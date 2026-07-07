@@ -132,6 +132,27 @@ def deteksi_tanggal(judul):
         return None
 
 
+# Judul berita Title Case membuat kata kerja berkapital ikut tertangkap
+# regex nama. Pangkas kata buntut yang jelas bukan nama.
+_BUKAN_NAMA = {
+    "gelar", "gelaran", "sukses", "ajak", "adakan", "hadirkan", "kembali",
+    "siap", "resmi", "buka", "umumkan", "rilis", "dukung", "sponsori",
+    "ramaikan", "meriahkan", "hingga", "usai", "bakal", "akan", "segera",
+}
+
+
+def _pangkas_bukan_nama(nama):
+    """Potong pada stopword pertama; None bila nama tersisa < 2 kata."""
+    words = nama.split()
+    for i, w in enumerate(words):
+        if i > 0 and w.lower().strip(".,") in _BUKAN_NAMA:
+            words = words[:i]
+            break
+    if len(words) < 2:
+        return None
+    return " ".join(words)
+
+
 def deteksi_penyelenggara(judul):
     """Ekstrak nama penyelenggara bila tersurat di judul; None bila tidak."""
     patterns = [
@@ -144,8 +165,29 @@ def deteksi_penyelenggara(judul):
     for p in patterns:
         m = p.search(judul)
         if m:
-            return m.group(1).strip()
+            nama = _pangkas_bukan_nama(m.group(1).strip())
+            if nama:
+                return nama
     return None
+
+
+def _bersihkan_judul(judul, sumber_media):
+    """
+    Judul Google News berformat "Judul artikel - Nama Media", dan sebagian
+    media (mis. jaringan disway.id) juga menulis domainnya di ekor judul
+    artikelnya sendiri — jadi ekornya bisa berlapis. Buang ekor berulang
+    selama ekornya sama dengan nama media atau berbentuk domain.
+    """
+    while " - " in judul:
+        head, tail = judul.rsplit(" - ", 1)
+        tail = tail.strip()
+        is_domain = re.fullmatch(r"[A-Za-z0-9.\-]+\.[a-z]{2,}", tail)
+        is_source = sumber_media and tail.lower() == sumber_media.lower()
+        if is_domain or is_source:
+            judul = head.strip()
+        else:
+            break
+    return judul
 
 
 def _google_news_rss_url(keyword):
@@ -181,8 +223,7 @@ def fetch_keyword(keyword):
         source_el = item.find("source")
         if source_el is not None and source_el.text:
             sumber_media = source_el.text.strip()
-            if judul.endswith(" - %s" % sumber_media):
-                judul = judul[: -(len(sumber_media) + 3)].strip()
+        judul = _bersihkan_judul(judul, sumber_media)
         items.append({
             "nama_event": judul,
             "tanggal": deteksi_tanggal(judul),

@@ -93,6 +93,33 @@ def tebak_jenis_klien(judul):
     return "tidak_diketahui"
 
 
+# Judul berita Indonesia memakai Title Case, sehingga kata kerja/keterangan
+# berkapital sering ikut tertangkap regex nama instansi. Pangkas dari buntut.
+_BUKAN_NAMA = {
+    "kembali", "bakal", "akan", "segera", "larang", "minta", "siap", "siapkan",
+    "gratis", "beri", "berikan", "bagikan", "salurkan", "gelar", "resmi",
+    "mulai", "wajib", "belum", "sudah", "jadi", "buka", "dorong", "usul",
+    "kaji", "tunda", "batal", "batalkan", "ingatkan", "sebut", "klaim",
+    "janji", "janjikan", "pastikan", "cek", "sorot", "soroti", "sidak",
+    "terima", "serahkan", "anggarkan", "alokasikan", "imbau", "tegaskan",
+    "ancam", "copot", "target", "targetkan", "lelang", "lelangkan", "tender",
+    "umumkan", "rilis", "rencanakan", "hingga", "usai", "soal", "terkait",
+    "disorot", "dikritik", "didesak", "diminta", "tanggapi", "klarifikasi",
+}
+
+
+def _pangkas_bukan_nama(nama):
+    """Potong pada stopword pertama; None bila nama tersisa < 2 kata."""
+    words = nama.split()
+    for i, w in enumerate(words):
+        if i > 0 and w.lower().strip(".,") in _BUKAN_NAMA:
+            words = words[:i]
+            break
+    if len(words) < 2:
+        return None
+    return " ".join(words)
+
+
 # Pola nama instansi yang bisa diekstrak dari judul berita. Hanya menampilkan
 # yang benar-benar muncul di teks sumber — dilarang memfabrikasi nama.
 _INSTANSI_PATTERNS = [
@@ -114,8 +141,29 @@ def deteksi_instansi(judul):
     for pattern in _INSTANSI_PATTERNS:
         m = pattern.search(judul)
         if m:
-            return m.group(1).strip()
+            nama = _pangkas_bukan_nama(m.group(1).strip())
+            if nama:
+                return nama
     return None
+
+
+def _bersihkan_judul(judul, sumber_media):
+    """
+    Judul Google News berformat "Judul artikel - Nama Media", dan sebagian
+    media (mis. jaringan disway.id) juga menulis domainnya di ekor judul
+    artikelnya sendiri — jadi ekornya bisa berlapis. Buang ekor berulang
+    selama ekornya sama dengan nama media atau berbentuk domain.
+    """
+    while " - " in judul:
+        head, tail = judul.rsplit(" - ", 1)
+        tail = tail.strip()
+        is_domain = re.fullmatch(r"[A-Za-z0-9.\-]+\.[a-z]{2,}", tail)
+        is_source = sumber_media and tail.lower() == sumber_media.lower()
+        if is_domain or is_source:
+            judul = head.strip()
+        else:
+            break
+    return judul
 
 
 def _google_news_rss_url(keyword):
@@ -149,13 +197,11 @@ def fetch_keyword(keyword):
         judul = (item.findtext("title") or "").strip()
         if not judul:
             continue
-        # Format judul Google News: "Judul berita - Nama Media"
         sumber_media = None
         source_el = item.find("source")
         if source_el is not None and source_el.text:
             sumber_media = source_el.text.strip()
-            if judul.endswith(" - %s" % sumber_media):
-                judul = judul[: -(len(sumber_media) + 3)].strip()
+        judul = _bersihkan_judul(judul, sumber_media)
         items.append({
             "keyword": keyword,
             "judul": judul,
