@@ -1,0 +1,68 @@
+# Radar Seragam — scraping harian + publikasi dashboard.
+#
+# Catatan lokasi: GitHub hanya mengeksekusi workflow di .github/workflows/
+# pada ROOT repo, karena itu file ini di root (bukan di radar/.github/).
+# Workflow ini tidak menyentuh folder pipeline/ (Fase 1).
+
+name: radar
+
+on:
+  schedule:
+    # 22:00 UTC = 05:00 WIB — data segar sebelum jam kerja.
+    - cron: "0 22 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: radar
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Kedua scraper hanya memakai pustaka standar — tanpa pip install.
+      - name: Jalankan scraper
+        run: |
+          python radar/scrapers/tender.py
+          python radar/scrapers/event.py
+
+      # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
+      - name: Salin JSON ke docs/data
+        run: |
+          mkdir -p radar/docs/data
+          cp radar/data/tenders.json radar/data/events.json radar/docs/data/
+
+      - name: Commit data terbaru
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "actions@github.com"
+          git add radar/data radar/docs/data
+          git diff --cached --quiet || git commit -m "data: pembaruan radar harian"
+          git push
+
+      - name: Upload artifact Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: radar/docs
+
+  deploy:
+    needs: scrape
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy ke GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
