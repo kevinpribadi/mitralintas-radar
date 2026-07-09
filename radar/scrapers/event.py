@@ -233,6 +233,10 @@ def fetch_keyword(keyword):
         if source_el is not None and source_el.text:
             sumber_media = source_el.text.strip()
         judul = _bersihkan_judul(judul, sumber_media)
+        # Guard: judul tanpa spasi (artefak encoding media tertentu) yang sangat
+        # panjang tidak terbaca dan merusak draft outreach — truncate saja.
+        if len(judul) > 80 and " " not in judul:
+            judul = judul[:80] + "[...]"
         items.append({
             "nama_event": judul,
             "tanggal": deteksi_tanggal(judul),
