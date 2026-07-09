@@ -43,6 +43,12 @@
     background: var(--warn-bg); color: var(--warn-ink); border-radius: 8px;
     padding: 10px 14px; font-size: .85rem; margin-bottom: 14px;
   }
+  .data-warning {
+    background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa;
+    border-radius: 8px; padding: 10px 14px; font-size: .85rem; margin-bottom: 14px;
+  }
+  .data-warning strong { display: block; margin-bottom: 2px; }
+  .data-warning ul { margin: 6px 0 0; padding-left: 18px; }
 
   .filters {
     background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -135,6 +141,7 @@
     resmi yang lengkap dan tidak real-time atas semua LPSE. Draft outreach hanya untuk disalin
     dan dikirim <strong>manual</strong> ke kontak resmi kerjasama; tidak ada pengiriman otomatis.
   </div>
+  <div class="data-warning" id="dataQualityWarning" hidden></div>
 
   <section class="summary-panel">
     <h2>Ringkasan Harian untuk Pimpinan</h2>
@@ -208,6 +215,10 @@ var state = {
   tenders: null,           // isi tenders.json
   events: null,            // isi events.json
   loadErrors: [],
+  dataQuality: {
+    tender: { valid: 0, problematic: 0, issues: [] },
+    event: { valid: 0, problematic: 0, issues: [] }
+  },
   filters: { jenis: "", wilayah: "", waktu: "", hideGov: false }
 };
 
@@ -228,6 +239,82 @@ function fetchFirst(paths) {
   });
 }
 
+function hasText(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+function validateTenderItem(item) {
+  var issues = [];
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    return ["item tender bukan object"];
+  }
+  if (!hasText(item.judul) && !hasText(item.title) && !hasText(item.name)) {
+    issues.push("judul/title kosong");
+  }
+  if (!hasText(item.sumber) && !hasText(item.source)) {
+    issues.push("sumber/source kosong");
+  }
+  if (!hasText(item.link) && !hasText(item.url)) {
+    issues.push("link/url kosong");
+  }
+  return issues;
+}
+
+function validateEventItem(item) {
+  var issues = [];
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    return ["item event bukan object"];
+  }
+  if (!hasText(item.nama_event) && !hasText(item.title) && !hasText(item.name)) {
+    issues.push("nama_event/title kosong");
+  }
+  if (!hasText(item.sumber) && !hasText(item.source)) {
+    issues.push("sumber/source kosong");
+  }
+  if (!hasText(item.link_resmi) && !hasText(item.link) && !hasText(item.url)) {
+    issues.push("link_resmi/link/url kosong");
+  }
+  return issues;
+}
+
+function validateDataset(raw, kind) {
+  var data = raw;
+  var rootIssues = [];
+  var items = [];
+
+  if (Array.isArray(raw)) {
+    data = { generated_at: null, errors: [], items: raw };
+    items = raw;
+  } else if (raw && typeof raw === "object" && Array.isArray(raw.items)) {
+    items = raw.items;
+  } else {
+    rootIssues.push(kind + ".json bukan object dengan items array atau array item");
+    data = { generated_at: null, errors: [], items: [] };
+  }
+
+  var valid = 0;
+  var problematic = 0;
+  var sampleIssues = rootIssues.slice();
+  var itemValidator = kind === "tender" ? validateTenderItem : validateEventItem;
+
+  items.forEach(function (item, idx) {
+    var itemIssues = itemValidator(item);
+    if (itemIssues.length === 0) {
+      valid += 1;
+    } else {
+      problematic += 1;
+      if (sampleIssues.length < 6) {
+        sampleIssues.push(kind + " item #" + (idx + 1) + ": " + itemIssues.join(", "));
+      }
+    }
+  });
+
+  return {
+    data: data,
+    quality: { valid: valid, problematic: problematic, issues: sampleIssues }
+  };
+}
+
 function loadData() {
   var pTender = fetchFirst(["data/tenders.json", "../data/tenders.json"])
     .catch(function (e) {
@@ -240,8 +327,12 @@ function loadData() {
       return { generated_at: null, errors: [], items: [] };
     });
   return Promise.all([pTender, pEvent]).then(function (res) {
-    state.tenders = res[0];
-    state.events = res[1];
+    var tenderResult = validateDataset(res[0], "tender");
+    var eventResult = validateDataset(res[1], "event");
+    state.tenders = tenderResult.data;
+    state.events = eventResult.data;
+    state.dataQuality.tender = tenderResult.quality;
+    state.dataQuality.event = eventResult.quality;
   });
 }
 
@@ -591,6 +682,31 @@ function renderSummary() {
   document.getElementById("summaryText").textContent = buildSummary();
 }
 
+function renderDataQualityWarning() {
+  var el = document.getElementById("dataQualityWarning");
+  var tender = state.dataQuality.tender;
+  var event = state.dataQuality.event;
+  var valid = tender.valid + event.valid;
+  var problematic = tender.problematic + event.problematic;
+  var issues = tender.issues.concat(event.issues);
+
+  if (problematic === 0 && issues.length === 0) {
+    el.hidden = true;
+    el.innerHTML = "";
+    return;
+  }
+
+  var html = "<strong>Data berhasil dimuat, tetapi sebagian item tidak lengkap</strong>" +
+    "<div>Item valid: " + esc(valid) + " | Item bermasalah: " + esc(problematic) + "</div>";
+  if (issues.length > 0) {
+    html += "<ul>" + issues.slice(0, 6).map(function (issue) {
+      return "<li>" + esc(issue) + "</li>";
+    }).join("") + "</ul>";
+  }
+  el.innerHTML = html;
+  el.hidden = false;
+}
+
 /* ============ Init ============ */
 function setTab(tab) {
   state.tab = tab;
@@ -646,6 +762,7 @@ function bindEvents() {
 
 loadData().then(function () {
   renderHeader();
+  renderDataQualityWarning();
   renderSummary();
   bindEvents();
   setTab("tender");
