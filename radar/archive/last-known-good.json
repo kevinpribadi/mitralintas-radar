@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-07-09T07:23:14.729Z",
+  "generated_at": "2026-07-09T23:16:45.858Z",
   "period": "2026-07",
   "archive_file": "radar/archive/monthly/2026-07.json",
-  "tender_count": 457,
-  "event_count": 616,
+  "tender_count": 459,
+  "event_count": 611,
   "data_generated_at": {
-    "tenders": "2026-07-09T07:23:08.952595+00:00",
-    "events": "2026-07-09T07:23:13.143453+00:00"
+    "tenders": "2026-07-09T23:16:40.418531+00:00",
+    "events": "2026-07-09T23:16:45.605013+00:00"
   },
   "input_files": {
     "tenders": "radar/data/tenders.json",
     "events": "radar/data/events.json"
   },
   "input_hashes_sha256": {
-    "tenders": "68f6451d6ce96c660c666d719f7e9a229042ad484f02d8ce3f692982d11e9ed7",
-    "events": "e4211bf4b6793a650deb40d9989fa3b135e1d5c1587ab63a7ee8547aa90559ec"
+    "tenders": "7f300d8b174585c45adb64256e6182417ec25eeb8511254c270f37ce218cc998",
+    "events": "1905ef418bbc198d29ee31895fd66a503f8e19e61a740df2a39a76dacbf27bf9"
   },
   "note": "Snapshot metadata dibuat setelah guard data lulus; tidak berisi raw item penuh."
 }
