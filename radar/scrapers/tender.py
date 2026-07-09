@@ -159,8 +159,9 @@ def _bersihkan_judul(judul, sumber_media):
         head, tail = judul.rsplit(" - ", 1)
         tail = tail.strip()
         is_domain = re.fullmatch(r"[A-Za-z0-9.\-]+\.[a-z]{2,}", tail)
+        is_url = re.fullmatch(r"https?://\S+", tail)
         is_source = sumber_media and tail.lower() == sumber_media.lower()
-        if is_domain or is_source:
+        if is_url or is_domain or is_source:
             judul = head.strip()
         else:
             break
@@ -215,6 +216,10 @@ def fetch_keyword(keyword):
         if source_el is not None and source_el.text:
             sumber_media = source_el.text.strip()
         judul = _bersihkan_judul(judul, sumber_media)
+        # Guard: judul tanpa spasi dari artefak encoding media tertentu
+        # tidak terbaca dan merusak draft outreach.
+        if len(judul) > 80 and " " not in judul:
+            judul = judul[:80] + "[...]"
         items.append({
             "keyword": keyword,
             "judul": judul,

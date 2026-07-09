@@ -185,8 +185,9 @@ def _bersihkan_judul(judul, sumber_media):
         head, tail = judul.rsplit(" - ", 1)
         tail = tail.strip()
         is_domain = re.fullmatch(r"[A-Za-z0-9.\-]+\.[a-z]{2,}", tail)
+        is_url = re.fullmatch(r"https?://\S+", tail)
         is_source = sumber_media and tail.lower() == sumber_media.lower()
-        if is_domain or is_source:
+        if is_url or is_domain or is_source:
             judul = head.strip()
         else:
             break
