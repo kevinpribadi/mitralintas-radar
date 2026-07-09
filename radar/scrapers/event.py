@@ -42,9 +42,11 @@ OUTPUT_FILE = DATA_DIR / "events.json"
 REQUEST_TIMEOUT = 20
 USER_AGENT = "Mozilla/5.0 (compatible; RadarSeragam/1.0; +https://github.com)"
 
+_TAHUN = datetime.now().year  # dipakai di keyword; otomatis diperbarui setiap tahun
+
 KEYWORDS = [
-    "fun run 2026",
-    "lomba lari 2026 pendaftaran",
+    f"fun run {_TAHUN}",
+    f"lomba lari {_TAHUN} pendaftaran",
     "family gathering perusahaan",
     "family day perusahaan",
     "HUT BUMN fun run",
