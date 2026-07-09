@@ -31,11 +31,26 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Simpan snapshot data sebelumnya
+        run: |
+          mkdir -p .radar-prev
+          cp radar/data/tenders.json .radar-prev/tenders.json 2>/dev/null || true
+          cp radar/data/events.json .radar-prev/events.json 2>/dev/null || true
+
       # Kedua scraper hanya memakai pustaka standar — tanpa pip install.
       - name: Jalankan scraper
         run: |
           python radar/scrapers/tender.py
           python radar/scrapers/event.py
+
+      - name: Guard hasil scraping
+        env:
+          RADAR_CURRENT_DIR: radar/data
+          RADAR_PREVIOUS_DIR: .radar-prev
+          RADAR_MIN_TENDER_ITEMS: "5"
+          RADAR_MIN_EVENT_ITEMS: "5"
+          RADAR_MAX_DROP_RATIO: "0.70"
+        run: node radar/scripts/guard_data.js
 
       # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
       - name: Salin JSON ke docs/data
