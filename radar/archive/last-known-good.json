@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-07-09T06:49:55.468Z",
+  "period": "2026-07",
+  "archive_file": "radar/archive/monthly/2026-07.json",
+  "tender_count": 465,
+  "event_count": 624,
+  "data_generated_at": {
+    "tenders": "2026-07-07T10:23:33.836504+00:00",
+    "events": "2026-07-07T10:23:39.975999+00:00"
+  },
+  "input_files": {
+    "tenders": "radar/data/tenders.json",
+    "events": "radar/data/events.json"
+  },
+  "input_hashes_sha256": {
+    "tenders": "60e72b66d8a29bf8ca01956e6f48b8bd7a9bbaf8f124d050d23bf353bfaa3cbb",
+    "events": "069969bab5ea017c6b29e442cdce7d53673b97473b9f05be4fc5c0138965e8b0"
+  },
+  "note": "Snapshot metadata dibuat setelah guard data lulus; tidak berisi raw item penuh."
+}

@@ -52,6 +52,13 @@ jobs:
           RADAR_MAX_DROP_RATIO: "0.70"
         run: node radar/scripts/guard_data.js
 
+      - name: Buat arsip agregat bulanan
+        env:
+          RADAR_DATA_DIR: radar/data
+          RADAR_ARCHIVE_DIR: radar/archive/monthly
+          RADAR_LKG_FILE: radar/archive/last-known-good.json
+        run: node radar/scripts/archive_summary.js
+
       # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
       - name: Salin JSON ke docs/data
         run: |
@@ -62,7 +69,7 @@ jobs:
         run: |
           git config user.name "radar-bot"
           git config user.email "actions@github.com"
-          git add radar/data radar/docs/data
+          git add radar/data radar/docs/data radar/archive
           git diff --cached --quiet || git commit -m "data: pembaruan radar harian"
           git push
 

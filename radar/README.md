@@ -39,6 +39,19 @@ python radar/scrapers/tender.py --ocds path/ke/export-ocds.json
 Data LKPP hanya mencatat sampai tahap **penetapan pemenang**, bukan realisasi kontrak —
 semua harga bersifat **indikatif**.
 
+Validasi data dan arsip agregat bulanan (opsional, dipakai workflow setelah scrape):
+
+```bash
+node radar/scripts/guard_data.js
+node radar/scripts/archive_summary.js
+# menulis radar/archive/monthly/YYYY-MM.json dan radar/archive/last-known-good.json
+```
+
+Threshold guard bisa diubah lewat environment variable:
+`RADAR_MIN_TENDER_ITEMS`, `RADAR_MIN_EVENT_ITEMS`, dan `RADAR_MAX_DROP_RATIO`.
+Lokasi input/output arsip bisa diubah lewat `RADAR_DATA_DIR`, `RADAR_ARCHIVE_DIR`,
+`RADAR_LKG_FILE`, dan `RADAR_ARCHIVE_PERIOD`.
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root
