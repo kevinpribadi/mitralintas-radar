@@ -219,6 +219,12 @@ def _parse_pubdate(raw):
         return None
 
 
+def _write_json_atomic(path, data):
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(path)
+
+
 def fetch_keyword(keyword):
     """Ambil dan parse satu feed Google News RSS. Melempar exception bila gagal."""
     xml_bytes = _fetch_url(_google_news_rss_url(keyword))
@@ -313,9 +319,7 @@ def scrape_events():
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     result = scrape_events()
-    OUTPUT_FILE.write_text(
-        json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    _write_json_atomic(OUTPUT_FILE, result)
     print("Tulis %s (%d item, %d error)" % (
         OUTPUT_FILE, len(result["items"]), len(result["errors"])
     ))
