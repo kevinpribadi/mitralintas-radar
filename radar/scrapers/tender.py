@@ -25,6 +25,7 @@ import argparse
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -174,9 +175,15 @@ def _google_news_rss_url(keyword):
 
 
 def _fetch_url(url):
+    """Ambil konten URL. Retry 1x setelah jeda 2 detik bila gagal pertama."""
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
-        return resp.read()
+    try:
+        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+            return resp.read()
+    except (urllib.error.URLError, OSError):
+        time.sleep(2)
+        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+            return resp.read()
 
 
 def _parse_pubdate(raw):
