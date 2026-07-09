@@ -56,8 +56,9 @@ KEYWORDS = [
 ]
 
 _KATEGORI_RULES = [
-    ("lari", ["fun run", "marathon", "half marathon", "10k", "5k", "lari",
-              "jalan sehat", "trail run", "night run", "color run"]),
+    ("lari", ["fun run", "run for fun", "funrun", "marathon", "half marathon",
+              "10k", "5k", "lari", "jalan sehat", "trail run", "night run",
+              "color run"]),
     ("gathering", ["gathering", "family day", "outing", "capacity building"]),
     ("hut", ["hut ", "ulang tahun", "anniversary", "dies natalis", "harlah"]),
 ]

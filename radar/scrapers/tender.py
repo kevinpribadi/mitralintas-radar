@@ -106,6 +106,7 @@ _BUKAN_NAMA = {
     "ancam", "copot", "target", "targetkan", "lelang", "lelangkan", "tender",
     "umumkan", "rilis", "rencanakan", "hingga", "usai", "soal", "terkait",
     "disorot", "dikritik", "didesak", "diminta", "tanggapi", "klarifikasi",
+    "beli", "dinilai", "molor", "bupati",
 }
 
 
