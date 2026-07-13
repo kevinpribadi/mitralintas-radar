@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0.0",
+  "storage_key": "mitralintas_radar_feedback_v1",
+  "reviewer_key": "mitralintas_radar_reviewer_v1",
+  "decision_states": {
+    "QUALIFIED": {
+      "label_id": "Qualified oleh Reviewer",
+      "description_id": "Manusia menilai sinyal layak masuk proses persiapan peluang lebih lanjut.",
+      "reason_codes": [
+        "DIRECT_PROCUREMENT_NEED",
+        "DIRECT_EVENT_NEED",
+        "PRODUCT_FIT_CONFIRMED",
+        "SOURCE_AND_ORGANIZATION_VERIFIED",
+        "ACTIONABLE_TIMING",
+        "OTHER_VERIFIED_REASON"
+      ],
+      "requires_next_action": true,
+      "requires_review_date_or_next_action": false
+    },
+    "NEEDS_RESEARCH": {
+      "label_id": "Perlu Riset",
+      "description_id": "Belum cukup bukti untuk mengambil keputusan.",
+      "reason_codes": [
+        "VERIFY_SOURCE",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_EVENT_DETAILS",
+        "VERIFY_QUANTITY",
+        "VERIFY_LOCATION",
+        "DATA_QUALITY_UNCERTAIN"
+      ],
+      "requires_next_action": true,
+      "requires_review_date_or_next_action": false
+    },
+    "WATCHLIST": {
+      "label_id": "Watchlist",
+      "description_id": "Belum actionable tetapi layak dipantau.",
+      "reason_codes": [
+        "EARLY_TRIGGER",
+        "RECURRING_EVENT",
+        "FUTURE_BUYING_WINDOW",
+        "TIMING_NOT_READY",
+        "POTENTIAL_FUTURE_NEED",
+        "HISTORICAL_PATTERN"
+      ],
+      "requires_next_action": false,
+      "requires_review_date_or_next_action": true
+    },
+    "NOT_RELEVANT": {
+      "label_id": "Tidak Relevan",
+      "description_id": "Berdasarkan review manusia, item tidak layak ditindaklanjuti saat ini.",
+      "reason_codes": [
+        "NO_PRODUCT_FIT",
+        "HISTORICAL_ONLY",
+        "DUPLICATE_SIGNAL",
+        "NON_COMMERCIAL_INFORMATION",
+        "EXPIRED_OPPORTUNITY",
+        "DATA_ARTIFACT",
+        "ORGANIZATION_OUT_OF_SCOPE",
+        "OTHER_NOT_RELEVANT"
+      ],
+      "requires_next_action": false,
+      "requires_review_date_or_next_action": false
+    }
+  },
+  "reason_codes": {
+    "DIRECT_PROCUREMENT_NEED": "Kebutuhan pengadaan langsung terverifikasi",
+    "DIRECT_EVENT_NEED": "Kebutuhan event langsung terverifikasi",
+    "PRODUCT_FIT_CONFIRMED": "Kecocokan produk terkonfirmasi",
+    "SOURCE_AND_ORGANIZATION_VERIFIED": "Sumber dan organisasi terverifikasi",
+    "ACTIONABLE_TIMING": "Waktu tindak lanjut masih actionable",
+    "OTHER_VERIFIED_REASON": "Alasan terverifikasi lainnya",
+    "VERIFY_SOURCE": "Sumber perlu diverifikasi",
+    "VERIFY_ORGANIZATION": "Organisasi perlu diverifikasi",
+    "VERIFY_TIMING": "Waktu perlu diverifikasi",
+    "VERIFY_PRODUCT_NEED": "Kebutuhan produk perlu diverifikasi",
+    "VERIFY_EVENT_DETAILS": "Detail event perlu diverifikasi",
+    "VERIFY_QUANTITY": "Kuantitas perlu diverifikasi",
+    "VERIFY_LOCATION": "Lokasi perlu diverifikasi",
+    "DATA_QUALITY_UNCERTAIN": "Kualitas data belum pasti",
+    "EARLY_TRIGGER": "Trigger masih tahap awal",
+    "RECURRING_EVENT": "Event berulang layak dipantau",
+    "FUTURE_BUYING_WINDOW": "Buying window diperkirakan masih mendatang",
+    "TIMING_NOT_READY": "Waktu belum siap ditindaklanjuti",
+    "POTENTIAL_FUTURE_NEED": "Ada potensi kebutuhan masa depan",
+    "HISTORICAL_PATTERN": "Pola historis layak dipantau",
+    "NO_PRODUCT_FIT": "Tidak ada kecocokan produk berdasarkan review manusia",
+    "HISTORICAL_ONLY": "Hanya berfungsi sebagai referensi historis",
+    "DUPLICATE_SIGNAL": "Sinyal duplikat",
+    "NON_COMMERCIAL_INFORMATION": "Informasi tidak bersifat komersial",
+    "EXPIRED_OPPORTUNITY": "Peluang telah kedaluwarsa",
+    "DATA_ARTIFACT": "Item merupakan artefak data",
+    "ORGANIZATION_OUT_OF_SCOPE": "Organisasi di luar cakupan",
+    "OTHER_NOT_RELEVANT": "Alasan tidak relevan lainnya"
+  },
+  "allowed_next_actions": {
+    "VERIFY_SOURCE": "Verifikasi sumber",
+    "VERIFY_ORGANIZATION": "Verifikasi organisasi",
+    "VERIFY_TIMING": "Verifikasi waktu",
+    "VERIFY_PRODUCT_NEED": "Verifikasi kebutuhan produk",
+    "VERIFY_EVENT_DETAILS": "Verifikasi detail event",
+    "OPEN_OFFICIAL_SOURCE": "Buka sumber resmi",
+    "ADD_TO_WATCHLIST": "Tambahkan ke watchlist",
+    "PREPARE_REQUIREMENT_BRIEF": "Siapkan ringkasan kebutuhan",
+    "PREPARE_FOR_SALES_REVIEW": "Siapkan untuk review sales",
+    "REVIEW_LATER": "Review kembali nanti"
+  },
+  "validation": {
+    "reviewer_alias_required": true,
+    "reviewer_alias_max_length": 50,
+    "note_max_length": 500,
+    "minimum_reason_codes": 1,
+    "review_date_format": "YYYY-MM-DD"
+  }
+}

@@ -31,6 +31,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Uji Human Feedback Loop
+        run: |
+          node --check radar/docs/js/human_feedback.js
+          node --check radar/scripts/test_human_feedback.js
+          node radar/scripts/test_human_feedback.js
+
       - name: Simpan snapshot data sebelumnya
         run: |
           mkdir -p .radar-prev
@@ -88,6 +94,10 @@ jobs:
           git add radar/data radar/docs/data radar/archive
           git diff --cached --quiet || git commit -m "data: pembaruan radar harian"
           git push
+
+      # Config disalin setelah commit agar tersedia di artifact Pages tanpa menjadi data feedback Git.
+      - name: Salin aturan Human Feedback untuk Pages
+        run: cp radar/config/human_feedback_rules.json radar/docs/data/human_feedback_rules.json
 
       - name: Upload artifact Pages
         uses: actions/upload-pages-artifact@v3

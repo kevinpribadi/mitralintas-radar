@@ -187,6 +187,53 @@ Field seperti `organization`, `organizer`, `instansi`, `nama_instansi`, `buyer`,
 `institution`, dan `entity` tidak ditemukan dalam dataset saat ini, sehingga tidak dipakai
 sebagai fallback aktif. Source/media publisher tidak dipakai sebagai organisasi.
 
+## Fase I: Human Feedback Loop V1
+
+Human Feedback Loop memungkinkan reviewer memberi keputusan manual pada item qualification
+readiness tanpa mengubah rekomendasi sistem. Dokumentasi lengkap tersedia di
+[HUMAN_FEEDBACK.md](HUMAN_FEEDBACK.md), sedangkan aturan machine-readable berada di
+[config/human_feedback_rules.json](config/human_feedback_rules.json).
+
+Cara menggunakan fitur review:
+
+1. Buka panel **Keputusan Reviewer** dan pilih **Review** pada item, atau gunakan
+   **Review Berikutnya** untuk membuka item `UNREVIEWED` menurut prioritas readiness.
+2. Pilih human decision, minimal satu reason, alias singkat, dan field wajib sesuai state.
+3. Pilih **Simpan Keputusan**. Machine readiness tetap read-only dan history lama tetap ada.
+
+Human decision yang tersedia adalah `QUALIFIED`, `NEEDS_RESEARCH`, `WATCHLIST`, dan
+`NOT_RELEVANT`. `UNREVIEWED` adalah default virtual dan tidak disimpan. `QUALIFIED` hanya
+dapat dibuat oleh manusia; tidak ada automatic qualification atau numeric scoring.
+
+Feedback disimpan sementara pada localStorage browser:
+
+- Storage root: `mitralintas_radar_feedback_v1`.
+- Alias reviewer: `mitralintas_radar_reviewer_v1`.
+
+Data tidak tersinkron ke browser, perangkat, atau user lain. Gunakan **Export Feedback**
+untuk backup `mitralintas-feedback-YYYY-MM-DD.json`. Gunakan **Import Feedback** untuk
+memvalidasi dan melihat preview record valid, invalid, baru, konflik, dan orphaned sebelum
+konfirmasi merge. Import menggabungkan history berdasarkan event ID dan mempertahankan
+record orphaned untuk export berikutnya.
+
+Untuk membersihkan feedback lokal secara aman, export backup terlebih dahulu, lalu gunakan
+DevTools browser pada halaman dashboard: **Application/Storage -> Local Storage**, hapus hanya
+key `mitralintas_radar_feedback_v1` dan, bila perlu, `mitralintas_radar_reviewer_v1`, kemudian
+reload halaman. Dashboard sengaja tidak menyediakan tombol delete-all pada pilot ini.
+
+Jika localStorage diblokir atau tidak tersedia, dashboard beralih ke in-memory fallback dan
+feedback hanya bertahan selama sesi. Jangan menyimpan email, nomor telepon, NIK, credential,
+atau data sensitif lain pada note. Pilot ini tidak memiliki backend, database cloud,
+authentication, sinkronisasi, outreach otomatis, atau workflow sales.
+
+Jalankan test lokal:
+
+```bash
+node --check radar/docs/js/human_feedback.js
+node --check radar/scripts/test_human_feedback.js
+node radar/scripts/test_human_feedback.js
+```
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root
