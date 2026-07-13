@@ -91,6 +91,9 @@
     "NEED_EVIDENCE_WEAK": {
       "label_id": "Bukti kebutuhan atau trigger lemah"
     },
+    "PRODUCT_NEED_UNCONFIRMED": {
+      "label_id": "Kebutuhan produk belum terkonfirmasi"
+    },
     "PRODUCT_FIT_WEAK": {
       "label_id": "Relevansi produk rendah berdasarkan aturan saat ini"
     },
@@ -124,6 +127,7 @@
     "TITLE_UNINFORMATIVE": "VERIFY_SOURCE",
     "ORGANIZATION_UNCLEAR": "VERIFY_ORGANIZATION",
     "NEED_EVIDENCE_WEAK": "VERIFY_PRODUCT_NEED",
+    "PRODUCT_NEED_UNCONFIRMED": "VERIFY_PRODUCT_NEED",
     "PRODUCT_FIT_WEAK": "ADD_TO_WATCHLIST",
     "DATE_EXPIRED": "VERIFY_TIMING",
     "DATE_UNKNOWN": "VERIFY_TIMING",
@@ -144,6 +148,7 @@
     "apparel": [
       "seragam",
       "pakaian dinas",
+      "pakaian sekolah",
       "baju dinas",
       "wearpack",
       "kaos",
@@ -155,11 +160,49 @@
       "merchandise tekstil",
       "pakaian kerja",
       "pakaian event",
+      "pdh",
+      "psh",
       "hospitality uniform",
       "safety apparel",
       "batik",
       "jersey",
       "uniform"
+    ]
+  },
+  "indirect_product_fit_terms": {
+    "event_or_activity": [
+      "fun run",
+      "fun bike",
+      "jalan sehat",
+      "family gathering",
+      "family day",
+      "gathering",
+      "hut",
+      "anniversary",
+      "festival",
+      "konferensi",
+      "seminar",
+      "wisuda",
+      "event olahraga",
+      "olahraga",
+      "marathon",
+      "lari",
+      "run",
+      "runner",
+      "race",
+      "sepeda santai",
+      "jalan santai"
+    ],
+    "business_trigger": [
+      "perekrutan massal",
+      "pembukaan cabang",
+      "pembukaan hotel",
+      "pembukaan rumah sakit",
+      "pembukaan pabrik",
+      "ekspansi",
+      "rebranding",
+      "peluncuran armada",
+      "safety campaign"
     ]
   },
   "need_evidence_terms": {
@@ -219,6 +262,8 @@
   ],
   "generic_organization_terms": [
     "dinas",
+    "dinas pendidikan",
+    "dinas kesehatan",
     "pemerintah",
     "pemda",
     "pemkab",
@@ -241,26 +286,38 @@
   ],
   "organization_artifact_terms": [
     "akan",
+    "ada",
     "bakal",
+    "anggaran",
+    "bantah",
     "bahas",
     "berpeluang",
     "buka",
     "capai",
     "dalami",
+    "digeledah",
+    "dorong",
     "dukung",
     "gelar",
     "gelaran",
     "hingga",
     "ingatkan",
+    "juta",
     "kenalkan",
     "kembali",
     "libatkan",
     "masih",
+    "melonjak",
     "minta",
     "nilai",
+    "nyaris",
     "pengadaan",
+    "periksa",
     "resmi",
+    "respon",
+    "rp",
     "seragam",
+    "selidiki",
     "siap",
     "siapkan",
     "sukses",
@@ -272,5 +329,9 @@
     "wajibkan",
     "titipkan"
   ],
+  "organization_field_fallback": {
+    "tender": ["instansi_terdeteksi"],
+    "event": ["penyelenggara"]
+  },
   "expired_threshold_days": 1095
 }

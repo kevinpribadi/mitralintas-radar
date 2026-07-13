@@ -62,6 +62,13 @@ tekstil, bila bukti produk memang cukup.
 rebranding, atau kegiatan operasional yang mungkin menjadi pemicu kebutuhan, tetapi masih
 perlu verifikasi lebih lanjut.
 
+Pada readiness, event atau trigger seperti fun run, jalan sehat, gathering, HUT,
+anniversary, festival, konferensi, seminar, wisuda, pembukaan cabang, ekspansi,
+rebranding, peluncuran armada, atau safety campaign dapat menunjukkan kebutuhan produk yang
+belum terkonfirmasi. Kondisi ini bukan product fit eksplisit dan tidak boleh otomatis masuk
+`READY_FOR_HUMAN_QUALIFICATION`; sistem memberi reason `PRODUCT_NEED_UNCONFIRMED` dan next
+action `VERIFY_PRODUCT_NEED`.
+
 **Historical reference** adalah item bertanggal valid yang sudah melewati ambang historical
 atau lebih tepat dipakai sebagai pembanding historis, bukan buying window aktif.
 

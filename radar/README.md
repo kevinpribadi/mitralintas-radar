@@ -118,7 +118,8 @@ State readiness:
   belum cukup.
 - `NEEDS_DATA_REVIEW`: review queue menunjukkan issue high/medium atau kualitas data gagal.
 - `EXPIRED_OR_HISTORICAL`: tanggal valid sudah melewati ambang historical.
-- `LOW_PRODUCT_RELEVANCE`: relevansi produk rendah berdasarkan aturan saat ini.
+- `LOW_PRODUCT_RELEVANCE`: tidak ada hubungan produk yang cukup masuk akal berdasarkan aturan
+  saat ini.
 
 State `QUALIFIED`, `WON`, `LOST`, dan `REJECTED` sengaja tidak dipakai karena itu keputusan
 manusia atau fase berikutnya.
@@ -137,7 +138,8 @@ Checks yang dievaluasi per item:
 Reason code utama:
 
 - `SOURCE_MISSING`, `SOURCE_INVALID`, `TITLE_UNINFORMATIVE`
-- `ORGANIZATION_UNCLEAR`, `NEED_EVIDENCE_WEAK`, `PRODUCT_FIT_WEAK`
+- `ORGANIZATION_UNCLEAR`, `NEED_EVIDENCE_WEAK`, `PRODUCT_NEED_UNCONFIRMED`,
+  `PRODUCT_FIT_WEAK`
 - `DATE_EXPIRED`, `DATE_UNKNOWN`, `QUALITY_REVIEW_REQUIRED`
 - `NEXT_ACTION_UNCLEAR`, `READY_FOR_HUMAN_REVIEW`, `HISTORICAL_REFERENCE`
 
@@ -162,6 +164,28 @@ pembeli Pemerintah/BUMN, tidak mengambil kontak pribadi, tidak mengirim outreach
 harga, dan tidak memperkirakan nilai proyek tanpa bukti. Suggested next action yang muncul hanya
 tindakan netral seperti verifikasi sumber, organisasi, timing, kebutuhan produk, review kualitas
 data, buka sumber, tambah watchlist, atau siapkan untuk review manusia.
+
+Product fit dibagi menjadi tiga kondisi:
+
+- Explicit product fit: istilah apparel/tekstil eksplisit seperti seragam, pakaian dinas,
+  baju dinas, wearpack, kaos, polo, jaket, rompi, batik, jersey, atau tekstil ditemukan;
+  `product_fit_plausible = pass`.
+- Indirect product need unconfirmed: event/trigger seperti fun run, jalan sehat, family
+  gathering, HUT, festival, konferensi, seminar, wisuda, ekspansi, rebranding, pembukaan
+  cabang, peluncuran armada, atau safety campaign ditemukan tetapi produk belum disebut;
+  `product_fit_plausible = unknown`, reason `PRODUCT_NEED_UNCONFIRMED`, dan next action
+  `VERIFY_PRODUCT_NEED`.
+- Weak product fit: tidak ada explicit product fit dan tidak ada indirect trigger yang cukup;
+  `product_fit_plausible = fail`, reason `PRODUCT_FIT_WEAK`.
+
+Organization fallback berdasarkan audit schema aktual:
+
+- Tender: `instansi_terdeteksi`.
+- Event: `penyelenggara`.
+
+Field seperti `organization`, `organizer`, `instansi`, `nama_instansi`, `buyer`, `agency`,
+`institution`, dan `entity` tidak ditemukan dalam dataset saat ini, sehingga tidak dipakai
+sebagai fallback aktif. Source/media publisher tidak dipakai sebagai organisasi.
 
 ## Setup GitHub Actions + GitHub Pages
 

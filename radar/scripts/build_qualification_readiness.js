@@ -39,6 +39,7 @@ const REASON_ORDER = [
   "TITLE_UNINFORMATIVE",
   "ORGANIZATION_UNCLEAR",
   "NEED_EVIDENCE_WEAK",
+  "PRODUCT_NEED_UNCONFIRMED",
   "PRODUCT_FIT_WEAK",
   "DATE_EXPIRED",
   "DATE_UNKNOWN",
@@ -84,6 +85,7 @@ const output = {
     tender_total: tenderData.items.length,
     event_total: eventData.items.length,
     evaluated_total: items.length,
+    organization_field_usage: buildOrganizationFieldUsage(limitedCandidates),
   },
   readiness_summary: buildReadinessSummary(items),
   items,
@@ -194,9 +196,8 @@ function normalizeItem(item, type, index) {
   const date = type === "tender"
     ? firstText(safe.published, safe.date, safe.tanggal)
     : firstText(safe.tanggal, safe.published, safe.date);
-  const organization = type === "tender"
-    ? firstText(safe.instansi_terdeteksi, safe.organization, safe.instansi)
-    : firstText(safe.penyelenggara, safe.organization, safe.organizer);
+  const organizationResult = selectOrganization(safe, type);
+  const organization = organizationResult.value;
   const metadataText = type === "tender"
     ? [safe.jenis_klien_tebakan, safe.instansi_terdeteksi]
     : [safe.kategori, safe.segmen, safe.penyelenggara];
@@ -214,6 +215,7 @@ function normalizeItem(item, type, index) {
     link,
     date,
     organization,
+    organizationField: organizationResult.field,
     searchableText,
     parsedTime,
   };
@@ -223,12 +225,14 @@ function evaluateCandidate(candidate) {
   const reviewItem = reviewById.get(candidate.id) || null;
   const matchedNeedTerms = matchTerms(candidate.searchableText, rules.need_evidence_terms);
   const matchedProductTerms = matchTerms(candidate.searchableText, rules.product_relevance_terms);
+  const matchedIndirectTerms = matchTerms(candidate.searchableText, rules.indirect_product_fit_terms);
   const matchedCounterTerms = matchTermList(candidate.searchableText, rules.counter_signal_terms);
   const checks = buildChecks(
     candidate,
     reviewItem,
     matchedNeedTerms,
     matchedProductTerms,
+    matchedIndirectTerms,
     matchedCounterTerms
   );
   const reasonCodes = buildReasonCodes(checks, reviewItem);
@@ -249,7 +253,9 @@ function evaluateCandidate(candidate) {
     reason_codes: finalReasonCodes,
     evidence: {
       matched_product_terms: matchedProductTerms,
+      matched_indirect_product_terms: matchedIndirectTerms,
       matched_need_terms: matchedNeedTerms,
+      organization_field: candidate.organizationField,
       review_issue_codes: reviewItem ? reviewItem.issueCodes : [],
     },
     suggested_next_action: suggestedNextAction,
@@ -257,7 +263,14 @@ function evaluateCandidate(candidate) {
   };
 }
 
-function buildChecks(candidate, reviewItem, matchedNeedTerms, matchedProductTerms, matchedCounterTerms) {
+function buildChecks(
+  candidate,
+  reviewItem,
+  matchedNeedTerms,
+  matchedProductTerms,
+  matchedIndirectTerms,
+  matchedCounterTerms
+) {
   const checks = {
     source_traceable: checkSource(candidate),
     title_informative: checkTitle(candidate.title),
@@ -265,7 +278,7 @@ function buildChecks(candidate, reviewItem, matchedNeedTerms, matchedProductTerm
     need_evidence_present: matchedNeedTerms.length > 0 && matchedCounterTerms.length === 0
       ? "pass"
       : "unknown",
-    product_fit_plausible: matchedProductTerms.length > 0 ? "pass" : "fail",
+    product_fit_plausible: productFitCheck(matchedProductTerms, matchedIndirectTerms),
     timing_actionable: checkTiming(candidate),
     data_quality_acceptable: checkDataQuality(reviewItem),
     next_action_possible: "pass",
@@ -278,6 +291,12 @@ function buildChecks(candidate, reviewItem, matchedNeedTerms, matchedProductTerm
   });
 
   return checks;
+}
+
+function productFitCheck(matchedProductTerms, matchedIndirectTerms) {
+  if (matchedProductTerms.length > 0) return "pass";
+  if (matchedIndirectTerms.length > 0) return "unknown";
+  return "fail";
 }
 
 function checkSource(candidate) {
@@ -348,7 +367,8 @@ function buildReasonCodes(checks, reviewItem) {
   if (checks.title_informative === "fail") reasons.add("TITLE_UNINFORMATIVE");
   if (checks.organization_identifiable !== "pass") reasons.add("ORGANIZATION_UNCLEAR");
   if (checks.need_evidence_present !== "pass") reasons.add("NEED_EVIDENCE_WEAK");
-  if (checks.product_fit_plausible !== "pass") reasons.add("PRODUCT_FIT_WEAK");
+  if (checks.product_fit_plausible === "unknown") reasons.add("PRODUCT_NEED_UNCONFIRMED");
+  if (checks.product_fit_plausible === "fail") reasons.add("PRODUCT_FIT_WEAK");
   if (checks.timing_actionable === "unknown") reasons.add("DATE_UNKNOWN");
   if (checks.timing_actionable === "fail") {
     reasons.add("DATE_EXPIRED");
@@ -391,6 +411,7 @@ function determineReadinessState(checks) {
     checks.title_informative !== "pass" ||
     checks.organization_identifiable !== "pass" ||
     checks.need_evidence_present !== "pass" ||
+    checks.product_fit_plausible === "unknown" ||
     checks.timing_actionable === "unknown" ||
     checks.next_action_possible !== "pass";
   if (needsMoreInformation) return "NEEDS_MORE_INFORMATION";
@@ -421,16 +442,38 @@ function chooseNextAction(readinessState, reasonCodes) {
   let action = map[readinessState] || null;
 
   if (readinessState === "NEEDS_MORE_INFORMATION") {
+    if (reasonCodes.includes("PRODUCT_NEED_UNCONFIRMED")) {
+      action = map.PRODUCT_NEED_UNCONFIRMED || action;
+    } else {
     for (const reason of reasonCodes) {
       if (map[reason]) {
         action = map[reason];
         break;
       }
     }
+    }
   }
 
   if (!action || !allowed.has(action)) return "VERIFY_SOURCE";
   return action;
+}
+
+function buildOrganizationFieldUsage(candidates) {
+  const usage = {
+    tender: {},
+    event: {},
+    none: 0,
+  };
+  candidates.forEach((candidate) => {
+    if (!candidate.organizationField) {
+      usage.none += 1;
+      return;
+    }
+    const bucket = usage[candidate.type] || {};
+    bucket[candidate.organizationField] = (bucket[candidate.organizationField] || 0) + 1;
+    usage[candidate.type] = bucket;
+  });
+  return usage;
 }
 
 function buildReadinessSummary(items) {
@@ -505,6 +548,18 @@ function matchTerms(text, groupedTerms) {
     });
   });
   return matches.sort((a, b) => normalizeLoose(a).localeCompare(normalizeLoose(b)));
+}
+
+function selectOrganization(item, type) {
+  const fallback = rules.organization_field_fallback &&
+    Array.isArray(rules.organization_field_fallback[type])
+    ? rules.organization_field_fallback[type]
+    : [];
+
+  for (const field of fallback) {
+    if (hasText(item[field])) return { value: String(item[field]).trim(), field };
+  }
+  return { value: "", field: "" };
 }
 
 function matchTermList(text, terms) {
