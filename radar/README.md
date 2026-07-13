@@ -234,6 +234,58 @@ node --check radar/scripts/test_human_feedback.js
 node radar/scripts/test_human_feedback.js
 ```
 
+## Fase J: Trigger Radar V1
+
+Trigger Radar mendeteksi peristiwa yang dapat mendahului kebutuhan tekstil atau apparel pada
+data tender/event yang sudah tersedia. Trigger adalah indikasi awal berbasis aturan, bukan bukti
+kebutuhan atau pembelian. Dokumentasi lengkap tersedia di
+[TRIGGER_RADAR.md](TRIGGER_RADAR.md), sedangkan taxonomy machine-readable berada di
+[config/trigger_taxonomy.json](config/trigger_taxonomy.json).
+
+Trigger dibagi menjadi kelas `direct`, `indirect`, dan `historical`, dengan evidence strength
+non-numerik `STRONG`, `MODERATE`, dan `WEAK`. Satu item dapat memiliki beberapa trigger.
+Primary trigger dipilih deterministic dengan aturan kontekstual. Pengadaan aktif dapat menjadi
+direct primary meskipun terdapat historical secondary; artikel yang terutama membahas audit,
+korupsi, penyidikan, atau penyimpangan tetap historical primary. Tie-breaker berikutnya memakai
+class precedence, evidence strength, urutan taxonomy, dan trigger code. Aturan ini bukan ranking
+komersial atau opportunity score.
+
+Setiap signal memiliki timing status `FUTURE_OR_OPEN`, `CURRENT_OR_UNCLEAR`,
+`COMPLETED_OR_PAST`, `HISTORICAL_REFERENCE`, atau `INFORMATIONAL_OR_EDITORIAL`. Timing memakai
+field event date eksplisit dan phrase judul; published date tidak dianggap event date dan
+reference date berasal dari `generated_at` input. Artikel editorial/listicle disuppress untuk
+trigger event, sedangkan keyword generik investasi dan tenaga kerja tidak cukup untuk expansion
+atau recruitment.
+
+Invitation phrase (`ayo`, `mari`, `yuk`) dan planning phrase spesifik diperiksa sebelum completed
+context. Verba seperti `ramaikan` atau `ikuti` tanpa invitation, completed phrase, actor/action,
+atau passive quantity context tetap `CURRENT_OR_UNCLEAR`. Published date hanya dipakai sebagai
+freshness guard 60 hari untuk phrase-based future signal. Signal stale diturunkan ke verifikasi
+waktu, kecuali judul memuat tanggal future yang dapat dibuktikan terhadap reference date
+deterministic.
+
+Jalankan setelah data sumber tersedia:
+
+```bash
+node radar/scripts/build_trigger_signals.js
+node radar/scripts/test_trigger_signals.js
+```
+
+Output ditulis atomik ke `docs/data/trigger_signals.json`. `generated_at` berasal dari timestamp
+input terbaru sehingga dua run dengan input identik menghasilkan hash identik. Environment
+variables yang tersedia:
+
+- `RADAR_DATA_DIR`: folder input, default `radar/data`.
+- `RADAR_TRIGGER_TAXONOMY_FILE`: taxonomy, default `radar/config/trigger_taxonomy.json`.
+- `RADAR_TRIGGER_OUTPUT`: output, default `radar/docs/data/trigger_signals.json`.
+
+Dashboard menampilkan maksimal 20 item awal pada panel **Trigger Kebutuhan**, dengan prioritas
+future direct, future indirect, current/unclear, completed, lalu historical. Filter mencakup
+kategori, class, evidence strength, timing status, dan type. Konten informational/editorial tidak
+tampil pada initial list, tetapi suppression count tetap terlihat. Product hypotheses selalu
+diberi label perlu verifikasi. Tidak ada scoring numerik, ranking penjualan, sumber scraping baru,
+keputusan manusia otomatis, atau outreach pada Fase J.
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root

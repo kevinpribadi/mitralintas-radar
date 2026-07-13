@@ -1,0 +1,640 @@
+{
+  "version": "1.1.1",
+  "future_signal_max_published_age_days": 60,
+  "class_precedence": [
+    "direct",
+    "historical",
+    "indirect"
+  ],
+  "strength_precedence": [
+    "STRONG",
+    "MODERATE",
+    "WEAK"
+  ],
+  "timing_statuses": [
+    "FUTURE_OR_OPEN",
+    "CURRENT_OR_UNCLEAR",
+    "COMPLETED_OR_PAST",
+    "HISTORICAL_REFERENCE",
+    "INFORMATIONAL_OR_EDITORIAL"
+  ],
+  "timing_rules": {
+    "future_or_open_phrases": [
+      "akan digelar",
+      "bakal digelar",
+      "siap digelar",
+      "akan gelar",
+      "akan menggelar",
+      "akan berlangsung",
+      "ayo ramaikan",
+      "ayo ikuti",
+      "ayo hadiri",
+      "mari ramaikan",
+      "mari ikuti",
+      "mari hadiri",
+      "yuk ramaikan",
+      "yuk ikuti",
+      "jangan lewatkan",
+      "segera daftar",
+      "daftar sekarang",
+      "segera dibuka",
+      "pendaftaran dibuka",
+      "pendaftaran masih dibuka",
+      "membuka pendaftaran",
+      "open registration",
+      "membuka tender",
+      "tender terbuka",
+      "pengadaan akan",
+      "rencana pengadaan",
+      "rup 2026",
+      "siap ramaikan",
+      "akan diikuti",
+      "bakal diikuti",
+      "siap diikuti",
+      "akan ikuti",
+      "bakal ikuti",
+      "siap ikuti",
+      "siap meramaikan",
+      "akan meramaikan",
+      "bakal meramaikan",
+      "diharapkan hadir",
+      "terbuka untuk umum",
+      "mengajak masyarakat",
+      "undangan mengikuti",
+      "diajak ramaikan",
+      "diajak mengikuti",
+      "targetkan",
+      "dijadwalkan"
+    ],
+    "invitation_lead_terms": [
+      "ayo",
+      "mari",
+      "yuk"
+    ],
+    "invitation_action_terms": [
+      "ramaikan",
+      "ikuti",
+      "hadiri"
+    ],
+    "completed_or_past_phrases": [
+      "telah digelar",
+      "telah menggelar",
+      "selesai digelar",
+      "sukses digelar",
+      "telah berlangsung",
+      "sudah berlangsung",
+      "usai digelar",
+      "usai",
+      "resmi berakhir",
+      "sudah digelar",
+      "diikuti ribuan peserta",
+      "diramaikan ribuan peserta",
+      "dimeriahkan peserta",
+      "warga meramaikan",
+      "peserta mengikuti",
+      "sukses berlangsung"
+    ],
+    "completed_actor_terms": [
+      "warga",
+      "peserta",
+      "pelari",
+      "karyawan",
+      "masyarakat",
+      "anak",
+      "penari"
+    ],
+    "completed_action_terms": [
+      "ramaikan",
+      "meramaikan",
+      "meriahkan",
+      "ikuti",
+      "mengikuti"
+    ],
+    "completed_passive_terms": [
+      "diikuti",
+      "diramaikan",
+      "dimeriahkan"
+    ],
+    "completed_quantity_terms": [
+      "puluhan",
+      "ratusan",
+      "ribuan",
+      "seribu",
+      "10 ribu"
+    ],
+    "ambiguous_verbs": [
+      "ramaikan",
+      "meriahkan",
+      "ikuti",
+      "mengikuti",
+      "gelar",
+      "berlangsung",
+      "hadir"
+    ]
+  },
+  "editorial_rules": {
+    "terms": [
+      "rekomendasi",
+      "daftar tempat",
+      "daftar event",
+      "tema",
+      "contoh",
+      "kata sambutan",
+      "tips",
+      "cara",
+      "ide",
+      "hidden gem",
+      "destinasi",
+      "tempat gathering",
+      "tempat family gathering",
+      "tempat outing",
+      "jadwal lengkap",
+      "cek tiket",
+      "fakta menarik",
+      "inspirasi",
+      "hoaks",
+      "cek fakta"
+    ],
+    "suppressed_trigger_codes": [
+      "CORPORATE_OR_INSTITUTIONAL_EVENT",
+      "SPORTS_OR_COMMUNITY_EVENT"
+    ]
+  },
+  "primary_trigger_rules": {
+    "active_direct_terms": [
+      "membuka tender",
+      "tender terbuka",
+      "pengadaan akan",
+      "rencana pengadaan",
+      "rup 2026",
+      "anggaran berjalan",
+      "proses pengadaan",
+      "pengadaan sedang",
+      "pengadaan sudah berjalan"
+    ],
+    "historical_dominant_terms": [
+      "audit",
+      "korupsi",
+      "penyidikan",
+      "perkara",
+      "temuan bpk",
+      "kelebihan bayar",
+      "penyimpangan",
+      "kerugian negara",
+      "kejari",
+      "tersangka",
+      "kasus",
+      "pengadaan lama"
+    ]
+  },
+  "allowed_actions": [
+    "VERIFY_TRIGGER",
+    "VERIFY_ORGANIZATION",
+    "VERIFY_TIMING",
+    "VERIFY_PRODUCT_NEED",
+    "OPEN_OFFICIAL_SOURCE",
+    "ADD_TO_WATCHLIST",
+    "PREPARE_FOR_HUMAN_QUALIFICATION"
+  ],
+  "triggers": [
+    {
+      "code": "DIRECT_PROCUREMENT",
+      "label": "Sinyal Pengadaan Langsung",
+      "description": "Data menyebut proses atau kebutuhan pengadaan secara langsung.",
+      "trigger_class": "direct",
+      "positive_terms": [
+        "pengadaan",
+        "tender",
+        "belanja",
+        "kontrak"
+      ],
+      "phrase_terms": [
+        "pengadaan seragam",
+        "pengadaan pakaian",
+        "pakaian dinas",
+        "seragam gratis",
+        "belanja pakaian",
+        "kontrak apparel",
+        "tender seragam",
+        "tender pakaian"
+      ],
+      "negative_terms": [
+        "simulasi tender tanpa pengadaan"
+      ],
+      "product_hypotheses": [
+        "Seragam kerja atau pakaian dinas",
+        "Apparel sesuai spesifikasi pengadaan"
+      ],
+      "allowed_actions": [
+        "PREPARE_FOR_HUMAN_QUALIFICATION",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "OPEN_OFFICIAL_SOURCE"
+      ]
+    },
+    {
+      "code": "FACILITY_OPENING",
+      "label": "Pembukaan Fasilitas",
+      "description": "Data menyebut pembukaan fasilitas atau lokasi operasi baru.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+      ],
+      "phrase_terms": [
+        "pembukaan pabrik",
+        "pembukaan hotel",
+        "pembukaan rumah sakit",
+        "pembukaan cabang",
+        "mulai beroperasi",
+        "resmi beroperasi",
+        "mulai produksi",
+        "resmi dibuka",
+        "grand opening",
+        "soft opening",
+        "fasilitas baru",
+        "pabrik baru",
+        "hotel baru",
+        "rumah sakit baru",
+        "cabang baru",
+        "gerai baru",
+        "diresmikan",
+        "membuka cabang",
+        "membuka pabrik",
+        "membuka hotel",
+        "membuka rumah sakit"
+      ],
+      "negative_terms": [
+        "pembukaan perdagangan",
+        "pembukaan acara",
+        "pembukaan pendaftaran",
+        "pendaftaran dibuka",
+        "pendaftaran resmi dibuka",
+        "membuka pendaftaran",
+        "pembukaan rekening",
+        "pembukaan sidang",
+        "pembukaan pasar modal"
+      ],
+      "context_required_terms": [
+        "resmi dibuka",
+        "diresmikan"
+      ],
+      "context_terms": [
+        "pabrik",
+        "hotel",
+        "rumah sakit",
+        "cabang",
+        "fasilitas",
+        "gerai",
+        "toko",
+        "kantor",
+        "gudang",
+        "restoran"
+      ],
+      "product_hypotheses": [
+        "Seragam staf fasilitas",
+        "Pakaian kerja operasional"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "BUSINESS_EXPANSION",
+      "label": "Ekspansi Operasional",
+      "description": "Data menyebut perluasan kapasitas, operasi, fasilitas, atau armada.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+      ],
+      "phrase_terms": [
+        "ekspansi pabrik",
+        "ekspansi cabang",
+        "ekspansi kapasitas",
+        "ekspansi operasi",
+        "investasi fasilitas baru",
+        "investasi pembangunan pabrik",
+        "penambahan kapasitas produksi",
+        "perluasan operasi",
+        "penambahan armada",
+        "memperluas jaringan gerai"
+      ],
+      "negative_terms": [
+        "ekspansi kredit",
+        "ekspansi pembiayaan",
+        "ekspansi moneter",
+        "ekspansi fiskal",
+        "ekspansi pasar modal",
+        "perluasan akses kredit",
+        "investasi saham",
+        "investasi pasar modal",
+        "investasi keuangan",
+        "dana investasi",
+        "game changer investasi",
+        "prospek investasi",
+        "edukasi investasi"
+      ],
+      "product_hypotheses": [
+        "Tambahan pakaian kerja untuk operasi baru",
+        "Apparel operasional untuk kapasitas tambahan"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "MASS_RECRUITMENT",
+      "label": "Rekrutmen Massal",
+      "description": "Data menyebut penambahan tenaga kerja atau onboarding dalam skala besar.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "rekrutmen",
+        "merekrut",
+        "hiring"
+      ],
+      "phrase_terms": [
+        "rekrutmen massal",
+        "membuka lowongan",
+        "penerimaan pegawai",
+        "penerimaan karyawan",
+        "open recruitment",
+        "membutuhkan pekerja",
+        "penambahan karyawan",
+        "onboarding pegawai"
+      ],
+      "negative_terms": [
+        "rekrutmen politik",
+        "rekrutmen partai",
+        "rekrutmen calon legislatif",
+        "rekrutmen peserta",
+        "rekrutmen relawan",
+        "serap tenaga kerja",
+        "tenaga kerja lokal",
+        "angkatan kerja",
+        "jumlah pekerja",
+        "pengangguran",
+        "produktivitas tenaga kerja"
+      ],
+      "product_hypotheses": [
+        "Pakaian kerja untuk pegawai baru",
+        "Seragam onboarding"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "REBRANDING_OR_IDENTITY_CHANGE",
+      "label": "Perubahan Identitas",
+      "description": "Data menyebut perubahan brand, logo, atau identitas institusi.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "rebranding",
+        "logo",
+        "identitas",
+        "brand"
+      ],
+      "phrase_terms": [
+        "logo baru",
+        "identitas baru",
+        "perubahan brand",
+        "transformasi identitas"
+      ],
+      "negative_terms": [
+        "logo sponsor",
+        "identitas pelaku",
+        "identitas korban",
+        "brand ambassador"
+      ],
+      "product_hypotheses": [
+        "Pembaruan identitas pada seragam",
+        "Apparel dengan identitas visual baru"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "CORPORATE_OR_INSTITUTIONAL_EVENT",
+      "label": "Event Korporasi atau Institusi",
+      "description": "Data menyebut kegiatan korporasi, institusi, atau perayaan organisasi.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "hut",
+        "anniversary",
+        "gathering",
+        "konferensi",
+        "seminar",
+        "festival"
+      ],
+      "phrase_terms": [
+        "family gathering",
+        "family day",
+        "ulang tahun perusahaan",
+        "hari ulang tahun",
+        "konferensi tahunan",
+        "seminar nasional"
+      ],
+      "negative_terms": [
+        "seminar proposal",
+        "festival film dokumenter lama",
+        "hut tanpa kegiatan",
+        "rekomendasi tempat",
+        "tempat outing",
+        "tempat family gathering",
+        "tempat gathering",
+        "tema family gathering",
+        "ide family gathering",
+        "tips gathering"
+      ],
+      "product_hypotheses": [
+        "Kaos atau polo kegiatan",
+        "Jaket atau merchandise tekstil acara"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "SPORTS_OR_COMMUNITY_EVENT",
+      "label": "Event Olahraga atau Komunitas",
+      "description": "Data menyebut kegiatan olahraga atau komunitas yang eksplisit.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "marathon",
+        "turnamen",
+        "olahraga",
+        "pelari"
+      ],
+      "phrase_terms": [
+        "fun run",
+        "jalan sehat",
+        "jalan santai",
+        "event lari",
+        "lomba lari",
+        "event olahraga",
+        "kegiatan olahraga",
+        "fun bike"
+      ],
+      "negative_terms": [
+        "run time",
+        "runtime",
+        "run dalam url",
+        "hoaks",
+        "uji coba mesin"
+      ],
+      "product_hypotheses": [
+        "Kaos atau jersey peserta",
+        "Apparel panitia atau komunitas"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "GRADUATION_OR_EDUCATION_EVENT",
+      "label": "Kegiatan Pendidikan",
+      "description": "Data menyebut wisuda, orientasi, penerimaan siswa, atau awal tahun ajaran.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "wisuda",
+        "orientasi",
+        "siswa",
+        "mahasiswa"
+      ],
+      "phrase_terms": [
+        "penerimaan siswa",
+        "penerimaan mahasiswa",
+        "tahun ajaran baru",
+        "masa orientasi",
+        "upacara wisuda"
+      ],
+      "negative_terms": [
+        "penerimaan siswa ditutup",
+        "orientasi seksual",
+        "wisuda virtual lama"
+      ],
+      "product_hypotheses": [
+        "Seragam siswa atau atribut orientasi",
+        "Apparel kegiatan pendidikan"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "SAFETY_OR_OPERATIONAL_PROGRAM",
+      "label": "Program Keselamatan atau Operasional",
+      "description": "Data menyebut program keselamatan kerja atau kegiatan operasi lapangan.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "k3",
+        "safety",
+        "keselamatan",
+        "operasi lapangan",
+        "armada"
+      ],
+      "phrase_terms": [
+        "safety campaign",
+        "keselamatan kerja",
+        "operasi lapangan",
+        "peluncuran armada",
+        "program k3"
+      ],
+      "negative_terms": [
+        "keselamatan lalu lintas umum",
+        "operasi tangkap tangan",
+        "operasi politik",
+        "armada perang historis"
+      ],
+      "product_hypotheses": [
+        "Safety apparel atau rompi",
+        "Pakaian kerja lapangan"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "HISTORICAL_PROCUREMENT_PATTERN",
+      "label": "Pola Pengadaan Historis",
+      "description": "Data membahas perkara, audit, atau referensi pengadaan yang bersifat historis.",
+      "trigger_class": "historical",
+      "positive_terms": [
+        "perkara",
+        "audit",
+        "kasus",
+        "penyimpangan",
+        "korupsi",
+        "penyidikan",
+        "kejari",
+        "tersangka"
+      ],
+      "phrase_terms": [
+        "perkara pengadaan",
+        "audit pengadaan",
+        "kasus pengadaan",
+        "penyimpangan pengadaan",
+        "korupsi pengadaan",
+        "dugaan korupsi",
+        "temuan bpk",
+        "kerugian negara",
+        "kelebihan bayar",
+        "tahap penyidikan",
+        "pengadaan lama"
+      ],
+      "negative_terms": [
+        "audit internal rutin tanpa pengadaan",
+        "kasus kesehatan",
+        "perkara olahraga"
+      ],
+      "required_any_terms": [
+        "pengadaan",
+        "tender",
+        "seragam",
+        "pakaian",
+        "apparel"
+      ],
+      "product_hypotheses": [
+        "Referensi historis spesifikasi apparel",
+        "Pola pembelian tekstil untuk verifikasi lebih lanjut"
+      ],
+      "allowed_actions": [
+        "ADD_TO_WATCHLIST",
+        "VERIFY_TRIGGER",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "OPEN_OFFICIAL_SOURCE"
+      ]
+    }
+  ]
+}
