@@ -52,6 +52,46 @@ Threshold guard bisa diubah lewat environment variable:
 Lokasi input/output arsip bisa diubah lewat `RADAR_DATA_DIR`, `RADAR_ARCHIVE_DIR`,
 `RADAR_LKG_FILE`, dan `RADAR_ARCHIVE_PERIOD`.
 
+## Review queue manual
+
+Review queue membantu menemukan item tender/event yang perlu diperiksa manusia karena
+kualitas datanya meragukan. Outputnya adalah
+[docs/data/review_queue.json](docs/data/review_queue.json), dibaca dashboard pada panel
+**Perlu Review Manual**.
+
+Jalankan lokal setelah `tenders.json` dan `events.json` tersedia:
+
+```bash
+node radar/scripts/build_review_queue.js
+```
+
+Environment variable:
+
+- `RADAR_DATA_DIR`: folder input, default `radar/data`.
+- `RADAR_REVIEW_OUTPUT`: file output, default `radar/docs/data/review_queue.json`.
+- `RADAR_REVIEW_MAX_ITEMS`: batas item queue yang ditulis, default `500`.
+- `RADAR_OLD_ITEM_DAYS`: ambang item lama, default `1095` hari.
+
+Issue code yang dipakai:
+
+- `MISSING_TITLE`: judul kosong.
+- `TITLE_TOO_SHORT`: judul terlalu pendek dan tidak informatif.
+- `MISSING_SOURCE`: sumber kosong.
+- `MISSING_LINK`: link sumber kosong.
+- `MALFORMED_RSS_TITLE`: judul RSS tampak belum bersih dari suffix sumber/domain.
+- `LONG_TITLE_WITHOUT_SPACES`: judul panjang tanpa spasi, biasanya artefak feed.
+- `DUPLICATE_NORMALIZED_TITLE`: judul sama setelah normalisasi konservatif.
+- `SUSPECTED_ORGANIZATION_EXTRACTION`: nama instansi/penyelenggara perlu diperiksa.
+- `SUSPECTED_LOCATION_EXTRACTION`: lokasi terdeteksi perlu diperiksa.
+- `OLD_ITEM`: tanggal berhasil diparse dan melewati ambang umur.
+- `INVALID_DATE`: field tanggal berisi teks tetapi tidak bisa diparse.
+- `INCOMPLETE_CORE_FIELDS`: field inti judul/sumber/link belum lengkap.
+
+Item yang masuk queue **belum tentu salah**. Queue tidak menghapus data, tidak memperbaiki
+data otomatis, tidak mengubah scoring, tidak menolak peluang, tidak mengirim pesan, dan
+tidak membuat keputusan komersial. Keputusan tetap dilakukan manusia. Tanggal atau lokasi
+kosong saja tidak dianggap error.
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root

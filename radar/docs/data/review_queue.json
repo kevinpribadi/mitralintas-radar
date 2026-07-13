@@ -1,0 +1,2793 @@
+{
+  "generated_at": "2026-07-12T22:54:59.286Z",
+  "source_summary": {
+    "tender_total": 448,
+    "event_total": 631
+  },
+  "review_summary": {
+    "total_flagged": 154,
+    "high": 0,
+    "medium": 3,
+    "low": 151,
+    "issue_counts": {
+      "OLD_ITEM": 151,
+      "TITLE_TOO_SHORT": 1,
+      "LONG_TITLE_WITHOUT_SPACES": 1,
+      "SUSPECTED_ORGANIZATION_EXTRACTION": 1
+    }
+  },
+  "items": [
+    {
+      "id": "rq_8c61414a9761f0980d6a",
+      "type": "event",
+      "title": "Tangkap2PemalsuWebsiteSumselBhayangkaraRun2026DoniSembiringIniPeringatanKerasKam[...]",
+      "source": "google_news_rss (sumateraekspres)",
+      "link": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNQ01FVy02ampCSkFHUkdKamlUNUFPbGhFRUd6VloyeTYxc3BXRjlhbHRiNjBPcERuUmtjNDFXLXpfajhLVGhBX1NGY3c4ZkFKYlF2VFZkU01RM2pFbWdNTlJ4V3lELTRtZDhSWkRnWnY4WC1xTG5RcUJFenpFa1lieXY3ekFzQWR4WmV6bGFrMmE3QTJxa0V3YWVlZ1NyeUs1TDNiUURIT3VJLXZUM0FoUHh1NjRMckgzM2o3Y2diYnlBRXFnRDhnakV2Z0NhdjNKTGtLR1ZXY2w5dDNqamhGMV9HSWMwMUhwOXVVS21CbnZlZENUUnpkeG8tTE_SAeoBQVVfeXFMUGlXUFREcEI2UlBtT1pUbjcxa0Z4OUc4emJxQ3pkNkZCWHVyeGxXaGtEVVlGaXZHRGJSNmctM0p2WDVZNmlLeGhjUkJfVE41c2MtdmpWODg5dFpfbFMzUjJZWDV0M0ZzVmJwT3pPdHliYlpPREJZWC1XWXhmY3pWa3BCYm1TWVp2QzM2eVJjN09BaHJ3VWpLbjd6aEU2QXl0eDZPSkN2ZE50eHZnRG1QTHJtYm9UZGZsUU95UnlscGY0eUl2TzV4UGx6SkN0ekFIVlo4M1V1eFJ1Mzk0V2tycEZub1NlU3RTTFhR?oc=5",
+      "date": "2026-07-10T13:16:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "LONG_TITLE_WITHOUT_SPACES"
+      ],
+      "issue_labels": [
+        "Judul panjang tanpa spasi"
+      ],
+      "severity": "medium",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_aa52fad20265f2afe22a",
+      "type": "tender",
+      "title": "Program Seragam Gratis Disorot, DPRD Nilai Pengadaan Tak Berpihak kepada UMKM Lokal",
+      "source": "google_news_rss (Kata Sumbar)",
+      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNM1dKR1Q1U0xQaGM4Y1BadFZ1dklvRkRadFU2VnJ0N0pWeWxqYnloVGd0S2stbzNOSm9FbGhCc3IzUmRYSC1QWGJaajViN3QyWWlLYzFvXzNWZDJ0YmI1bnQwT08xcWFta0NOQ1dmSUo3TFFYQ3lkdFJLTDRncGwtalBJRzNMcjFvTDRxSjlmYTFZaHNBTEU5ajdlaFNiLWQ3Tm5fdFdkWjVsZ9IBrwFBVV95cUxOdGZCZGtRTlVmc1BmWTRITHdDX3JBQXl0VUN1bzZPVWZLMFJFQ1FQTGttZ1ZlV21WcjlVVjlUZDdvM3NzeERYLTU5cjQxdDN2NG1DM01HYmhUbDU3a21DbWVIWXpIcDhiVXprOWpmY3M1NHFFVkl6VDhwanVTc0puVlJBaUE3STVQSzl3c0dpa3VQMlRSbncybWJTYTN4TkJzdXBJNHNzTms5RExlODg4?oc=5",
+      "date": "2026-07-08T09:39:00+00:00",
+      "organization": "DPRD Nilai Pengadaan",
+      "location": "",
+      "issue_codes": [
+        "SUSPECTED_ORGANIZATION_EXTRACTION"
+      ],
+      "issue_labels": [
+        "Ekstraksi organisasi perlu diperiksa"
+      ],
+      "severity": "medium",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a15551b71dac4fe83c19",
+      "type": "tender",
+      "title": "Berita",
+      "source": "google_news_rss (Ikatan Pelajar Muhammadiyah)",
+      "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQLXhrbjhrLVBiR3k1dzRHX1FWdzV1UFBRWTB5a3JBamdIdmlBWTdDLW9oekVBWTlRbTl1WnFxeFVaY05Mb0RQRVAyYXFQVnFvTV90RElhZGE5TkxSdUZ2R0pwZFA0TXNUVVU1WXJvVDBoVTZ3RVlXaUJSOC1rSFJGMm1aR180dHk2SDV2NFVONGhWZHdJWmVIQzNn?oc=5",
+      "date": "2024-09-09T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "TITLE_TOO_SHORT"
+      ],
+      "issue_labels": [
+        "Judul terlalu pendek"
+      ],
+      "severity": "medium",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d4dc38e0750e7ea57c2c",
+      "type": "tender",
+      "title": "Kejari Palembang Lakukan Penyidikan Dugaan Korupsi Pakaian Batik Dinas PMD Sumsel",
+      "source": "google_news_rss (tvOneNews)",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPUUxOYWk4d0tTaFF1Y2NKLUt1NFBHdlotZzFJbnljMDI0SkJIakxMeUwwVk43elZzbzloTHVsRnh1UmlxeUhqNHRzYmxLVW83YVZfNWJNNFNsWF91aWtmX3FEc3hYWG51WnFHSzZvcGlja2o0a09KM0JzX2w4M2Y2MUNoX05kaVZYOEk4eW5RZWMwdEJ1a09qemhiMk5EaE5VYXNwX0FMY1R2aGZXazJsTGhtUVVfYWJPS01oNWEyQ2h6Qi1LelJXX3JR0gHPAUFVX3lxTE5oajdOWC01RzhnZUp6UzNCT1h3UUEzdVVaY2JjYkstUV9LazlwWEpHV0dWN3luY2o1cFA3UnBseEJiUHZYYlNVT0lKUDdmXzR6Um9XT1R5UjhUT2VzbEItWDJWZTU2bjlVd3VGMTN0V0FUQVZzUUJyRkt2cmlLNHF3YkZ0Z3o2Zm9oX0lyY01QMmk5LU1tSmJta01JWnBfQm8yVkpSSlI2NF9vVGpWQ240TVdCSlkwODc5d2t0SjVsd2swMFNmYkVrX3NpQ0xxbw?oc=5",
+      "date": "2023-07-13T07:00:00+00:00",
+      "organization": "Dinas PMD Sumsel",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c55d664114d30b719cf6",
+      "type": "tender",
+      "title": "Kejari Palembang Sidik Dugaan Korupsi Pengadaan Pakaian Batik pada DPMD Sumsel",
+      "source": "google_news_rss (SumselPers)",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPejlMdGVsMENLMFhhcTZCM2J5ZDY3U202T2hKVC1UckY1QjdnLVZnVFZIYW5aTXdzaTMxV0dvRHpSeGN5Tlo5dkVMeHYwYm01LUN3d2ctQVhOVlRHTEZUd2c4VEhyVXdGd29VUDV6U1o5dUsxaVF3aUpRZC04NUN5VWwxMA?oc=5",
+      "date": "2023-07-13T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_69c33415bf56641481b8",
+      "type": "tender",
+      "title": "Kejari Palembang Usut Dugaan Korupsi Pengadaan Batik DPMD Rp 2,5 M",
+      "source": "google_news_rss (detikcom)",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPcklnUjlMdjhiM1VrYWFGemdUZ1hDdEx3MV9KNXdTRDk0R3lwakFQaC1jaDN0Ml9zZ3Y1eEFFalY1VkR2Q1J6b1REYVE3azE2cGZkYmVPZnRzNUpCRWFFRXBNQ19NeTVLYm8taFJPeDdIV0tQRmJ6NE03TEFjaGZNYVJ4cjBvRkpGT1k0RW9PaWhhM01yejI0S0tyVHdwMFppY29YTVpPNkpUbVgtRjR0UlFhQ3Y2YWRPTTBYTGpaRGl1R0dRS2fSAcsBQVVfeXFMTW9zbG9QbXgzUndwekl5NEtmTFZMMVNWQjVISDRud3pPYV9uc2k3dUxiVWs1RlVFZ01ITXB2M2hUeUZlQ24xSlhxcWY1dUpBQnlTR3VUY0hFWUkwVlU5ZEhhc0M0TDVvR2YwVlZCVHJlM0prakhmRGVuMHpNVnhYZFZhalJvTm5qWXZLbWNBQkU0alQ5WUx2QnJsOWNvc2ptWVI0aXdUdk1JV1l2MmplZlkxUFVDM3dJc1A5VXYwdGlfRVg5SzNPcUNJUjQ?oc=5",
+      "date": "2023-07-13T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c9922f12a4eeeb861b06",
+      "type": "tender",
+      "title": "Penyidik Kejari Palembang Bidik Tersangka Dugaan Korupsi Pengadaan Pakaian Batik Dinas PMD Sumsel",
+      "source": "google_news_rss (Sumsel Update)",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQRVFITXZNZ2t6NmlxazJHcy1KWUFISHRSMnB6T2kxYWJrYTN5bUJaQWZsNlUtR3lKNFNYN0pia1J3c1dvWERyd3pHanRJOFd6MEdQU28ycHNwTDNiajRubm8wOW1TWTFBOW50MnJpVGxpdUNIVTNGMW4ySkc4M01lYlEyQ3BHSFV4cVc4MGhsRnVJQ0ZsNnlwNmtvN09sUV94VXFLWDkycDFjTUdjOUIxSGplaUw5YTk4ekVBME40N3A?oc=5",
+      "date": "2023-07-13T07:00:00+00:00",
+      "organization": "Dinas PMD Sumsel",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b2622e0361849d49511d",
+      "type": "tender",
+      "title": "Pidsus Kejari Palembang Lakukan Penyidikan Dinas PMD",
+      "source": "google_news_rss (Mattanews.co)",
+      "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE81Nk5KbTZLa2dtNVB0djY1Mm9iNHhjWVpZQ0dpbGYxUHROMFg4Y3FrYWE4cFQxdm5YVFJ2TlQ3U1dmRndDbTNRTmFEb1FLZEpMOUNPRnI0ZGdyYlI4SGFLSlBCQU9GMEN5cHJTTmFYaFpBT1pWeGZYWWF4S0NGYnc?oc=5",
+      "date": "2023-07-13T07:00:00+00:00",
+      "organization": "Dinas PMD",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4ed0a484df2facdcea90",
+      "type": "event",
+      "title": "Hindari Karyawan Stress, Menkeu Bebaskan Pajak Outing Kantor",
+      "source": "google_news_rss (CNBC Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxONXNJakhWOTZuOWZDaEdoSW44Z3h3WW1xTVRfd1dTZFdVVlVqRWhVdjN1VjJRa1BrREJvTlRwSHdienB0OFFyX29HaV8zSmhXaGF4U2taWEtUZ0ZhWF80M3ZocWZSZXNnME5HaEU1LWZrYUZxdmxFZEZtMjZKTUhNXzdwSU4xczFZci01dlJuWDI4ZVNvRFNxbWlSc0VSU3Njbm8wUnBaSl95ZFdoa0g3T3dteGVXMGZhckHSAb8BQVVfeXFMTkdxZmMtRG1JLXZQeklkbmp3Y0p0MGlzQ3lvbG43RGVmZnRSNTFsa2xPTEJ5bEM2Y0FVWVJkZmc1WldEd1JOWk11djJCOVhtZXNYNGhoMjhsd1ZkYXpzVU85Y0xCdlEtQi1ZNzZMWDlITXhQR28zd2VESGJobW9FZ0dnbldDb0QwNGVPVlhIUmQ5ZEdDeEVFbkpOTGtvY0t6TXlvNHBCOXJGU1JQZ2dCaXFkUFZ3ZmhiZTNWdE83dGM?oc=5",
+      "date": "2023-07-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_0b58e10079a39ee1cfc1",
+      "type": "event",
+      "title": "Kegiatan Pembinaan Mental Karyawan Tak Dikenakan Pajak Natura",
+      "source": "google_news_rss (Pajak.com)",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNcjR5eGhTWGs5b1F3dmJYNzdIc0EtYU5GNVE0VHMySzdVMW9wWHZuQnB1OVVMUmo2aEZSVGFrSVEzbno2Vy1TLWthN0k0WXNiemFYNE13V1JObTlFaXQ5Z3gzV296RXFBdmxJcmNDRXhXZlFpSnN4TGVQcnpOa2JGd0NSQjhzMnQ5VjlKRGtwdkE3UG9M0gGaAUFVX3lxTE5pcks4azMybHBZOFRDejNybG93TnpLeDZNWkFSa3RISGVDNHY3Nl9MVzJyaDlGcWtGd09tMDlCb1M2bV9Fdlh5VkptdUI2RVctdlJyN2RtU3RRWnBPMjVmSmUtUk0zTnl5cGxVdHRLbHFfSk1Xd0VJUDNvbGtWQ1JDMUtpWUVMbmY1WjY3R1cwcVZPVl92aHpvM3c?oc=5",
+      "date": "2023-07-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ab20d403cd56fa107f21",
+      "type": "event",
+      "title": "Outing Kantor Bukan Natura dan Bisa Dibiayakan oleh Pemberi Kerja",
+      "source": "google_news_rss (DDTCNews)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQVlhfTGV2dUdyeHhUdVE4eWJPSjcyRE1rS05pWGtyNUViZkpwYTRmZzRvN0xZdHRybzJHNUN4OGlPOFRrWHFrcW1xeHo5TGN6Rk9xUElHQkRFX3gtTkVpUGlGX014S3lZYy16eUF3WUU2RG1RVklmLTVNaXRkWXNrNFhnaXFqMGRoV2VCZ1l3UVVneXRURnN0RHd0cFZZVk5ud1NVVEhGcjI2bUxwbXhBTjY1TQ?oc=5",
+      "date": "2023-07-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_8e99754d19d87737f07e",
+      "type": "event",
+      "title": "Kemenkeu Tak Pajaki Fasilitas Outing Kantor: Biar Gak Stres",
+      "source": "google_news_rss (CNN Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNYlNrMmY0bzNDZmRoWTlObDUxRjgtUTRNaFd6OEliTHAxVHpMNUxEV1AwNENoMW01S2UwcFduR3U2Nk9zNjhSeUJud0NIRFFMRk15bU1KTkxmRlZhNTgzWmQwbGlmUWpHbGh1TGN2alZ0YkZVdm5IODhPZHUwbzdGOExWRXdmbEUxTmhWSGhobTFKSjJpV05Bbkk1RWFNWXRXZVJuRFlLUzlweGg2UnptR1VZVXRaZldqS2VjRllB0gHDAUFVX3lxTE9RU29mcGpJdFpYWUpReXh4UnhfX0pUR0Y4YkctTEJkWldZYy1RSUctZDI4dWQ4NVBHdmxnSUNjcnk1WFplMk9EOHYxQTJFQW1oTjR4U0F4bThWTlg1WXdFemlQQjZqRVhmanRyZFd4ajJlbnJsODV2V0J2TDBPRVdIZXNtT1JLZjZvaXZpVVdmcUNXWXpFUFBLcWw4WFU3QS1fY2NiemZUVEM4RFF6WUN6ZEJUWUp5aHRLb0c3emtQa0t0OA?oc=5",
+      "date": "2023-07-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c368e67c5dcd997175ae",
+      "type": "tender",
+      "title": "Ombudsman Ingatkan Sekolah tidak Menjual Seragam saat Penerimaan Siswa Baru",
+      "source": "google_news_rss (Ombudsman Republik Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQMDhRU2J6ellCaC0wXzFqd1kxRHVuQVV6OE0wRTVJdkpDNFJhdnoyNGNUN3FzNHR6amh1cmNGYW9pRGhUYXRLU3RsLVpTVzBNdVUwRmpWbGpySW1VMWNqNzJ4aENxNTZxbzRKVzB3NDVBaHMtLWd4ZGU5MGZJS3ZqelBuT2tzbjR2MVF5My1GcVkxaGNoNzZPUDNBTFpyQXl2dlFVNHFubEZwN0Q4dWF3dWRmelhwTHgwbl81c1JaVmwwZE5MS1E?oc=5",
+      "date": "2023-06-20T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_31a93f7392d44bc9285a",
+      "type": "event",
+      "title": "Family Gathering PT.Multi Prima Usahatama Berlangsung Meriah Dan Penuh Kekeluargaan",
+      "source": "google_news_rss (Metropolitan Post -)",
+      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQMm1FaDk1QlhFLWxMbDJzTzk1VmI0Z0VaMzA2SC1vaTZraFlhVVU2TTRiSTVaQUNUdGlpdkp5eFQ3N2R6QjJkVm01MzFDSy02alFkUk9naFhEQjJvNkJSVGpidkE0ZWlYTkhoMXNQSGtqc1JZQzJNdEFhRm9KSEl2SFBtRFk5VWNud2kwSzk3eGZzM0NFSlBNbkUzYUxiX1JGWGt5ZUplam9sdVBzTExfZXBB?oc=5",
+      "date": "2023-06-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_600a83dc7d5f0b0a826d",
+      "type": "event",
+      "title": "Family Gathering ke Ranah Minang, PT Asri Gemilang Prima Berpeluang Buka Rute Riau - Sumbar",
+      "source": "google_news_rss (Haluan Riau)",
+      "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNbHZPLVJoLW5uaUxDOHk5b0JIbnJYSjFySnNrS2pJd1BOWFVwbTVqYWpXbDJsajRmcmdPZGFSRnJLTUt6b01pZDJwLXZYUTI4V0ZQQUJYb3h3MHZQczhSakRmT19yeF9PS2JxM3dldGFZSWszb0MxR00tNkhqY09RMEYtQ25jVHBlTmRYd2kyeENKVFJQUTFCWmxJUi1zZTZXV1AteHVHRzdOMzYyQldqb0JFd2FJaGwyNUtkMlExa29mTXliZ2F5NVdMZE96Z9IB0wFBVV95cUxOQ2ljR1N1LVJCREpkN01ucFh5ZnJGSExQZ0JodnRfYUZrcDdPWjNLVUpfbUhEUk5MOEpvSkowdU55UDlSTHdwUU9mS2Z6aEFtQmRteHFNZS1SSm9yeEpZQldCZll0YzdlQmhXMllqck54bFpzRlVoMm5UVXRrRk4tb2N6eUc3djBqUGZEeHhHOWNzLWE4ZEt5UUlXcDFzYzhNWFZpT0R6bXI4YlFYelpZTGRPYzZfNmNGNUxXbEs0TjZNUjExNnNmRFlfTHN2a0NNU3Bz?oc=5",
+      "date": "2023-06-03T07:00:00+00:00",
+      "organization": "PT Asri Gemilang Prima Berpeluang",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4b855d1de9d3a3e2a560",
+      "type": "event",
+      "title": "Pererat Hubungan Antar Karyawan dan Keluarga, PAMA Gelar Family Gathering 2023",
+      "source": "google_news_rss (Majalah TAMBANG)",
+      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOTXBCekpaY3VpME5QMC1pYzNsRTJkUmFQenZxb0xCeW9CNkNwS3Iza29XbWl6c2tsaWl3dE9NcTNZVHJaUkxGa3pvN25nSVVsQktZRWJqVEthTUdqUl8tLWs2RjhMcWRKYW81eFY0ZVJtVnRYSUpqd0ZvcTA1N3JkOU5VOXoyLWpQWHNVYnJFZDFvbFU5UHNnc3dhUDVMOVhzMGc?oc=5",
+      "date": "2023-05-21T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b9817a06b02f6793d431",
+      "type": "tender",
+      "title": "Larang Pengadaan Pakaian Adat, Bupati: Pelajar Cukup Pakai Baju Putih dan Bawahan Batik Lasem",
+      "source": "google_news_rss (wartapati.com)",
+      "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPUzA5SURGOGVWQjFjVXBvYWpOdE93cnhLa3hpeFdLWVhJcVRuNi1SZ1h5NEk2T1BmRTNmV0FPdTBLbkRYT2U4dlljUkc5T3pzYnlSaUZwcF9uaDNnQlBxNHB6SThSbjU2dEQyb21DMjRBT1R1RHJLS1poeTJldFV0SlBJWFNhMkZLLW5rc09QaFRtRUxFNEZWUm9aaXJWYWw2b29Hc29xVWpmVlpYc0M5ZEMzN2I?oc=5",
+      "date": "2023-05-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_600dde5cf40a5657e8fc",
+      "type": "event",
+      "title": "Anggota dewan dukung hadirnya bioskop di Lapangan Merdeka",
+      "source": "google_news_rss (ANTARA News Sumatera Utara)",
+      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPeDZDQU02OW1oNlVYbHB6S0pIaE4xc0VHUlItdFQ0SFVBQ215SHc4ckptdVpFZWZEemhMT1Zyc2dyRjNDTkdCbWJFbFlpYWpzUTFOd0l0OFRZM3FxSUhjZF95cWhfUHlHdGpBc3RzV2dNc2hTRWZMUGlOX1FsZ3l3dXBfb00yaWd1cVE5aFZHQ3B4eW1XUm00YXZSR2NfRlNHbTJsdVhrOEc2YU5tY2fSAacBQVVfeXFMUERYYUlvRjZGdHNHNXpOS1AxYlAyLU5ySmlLR2dWenRQa184N092bmF3WEJpakZTQnZPbmRRNDAybE5Pa1lkaEo0TFR5WlBjdUJfT1lsdWF0Z2NmblMtMUlSLU5VZS16NC04TEdqX0t4QkNkS292aEhFQkI2SS05VTNVMFFvU2hzU2pkUEc4d0JEa25YWUVJbUxYR1BwdGxLeUtNQjUyRnc?oc=5",
+      "date": "2023-04-19T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c3eedbdf97b153e5bf62",
+      "type": "event",
+      "title": "Rangkaian HUT Lampung, Ribuan Masyarakat Ikuti Fun Run dan Sepeda Santai",
+      "source": "google_news_rss (Radar Lampung)",
+      "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOLUhvbEtvSVFuTi0tSmVFcHh3Vko0YzdIRUtHVTJGY2RYblVINmRiQzEwRFlGSzZENVhZRlpsMU42blg1RU5lLTFMMDFmMGZJVWFJSlpXYUhVRmtpR0VlcFNrdFRBQnNLY0daS1pEenB4eDVsWlJ1NEktOFVrbnY2YVc0OXQ5MUhOZmlNRmRwa2IxYVZLV21DTFpjMmRyaVJRQTR2RHhiSU80R29zRFltUWd2RnpkR2RNd3Y3bUNjb2hFdDN10gGzAUFVX3lxTE1FeDVHSnMzalhTaWFick5jSzZzQXp0TXRVdjJPa3owbVczV0J4SEo2NEdJYnlXTmljMTJ5V0ZmU1ZHWnpOSWxFSVVnVVQtcnVPWi1HSFJQOVdhY2hxZXhRRVAxakFlRUpoTmNYZlc2MjBNaXZTd0k2TEJ5Zm5EYWxtcFdHdko1V25qT3BOWXBibEpoSmpGNUlJb0dMUnJvM2t6eFVHOGxLV3RFeGw1ZlVxTGNV?oc=5",
+      "date": "2023-03-19T07:00:00+00:00",
+      "organization": "",
+      "location": "Lampung",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b1ef13ea7e2c4f5800af",
+      "type": "event",
+      "title": "Keseruan Family Gathering Karyawan PT MMKI di Trans Studio Cibubur",
+      "source": "google_news_rss (detikTravel)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQNEtsZ3BTc2liN0lUSmdNLWpXbktCRXM1Uk4wT09GUXJGLWRQNk5ZYWFYV3VCeUtyYzUycG1LWnhBWUNtNkQyLWhqRldKeGJEQW9yem5oZzhLVUE2TmtCTVcyZFltUXk4WWphSm9KYWhvZ1VJUVNRMUpqd1A5d1o2eDRYc0Y0YWc1bnFvVWlNLTR3MG00dkVtQWQ4NlMwRUNERUV5TTc4UHFoa3kzYmNrbEhtRdIBuAFBVV95cUxORkhxNUFudnlQbF95NE1Yc2VBZ3NRdDNTd1k0R3VWQ19QQ09ZSnozMWZHNEJNbVdFei0zUmtxR3ViWE5MbWhqeEpfTnZFbFlTTXY1ZU5WcFRYYU9PbkxlVnIyV1J2LUpqdDc0cEtlczBRT2dzWmVmcjdTUzhJXzJJTXFVUjE1eU1ocElPb2lMbXl0d09TeU9pVW1KV1hCMk5WMEMzNGtPSVlYWHhxV2RjWU0zQmNYODBs?oc=5",
+      "date": "2023-03-02T08:00:00+00:00",
+      "organization": "PT MMKI",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_37c418e8500ab9a1fcd2",
+      "type": "event",
+      "title": "Kebun Raya Bali Sebagai Destinasi Favorit Wisata Sehat Hijau untuk Gathering Bersama Teman Kantor",
+      "source": "google_news_rss (Grid.ID)",
+      "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNdjlfQXFxVF9ra3lWMjRZb1dZNmF4LUxLNnBPV3FGOEdidHg5T0VjeUdNN3hPdXQzZS0wM3VqNHJ0MERzVFFaanV0S3JQSmdpaFg2S3N6ZTRlaGxPOVJ1UGU5UFFPV0h1dVpJNS02T1d6OWRHRnhObUl2VG9FeHdSZ1RoWXo0Rkh4ZzdkLTVsUHJjZllTZFY1OHVrYzd4V2VnQzNUc3liUUxOLTRRSXRZZmJIQmt0NTNZMnRlR3N1YWY1bFZwTjY1ZERKbmQtbVdndGRQclZQcw?oc=5",
+      "date": "2023-02-28T08:00:00+00:00",
+      "organization": "",
+      "location": "Bali",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_52b96dcb48614c13acb9",
+      "type": "tender",
+      "title": "PN Depok Anulir Status Tersangka Korupsi Sepatu Damkar",
+      "source": "google_news_rss (detikNews)",
+      "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQakVBQlNtdzNVMnhFUUlZZF9fcG5OMmZwOUNzaDl3ZkVRNDhxT3Z6NHpLYVVxREo0R0FNTlNuaXE1U01HR1FMZzdaR0R2S3d1Q3hZVTlMLVQwV3lHRDhWd2tHVWk1Rk9jVUR5al9mNjRoREtydUhwa1pGeVdkMWpXazEwSGs4WV9LWGFVQ1dCODI2QUVSN2tOejB30gGfAUFVX3lxTE9sRzY2ZlRCbnRRMUthTFZVQUliSkRZR2YzSVZ0d2lMMkJtX0JoZDJYbXMxQkpxTWZUeENZaGpmNk5UanFBWERZOXlpVFNVVWV5emhqbjV1cjNkTERpX3hOQUE5MjdzZFN2bDJWenVxQnBmRTRlMGVHbTRaVk9BT1ltQ0t1WXZ3Xy1KdjFpT1BhV1BwTnZsanREYWNndXB4MA?oc=5",
+      "date": "2023-02-20T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9aa5970ece635783bf5b",
+      "type": "event",
+      "title": "Family Gathering PAMA KPCS Diapresiasi Pemkab Kutim",
+      "source": "google_news_rss (pro.kutaitimurkab.go.id)",
+      "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQM1p5a2VyY0J5RjJ0ZXcwYl9QRkxLSG1lTWlOV2lXdmtUcEQ3bl9pcnhMZ0FqSzZxMXNGWnJob0dyRXFBYmpfNXNvaGt4V1NJczAxdjZLb241Rmt2QTQtSUUtSndta3lLVUpnbjlSTjdLWnZNRzVpTUYxbXBDdm1ndWdLdm0zNkFvOEs0aFNsbmROV3NXZHR5d19jVQ?oc=5",
+      "date": "2023-02-18T08:00:00+00:00",
+      "organization": "Pemkab Kutim",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a38d726bd8804be6df14",
+      "type": "event",
+      "title": "6 Rekomendasi Tempat Gathering di Bogor",
+      "source": "google_news_rss (Kumparan)",
+      "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNQlMxRUVpVHdpb1hwZE5oTDRqMVlsVGxqOVBvTXlLS1pqRzctT0ZqUHNIMExvWFM0VWZINjBkcnJQQjQ0RDM2ZkpzMVBWYlVURzNWT0M3RWJsZ25TUDhCNFpnNzVsd01yVzRjREd0bUNQRkNOWlZzVUlndXZ4NzdoeFdlVkJHVjBMdHZ4ZXpob9IBlwFBVV95cUxNWF92bm1QOElLd29sTDZsZXlUMzY1OWVSazZHMGlRN2dRWU82QWJsejFHR0Rtd2ZPd1Nydzk4djgxSzhaZ1pUM2ZFQzRjbFN5YVVXTno2OGsyWTQ0a004alhtSTY4MWw0R1BFMU5tZENCb2pSNWExanZxaUZSMTBHejJBNHI5Z2JfeGFvX0tBT2FuRURBb29N?oc=5",
+      "date": "2023-02-15T08:00:00+00:00",
+      "organization": "",
+      "location": "Bogor",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_23e64018ce222a2c6faa",
+      "type": "tender",
+      "title": "Ketua Paguyuban Wartawan Depok Berikan Apresiasi Kepada LSM BARA API",
+      "source": "google_news_rss (RADAR NUSANTARA NEWS)",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNMU83S0lQZ3lFVkpiX0ZjNW1adnc4Z3N4Q2ZZTUlqVl9tQXM1X3JlYjlPRTd5OFdyMW5ERjJ0ckRlSXg3VFVWMEdJaDIzdnhZd01yenFNOVdFb3NUX24wdXdjUkhWSmxyTXM3cGxGQm5zbUo0aWlVQ3JHS2dHcmNaazZZLXdKU3dC?oc=5",
+      "date": "2023-02-09T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4f0a4745d2dc7b4506d9",
+      "type": "event",
+      "title": "Family Gathering PUK SPAI FSPMI PT. Moriroku Technology Indonesia Tahun 2023 : Bersama Kita Ciptakan Perubahan Untuk Menuju Lebih Baik",
+      "source": "google_news_rss (koranperdjoeangan.com)",
+      "link": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPY1FwQnVRLThVSW5BTXVnQnJPRE8yQW1zYjM2OThzZGVuY2MySjJjNUx4V2FRb3p2TDY4anotUnA5aEI2dW1hUGlSUENUTkJSOGJiRTJRWWZIMm1oR0M0Q0dNcFRZU1Z5ZG1ieHB0VXhySVNlNVMtR1pCdkRxUkhDNDNNSWplaTVfZ0JIVU0ycXg4dEROU0dQNmFkeERhVmRtTHBwNjFjdGFBWXNuNVlvRThUdGVFMGZUbmhJOG9hV2plZHYwbjJ2MC1TX1hLekdpTDM2TWNkUFNQNTZHRW5xdmpvbG9tTlZWN2ZzT0V3UGlZR3BHVjNDNmt3?oc=5",
+      "date": "2023-02-08T08:00:00+00:00",
+      "organization": "PT. Moriroku Technology Indonesia Tahun",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3fed541dd1183e31884e",
+      "type": "tender",
+      "title": "Lestarikan Budaya, Pengrajin Batik Diminta Sematkan Ciri Khas Bulungan",
+      "source": "google_news_rss (KoranKaltara.com)",
+      "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPaFhFUzJVbV9fQ3IwVVVUS01XNDM0Zk5YSV9GUlNuZ05pcGRrX0VSeGNYb24tN0pUc2VfdnU0a0cyWlN1dFRSZWs5bmZDdHExWHlrcGcyRTdHZTI1THc3Z2xQcV9rc3lrdHp3UVhoZ2ZiOGhvRUVibURfeGd2LUlGU3ZhNTUya0lFUHRYeDNSbkFWUVZIV0wwcDdB?oc=5",
+      "date": "2023-02-07T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9ac58a1b7e8146bb6adc",
+      "type": "event",
+      "title": "RDT PLANT PT. ENKEI Indonesia Adakan Family Gathering di Kebunsu Bogor",
+      "source": "google_news_rss (koranperdjoeangan.com)",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPdVU3Z1QtdU9yaHZ3clN6eXV5V3Z5TXY1QVpYblVhTU4yWWhVSHRKZV9VdExjbHMxcTJHcW8tenBxVHoyT19JdUZLT3gzZml1NDFMcHdNVmRpcVRRZXVfVlJjMmN3cXdOb3V5VVp0X2toLXpUR2x0bk1KUXRFUko2NFdoTllZdXBhWmxXUzgtU285b3RIUkRIazRnMWNVbGZfVTRpYTUtcw?oc=5",
+      "date": "2023-01-31T08:00:00+00:00",
+      "organization": "PT. ENKEI Indonesia",
+      "location": "Bogor",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a5bb3ba4810c30532bc3",
+      "type": "tender",
+      "title": "Pemprov Sulsel Anggarkan Rp430 Juta Pengadaan Baju Baru Gubernur Andi Sudirman",
+      "source": "google_news_rss (Herald Sulsel)",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQUXVfRlhndmpIWnZ6SVhuMTBuaUhPUms0RjJlQWJxc285dkRjc3ZRNkp6bkhlZ1BnXzFjUFJILU0wRmt5ZURKVWJraEh6b29IM2VMWUdCZ1VFSVptQzQxZEdidjBVSjlSYTlST2NqbHk2SVByNEdDT0JuQkVCMDVXTzVXMFRSVFFUWVZ5U2N0MldncHFUZ29wZXdzbWNVa3FJdUdkZm1YSFp6N0NnZmpfMXBVeUJtQQ?oc=5",
+      "date": "2023-01-21T08:00:00+00:00",
+      "organization": "Pemprov Sulsel",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_63a39a3f7ce96e3198cd",
+      "type": "tender",
+      "title": "Kasak Kusuk Seragam Batik ASN Sumenep",
+      "source": "google_news_rss (Suara Madura)",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5KQ3hmMV90dkxuSEg0Rk9JTmsxaXQxX0JEZVJpZVI5VTRNMHRZM0gyVXlzNERSbWQta1h2MEZnLTlXQVdRQTQyNGxsQlowaUtqRWhPQzhxdVJFNXUxcUZGSE9oUjZJSHk1bnFGdEhR0gFuQVVfeXFMTkpDeGYxX3R2TG5ISDRGT0lOazFpdDFfQkRlUmllUjlVNE0wdFkzSDJVeXM0RFJtZC1rWHYwRmctOVdBV1FBNDI0bGxCWjBpS2pFaE9DOHF1UkU1dTFxRkZIT2hSNklIeTVucUZ0SFE?oc=5",
+      "date": "2023-01-19T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_0c09b1752ddec7385cdb",
+      "type": "event",
+      "title": "Family Gathering di Kebun Wisata Agro Larosa Palangka Raya",
+      "source": "google_news_rss (Hai Kalteng)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPT29FV1VlS25yWjc5S09rdGY3clZMbHZrbDNubU9ZX2Z4N29heW80ZFRya1l1b1M0WkMxd0dyS0oxUG1hUzFWNDcwTHUzUW41MHRXdWo5TFIxQ0NnbG0tSE15NHNYLWhNdkNfU0d1T2pybU9qWVJSQnhHMnljeEswQnlKSWpqcWFyX0kwbV9fOWxEUkFiMkhxTXMxNFFjUQ?oc=5",
+      "date": "2023-01-04T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a52098625513495c5e04",
+      "type": "event",
+      "title": "PT Pamapersada Nusantara Gelar Kegiatan Family Gathering",
+      "source": "google_news_rss (Vivaborneo.com)",
+      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOZ1RpZElZcnVicmtFOEhIcmlxZ1ZJREZNczZTejM0V3NBdEhYZUhHS25mRlVmblE5Ry0tT3B1UGY4NmlwLTZFR2RIaWlEYXhLLVNMMHA4Vi1KQ0JTdGlrMU5RUDZGZ2NpQ3lSa1V0em9VMVVDYVdpMmFrdm5RLTNKRmZ3SEZiTUphTWxr?oc=5",
+      "date": "2023-01-04T08:00:00+00:00",
+      "organization": "PT Pamapersada Nusantara",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_64f598c210b6316942e0",
+      "type": "event",
+      "title": "Puluhan Doorprize Semarakkan Family Gathering Karyawan DPP PKS",
+      "source": "google_news_rss (Partai Keadilan Sejahtera (PKS))",
+      "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOM1dDVzJ0Ym9XdnJCVmJwUmllcVIwQllCSHl4cDl0LVRuNm1QanM5S3lnTVNvemtsTmxYMjg2dk1jVkJPVzlZQ2JsR3d4R3RKMGVBNUt0WjNWOHlkUGt6a2lLaTZ2VXlmR2s3Ql8tQmJqZ2Y4LTN4M1JIbWwydW4wUUFNTjYxQUMwRFd3Sm1B?oc=5",
+      "date": "2023-01-02T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4ca49c5a6a91cac7f6d9",
+      "type": "event",
+      "title": "Mantap, Grha BUN Gelar Office Gathering di Taman Budaya Sentul",
+      "source": "google_news_rss (Majalah HORTUS Archipelago)",
+      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNaFNnWWJkNTA4cVRmalhpbjkzVnN4YUw2RFZKZnFBdEdXOW4yWWJTWXQ4bTB2S09oUlpIb1AxalA3S01hVUpycDdDSWlkLXlvVkJjYjQ5U0gwTjZwaEloNnZ2aUI0UTdNTGpnYlM2NlJmdDFYQW5SWU5sWE9yUEFWYk1pYkgteGN3WHFvUA?oc=5",
+      "date": "2022-12-26T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_e9fcdd89610949c4b53d",
+      "type": "event",
+      "title": "Bangun Kebersamaan Guru dan Karyawan, SMP MBS Bumiayu Gelar Family Gathering",
+      "source": "google_news_rss (Suara 'Aisyiyah)",
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNNUozUjNWMGNWaDZDQUxWQTZjRC1OdVFwZXN6TzNzSWFreHdBeXJVLWdEcmlPM2ZUa2FxVXVuNzNCSDZFdFh3THBqT2c0aHVCblVkeWt5a0JnQXB6Q0JLR2dXQ3MtSXMyX19mZkVoU29WcHhZWVppQWNxaGQtMjlKaGZnXzhTREV2QkhUTnB2X3E3c2Z3MEJCaWMtb0t1QTAyNjI4?oc=5",
+      "date": "2022-12-21T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c4f6eabe2866d67d7018",
+      "type": "event",
+      "title": "Enam Cara Mengatasi Karyawan yang Ogah-ogahan Ikut Outing Kantor",
+      "source": "google_news_rss (Kompasiana.com)",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQUW11cVVSeElTMnptdHA5SmJiS0ZUeVFQbWxCelkwZTlfTHdZQ2JXZWhfWTNJZzUtbFpXaHpOWlZGaW9WZGhQVmxPU1pJcXRoaUxfZ3pwSjZ2LWFtbk41TkFZbHUyWjQ0THM5VzJSelh6ejVPa3NVaWQ2WGZFazhpaExaakJQTHphU180UFBKaHdpcjVmRXpNZXZQdllUZTFzN1FiZzJVZHRWMjMzQ1RaSEdRT1E4ejN1QlRZa1M4S095bVVGTFdEb2RR0gHPAUFVX3lxTE5UMVdIaWp2OVZRTFliSEJVV3lPNmo3andSMWhhb3phLXl4WF9QSkxwdi1xV3lQUEhmU3J4X0xEc3B5Y0V1UXpYcUdfc2xxSV9oT1VrZjM1ejloNGFfQWNGdHp1R1pnVk82bjFiTTM2VXFTdURyWWZENGZ0NnJfYkd0SklHQVJVUFFNMUIwTVJLTEFsYkNCUThyb0theDAxOHNZWW1fZWZaZ0llR2tWbG9HY2RHUG5mMzBBWlFDTThpR3hmSUJ1RHdLOUxpQjZBdw?oc=5",
+      "date": "2022-12-21T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c313cb805a4461ed6f37",
+      "type": "event",
+      "title": "Tingkatkan Kemandirian dengan Camp Family Day",
+      "source": "google_news_rss (Joglo Jateng)",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQUEQtNlRhOFNwVVhYcG5WN1JNYnhZYXhtWHJvTUFWVkpNaGxaY0JSTmVhT2dXZTkwa1BHNXE0a1lvV2tEWjYwMDIyUHgtUDF1U3BXMzdIMmJjVEZOV0J4X3lxWTM0WGM3dlNjaGJ1eHh5TUVOODY3eTlJVTJwR0FqcEl5bzdXYWl5?oc=5",
+      "date": "2022-12-19T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_84a13145a4f6dfbcd5d2",
+      "type": "event",
+      "title": "Indofood Percayakan Bugis Water Park Adventure untuk Gelar Indofood Family Day",
+      "source": "google_news_rss (Sulselsatu)",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNNGNPLTRVdEJlYXZVQW5NaERhRURmTFlIYXl2Z2lHUURSUTl5SGlJSFpISDc3eFF2TFU2eTZfTHVLc0pUQ2Z2MFktTWRnU3BhR0xwWWxDLW5zdlJSMXh5ZlQwbEdocmxSRW9vajQyTkQ1S2J4WUVmaHBEaUQ3eFYxTnZkek9HMmxvWVU0SUZVcWxNQTBJdE9DOFlxaW9LYzJvNVhSTVpDMW1VMWtGMVdvNjJ1a25OeFVwZk9TWXJRX2VmdW5qVjdwQkRR0gHPAUFVX3lxTFBEWEJrd2tjcGVpMlhieUN4NnVuZ21lRG1jbzhMcm5NRFExVEszRU43bzlwUHFMX3RsRzBqU3c3ZzcwZDdmSHVwRC10dDJBWGJ2VWpQSGt6aDNydXdlbHZvZW90bEVvdWZ5bFdZbU1TZnZrTkJyQk9LN09jLThGRjJ0RVdMaFQyc0FXMHZRTnRTa2d2OU5zQ2VHOU5EaFFrR1VwZ2RRWktGSDN1b0RFa2N1Uzl0RVpBWXc4b1R5UU4wRDQ0Z1J1N2ZwWXZfWlFvOA?oc=5",
+      "date": "2022-11-28T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d3197fe2ba282db192e4",
+      "type": "event",
+      "title": "Sambut HUT ke 62, Hutama Karya Gelar Pekan Olahraga dan Seni",
+      "source": "google_news_rss (Langgam.id)",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPUjY5Ry0yd21fZ05Md2p1dVE5d0VoY3VSU2E3VmhjUklrZ0s5NFFFUGdBNXpsanhUdVdfTVhWNUZNR2ZJbEkxX2pmMWxzNXUtNi16V3B6RGpQdXJXUU9PT3BvODRFYVZPVW1KN180U0ZxREptZTZFMFBRWUhHWHVrdmlaZmp5dw?oc=5",
+      "date": "2022-10-31T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6b9354839a0de5fc2c0c",
+      "type": "event",
+      "title": "Membangun Sinergi Keharmonisan Family Gathering PT. Diametral involute",
+      "source": "google_news_rss (Pewarta Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPYmhzQzZfaTNHRG95cXNLWHlnQTZ6MVpRMk5uelNaVHJqOTJaS3otVXNBR3JKX3FiTjhaYlNELWdta040Sndtc1dtUVFtbUxwU0FDbUxXZFRXSmNzQ1hoc1Flb2QyZWU3c2kzbG0xem9zaWhZT3dacE1YYTJVc3M0TV8xNDExZkF0TFpQZVVzVDhRTzVvRmZReTdWYklEQ0VIZlNSRWJrU3BJeEhQ0gGsAUFVX3lxTE9iaHNDNl9pM0dEb3lxc0tYeWdBNnoxWlEyTm56U1pUcmo5MlpLei1Vc0FHckpfcWJOOFpiU0QtZ21rTjRKd21zV21RUW1tTHBTQUNtTFdkVFdKY3NDWGhzUWVvZDJlZTdzaTNsbTF6b3NpaFlPd1pwTVhhMlVzczRNXzE0MTFmQXRMWlBlVXNUOFFPNW9GZlF5N1ZiSURDRUhmU1JFYmtTcEl4SFA?oc=5",
+      "date": "2022-10-29T07:00:00+00:00",
+      "organization": "PT. Diametral",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_7c7363023566f0ca119f",
+      "type": "event",
+      "title": "Peringati 1 Tahun Perusahaan, PT Mahesa Anugerah Medica Gelar Family Gathering",
+      "source": "google_news_rss (rakyatsumbar.id)",
+      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOcEdsaDcwQ005MVVHOWdQYnZUcDdvMFM4VjFnaFRqeXZwY3dEUUpoc09WUm5XdGdDMWczTFFWaWw3NXJPaWJMZ2pnT19aZGI5eWtiZXN1aU1Ia2VxdE56NzdfQkJpTVpBTS15V2ZCZnliSVNOd0N2RkZiRlFjTjVUSVNUVnZvblVtU0pMUFVhWFFTVjE4Vm1lVmpSWkNpTWg1eDM4LdIBpAFBVV95cUxOcEdsaDcwQ005MVVHOWdQYnZUcDdvMFM4VjFnaFRqeXZwY3dEUUpoc09WUm5XdGdDMWczTFFWaWw3NXJPaWJMZ2pnT19aZGI5eWtiZXN1aU1Ia2VxdE56NzdfQkJpTVpBTS15V2ZCZnliSVNOd0N2RkZiRlFjTjVUSVNUVnZvblVtU0pMUFVhWFFTVjE4Vm1lVmpSWkNpTWg1eDM4LQ?oc=5",
+      "date": "2022-10-22T07:00:00+00:00",
+      "organization": "PT Mahesa Anugerah Medica",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b3e7ddb2c02179e5ba2e",
+      "type": "event",
+      "title": "Dalam 5 Tahun, Honda Targetkan Penjualan 1 Juta Motor Listrik",
+      "source": "google_news_rss (Berita Manado)",
+      "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNNE9KdmwwLVpJREs0UTJGSkMtTHlvMlNoTW8tYzctVkpWWWhDVUwtT2drZjFsblVCTXlUNnZpekxkMVlnRlNBcUh0SHlncTJzNkU0N2tJRk9HZ2wxNW16ZnZxcU53azhQSC1IV2FQNjNXUzhwSzEwWWtGcUlkTzA5Q19JSnZFYUhTMUhOM2hqdw?oc=5",
+      "date": "2022-09-14T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6a5785dc8c75baa15bc3",
+      "type": "event",
+      "title": "Family Gathering 2022 PT NT. Piston Ring Indonesia di Gelar di Pantai Pangandaran Jawa Barat",
+      "source": "google_news_rss (koranperdjoeangan.com)",
+      "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3VFcXRuamFhaV9kdTMzeE9LV1hTSHJzVGp1ai1kS082ZjhIX0hhcTNNVktkOGdIaW1pOC15TlV0NnBJUzhZb0dteHdZYnhXWGJCQU5lcVVxdDBQMGFheFdJQmN3Vlp4dzY1d2cxWkZEQWp3NkJyMTRUNDY1NjhZWjFLZUFZVS1SV0o5MHJBNGJwQTZMdTg1LURaT0FhQ1psYXdxVFJXcGQwaFZNSlhJNklmSEtGSGh5TGV0c1YydVg5NDNq?oc=5",
+      "date": "2022-08-26T07:00:00+00:00",
+      "organization": "PT NT",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_03f0ca3832213139de8f",
+      "type": "tender",
+      "title": "Anggaran Rp 252 Juta untuk Baju Dinas Bupati dan Wakil Bupati Lamongan",
+      "source": "google_news_rss (suara indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNdjhqM0hQRDlRN2ZqMkRsUTYxTm05bERZLVdSNWo0T2F3WW8wNHNhUlZDcWx1V1FjeEJ5T0I3dDdOZTZtSUhTYS1wQkJKOFd2ZUxTZ0ZfQXhnUmNPdEpOTjZJa2M2MGFfaVU1c19OS2JWcVVjV1hTRjlRVmRVRWRwSGp6bWlRc0M0SnJKd3I5dzg0V2RTdC1IbUlmN1NyYWU4T3RQcW0wbW1nNmhCQzlXZ2ZLTGtGU1drR0hqLTBOaUEtYmhKS1hLTmN1OWNpd3By?oc=5",
+      "date": "2022-08-21T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c88c0e107b7b924c552a",
+      "type": "tender",
+      "title": "Ini Penyebab Pengadaan Seragam Sekolah Gratis 2022 Program Pemkot Mojokerto Gagal Lelang",
+      "source": "google_news_rss (FaktualNews.co)",
+      "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQelNxeVViMFgtZkN1WU5icExMSlJ5LXpIbGFnTjZ6QVh6T2pmRERRYjYyVnlkTlR5X2NBTXFkR3p2SGFqR1R3QlEyMXlSVGlIN2Jwb1ZTRVMwWEltbGVfbkFHMDVjckZkazktMnh0MU80WmVJXzZsQ0gtaW5nTXJvZkFaTDFuVUxvaG56d0tISEZtZzVWQTZKMWhqaWVJYV9VdDQ5Qnpnc1dObzZkM2RxYWhLWGNJbnBVTlFkNGNTTFlHclJuTjNxUFRUMnA?oc=5",
+      "date": "2022-08-18T07:00:00+00:00",
+      "organization": "Pemkot Mojokerto Gagal",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c4a15fa093452ca3cbb2",
+      "type": "tender",
+      "title": "Louis Vuitton Indonesia Akui Tak Supplai Bahan Pakaian Dinas DPRD Tangerang",
+      "source": "google_news_rss (ussfeed.com)",
+      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQb1FHQTJwSi10UUJnWURPVEIyYXdsc2VUWlduQ3daNkIyck84cVJFdENBb3dQcHRNcmg2NDlDaE9pS0prNUg3S01yX0VUaUx2dXFMU0EwQkJHLWV1UU9xSkNybWttTV95eFgwZGNZZzhjZFJMaFlsM3JORWZDYTNVUlpBV29pbnh2OTFOWjVIN2ZlUFZ4OE01aEg2OFkwQ1RFT1o1bG1URUhGdHNM?oc=5",
+      "date": "2022-08-15T10:33:57+00:00",
+      "organization": "Dinas DPRD Tangerang",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b9d190ba1aab76c24853",
+      "type": "event",
+      "title": "Ambon ada SBAM Fun Run 2022 berhadiah menarik, begini penjelasannya",
+      "source": "google_news_rss (ANTARA News)",
+      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQTDd1ZkduVWVaVGlBdG9XNFVBcVhRcXlxV1RvN0tYMlVTYzliTFNRaWY0Q09Zc0UtNkxrT1ZGZkcyQXpQYTk4RmlGT2V5RkppOE1ObFJ0bHBIY3A5WGJNR2wwdVoxWTBvamNlMHhoUEE2Z1ZkWEtnaTRrNUdRMmtGUmtzTzZ6ZTN4ekF0Rm42LXo0aWVneU84MTdBdWNoMHpaNERBYUEyaE9nbl9KNlE?oc=5",
+      "date": "2022-08-09T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_863ddfefbff12e68c1cb",
+      "type": "event",
+      "title": "Kolaborasi Manajemen Dengan PUK SPL FSPMI PT. ACMI Dalam Acara Family Gathering",
+      "source": "google_news_rss (koranperdjoeangan.com)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOMVlhang1c2ZiYm83cTZFSzlHU1owaWR2YjdTeGhuNkRiOGRiR3FOdm9INWFDVmVVSzB1cGpYX3dyeWs2MnMzaEVJRF8wa1NoWEtkSTNCWm5vR2NMNFY3MVUxUmlGVnZBMGstNklCVmZhSTY3c05rckU2d3kyenlFdGNaekt3SFhaQnhSTTJ0R0RZTGpFVl9YUW5IU2thazZKcDJDcl81YkZpVzZLTDkxZFhtTQ?oc=5",
+      "date": "2022-07-31T07:00:00+00:00",
+      "organization": "PT. ACMI Dalam Acara Family",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_767baf724f23a600e51a",
+      "type": "tender",
+      "title": "Selain Pakaian Batik, 50 Anggota DPRD Lamongan Juga Dapat Pakaian Dinas Mencapai Rp 320 Juta",
+      "source": "google_news_rss (suara indonesia banyuwangi)",
+      "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxOc0EyWUJSWHo0RFFuNFg5M0VGS01IY3N3MnYxbk1ObTZua2pyM21sZUhkN1BuNWp6Y0NxN0tYdm8zaDRtX0xWcGNRZ1lvUmtYWXg0enllejJzYllqazVNaXAtbERuUkJUTjcwd196MW4zLXNma21EVGFfX2tPbkNRNGVOM0Vvb1RfYkVuMmllU2lOTVdmYkVGaGVha0hEWDRpMGk4NVQzUlZsTVRVU0gyX25EbFREay1kR0QyVjBvZlBSeUI2NkFoVk42b1ZGS1Y2MDcydWdkSDhyVHQ0S2thVWRPNjRfQThMcUpPZEFMU01PM0dDV1E?oc=5",
+      "date": "2022-07-27T07:00:00+00:00",
+      "organization": "Dinas Mencapai Rp",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_b0e37622f221fc7d3931",
+      "type": "event",
+      "title": "6 Rekomendasi Tempat Gathering di Sentul yang Nyaman",
+      "source": "google_news_rss (Kumparan)",
+      "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPSmtEbHFwOXRmUHpGTlBSOWdRRVZOSmNGdEcyUTZxVmgxckhyVEJGRC1OWUFzMnk1c05WeGhjUHVpRW8ydEk3dlQyOVhqbDFYMURxOEV4YnlaSmVCSnY4c21BM2VjSVV4MmRPQmptNzBlbWxDQ1EzdF9Fb0dnS294YnJSQ1RGNHJtZWVtTGgyeFExaXBwdVp0RGhUd0hxSDZH0gGoAUFVX3lxTE53MEtiTE56QTNGUVZPc0JSR0pVbHRJdHROeUhEWUZzYnFXOG94aDRIUkhHV3ZJSDZRUndpZkIxT0VzbTNwLWJ6cmVaa1RWbUlTYVdmc3ZDZHNYXzVpLTZoc1RtNUxkY1dzRXVqY2VzUlRiY3JiRG1VSEFOeVdHbXBxRjdpTXZEY2V6WWN0b1QzU3dON0pia1kxNzNfeTNacTdfMk9EcjQzTg?oc=5",
+      "date": "2022-07-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_aceec1922514b303688c",
+      "type": "tender",
+      "title": "ORI DIY Telusuri Kegiatan Pengadaan Seragam Sekolah oleh Paguyuban Orang Tua",
+      "source": "google_news_rss (Ombudsman Republik Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNQUdRbkxUeWtkV2s5alY5RTV1SjRTUVZ1Um84NGlSU3dubXVrWmI5S0Fib29XTWdaa09ITWt1elY0MjFhTHRISF9OOGsyNGRZM0JBckxiaFRaVWE1ZGhHZTBnbDdHN2dlaUxKUmcybmo3TTRrcjFycWhFZzZHR1RCLWxucG5KMDduZk1CckZTQ25RSjE1SWh1a200NW9nbmN1NkFlSlJmLXZGcjF2Q043Zm4tSFlTVG5BZklpVm5wRXU3Uk1SMlgwaWszanRBdw?oc=5",
+      "date": "2022-07-16T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_92eee5c7314c2255fc60",
+      "type": "event",
+      "title": "Family Gathering PT. Saranacentral Bajatama, Tbk Tahun 2022 : Kebersamaan Untuk Kemajuan",
+      "source": "google_news_rss (koranperdjoeangan.com)",
+      "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPZ1d6bXRXd2Z4R01lVUg2a2xwSldQTnRCMHJvR0xuQjBPbkVsN1prSVFKSlRyZmwwVzY1WTJOVUlhdjhfTWFGT0pES2c4YVhEUGh0RmVSS3hTV1VwYUswamxReTdRSWliTkxyVVROZGo0MENLZnp4WDBBQzRUelIwRk4xVVhndFY5Q3pfWkR5aUh2WlhuSlk4eUlBMkVFWXp3VzJSbnlVZlJvdXFmeW80bkdyTV9fMUNhT3Nv?oc=5",
+      "date": "2022-07-06T07:00:00+00:00",
+      "organization": "PT. Saranacentral Bajatama",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d67f4429f356fcea8ec2",
+      "type": "event",
+      "title": "LKBN ANTARA Bali adakan \"Family Gathering 2022\" di kawasan Kintamani",
+      "source": "google_news_rss (ANTARA News Bali)",
+      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOaWVfVTd2aGdnLWZEUk1WbU9aTzVfMVEwdTdISVJOdEdzRWtJRjhKUnRpbEZ6akMya1B6NGYxUmlFV0lDZUhaWVUySTU1MjlIMHA2SFpUbGdoRDdDLXI4SS13WE51aVZ0NThZVFgyVDlCSHNOa2Zna0dFTmdrV09fMndXRzZKY0t3bFh3UnpEU2lRWHhCVWxrckpFT1dMM0RsZy1rdGJEQnpCQnVa?oc=5",
+      "date": "2022-07-04T07:00:00+00:00",
+      "organization": "",
+      "location": "Bali",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_52871fbc0de34b57e413",
+      "type": "tender",
+      "title": "Dapat 6 Setel Kain, Harga Seragam Sekolah SMP Negeri di Sidoarjo Rp 1.8 Juta",
+      "source": "google_news_rss (suara-publik.com)",
+      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPbzJUZG9uX1JkRGd0WkFBZllzNzRfNm9MYlg5ZnBsbHU3TnBodDF3WEJvSHFKUklNWnZtam5lTkpOT2dUR3JCREowOElQNEdyTDc4RHlwNU1sNGxia1lzcjNaX0w4aGZfRDJiUEM3MkpaSEFoVjZTNFhHbzZfdWFkelVOd1VFMGdoNjdWZnZfMmlqQ0hsZXRBdGdtYmpHNHNvWENNVzhjR3lELV8yNGdNRtIBtgFBVV95cUxPRU1tSGVwS3F2OFN0cFNyeEhza0gweEJvdFZSQzcwcUl3U1FPTmFZblpYb0xONG5WZWp3OGNpNW1uYzhuUU02ZEt3clZPTjI3N0xUN3hlR19qRTRKNG5Va09lQTg1ZV9FS2E0Q19Sc0VhcEpXYk1sSUdDM3piOUtGNnB4aVc5TGtMcE1kZENSNnZydkZ5Z3pveEhhT0p6OGhGaDM4dGFicnowMGk1T3JqSkZhSWF1dw?oc=5",
+      "date": "2022-06-30T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_296fd7af86ac02f7b87a",
+      "type": "event",
+      "title": "Human Resource Gathering Bangun Sinergi Perusahaan dan Karyawan",
+      "source": "google_news_rss (Kompasiana.com)",
+      "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOWXBUREJnSENjLXRQTW45YkJMZG5nX2dWQWw0M082RElOaFpnMjBuUXpMMHhvSXFWend1azE3WHRnRHRsVFZxYnp2VkFxcWVRUkJSSUxvbFJvT2NnLTk3UEFnU1RIbWNrcFEtQlN1VnVRU3lITXplQjl4U1d2ZGtTTERneE9ueHo1OV9DY0JpYzItMnVOX0l4amVjRWVtQkdiYTZkVDRrV1pHQXBrRTU1ZmdnMXNHczF1OGgxb2k5aDBOQdIBxwFBVV95cUxNZDNhTGZ3cWd2S0ZXRTJkWFR0UmNpaG51UjhCel9BdkhMZkRtRXdtc05xNnZLajJrQnlhMVdnYWpfTnJ3cGVDdnNmMGV5eGF4TERybHk5U2ZiWEZvS0RMT2E1d3Vuc0NtZ1Vrc2FCbHNKekNsZklHS1JHUV94RVNfSWxQOTFmdnphLXdGeUlJYVZ5NFhMczEyOXRQX3RCTXlsYzlVc0haeElQNmJrMkltUklOVi1GVGJMNGZyRVAzTEJ5Q2hBMXN3?oc=5",
+      "date": "2022-06-21T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_73b8682147070c0eef0d",
+      "type": "event",
+      "title": "Manfaatkan limbah kayu, Chandra Asri bangun trek dukung pengembangan Kawasan Edu-Ekowisata Lembur Mangrove Patikang",
+      "source": "google_news_rss (ANTARA News Banten)",
+      "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOYkh2emFkajMyYnUxdkY0eEJWa2dXb01vSDd0RnJ6UGdKbmlXeHFvNW9Zc3N3N1JhQTRDSF9va2QwRTJ3STdhOHpFdk9KeW14NDRSa0I1MUpWR1Q1NklDcUUzeUlIQjViY2Zfb3JvbDA5Yk1fXzg3eW9qWXVmX2RSUThmd3o2XzFQdHdZM0paWUpiQjZnd1hoV3dUbElPWVd6RjMxSkMwbS1DdS1zaUQ0Mk9KdWdqNXVvZFdTNmxYYXQ1MC0wVlBqOV92TFdIMXplbWFkdWFjRFM2U3dEeFRjZWhOVXV4MWxJd2xFZUo5NNIB9AFBVV95cUxPRzN6Y3lvM2VyNklWZnpDb1BpVWNudVlzVnkxYl92VGpqdjZaMTczQlNqZGlGRUtoa1pOeld5X3FKNDkwNjVwQ1VtMXdjZXdPV2lBcVMtbDRIbDFiYjlkcnMtNkVHSEVTdnhFSDNtMUx1Slg1cHk1eHpGTEx1MUlyUFJDZV8weU45elpyRFE1NjJXeVM5X2hQeFhPdFpVQmR6V2c4VGJNdFZnRzFOZHQ2ZmF5ZWxxUGhEa0VySUp0eFcwREtZUFpjeV9BNjJyeXlOWmxoZ0g1UkFBRk8yWEFISWhjV0NRRGpmMk9Ya2l0bGwyNE5M?oc=5",
+      "date": "2022-06-20T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_59e93e5c4f7e0008b819",
+      "type": "event",
+      "title": "Jaga Kesejahteraan Keuangan Karyawan, GetPaid Gelar HR Gathering",
+      "source": "google_news_rss (JPNN.com)",
+      "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPRkVnZUNrcHhZQlRqRHpyRWdYbWlnd1FyNUtQcVVneFdTM0dkRUZUZl9kM2xacFlybkNGWGpRaWdRTEJUZEI4VEpSVTBNRnkxLU1udmFKR0FsOVhkbXFmRkNCTXJYRk5DNllpVzBDUXlHeHVwSEtIWnU3YnFqLVRJcVhWUmZQaWRNQ05iZG1EZGVjZDQ2R0cxenNn0gGWAUFVX3lxTE1vTHU0OGN5VXViSzRGdFA0OWxjS3FDTFh0LUluYzJqYU1RNGxKUnh2cGNrZk1WamV3anV5cm5RZk9sTUEzcGkzdnh6dG5ZanhFeFRhSnBmOERXcDFKQjlobFV1enVIQW4zVlBnaGJOODZRbEFPbTVRZ3ZVdktzcThkNXhQY3FpX08zTHAyV004dzVKNDVIUQ?oc=5",
+      "date": "2022-06-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_30231be41b0ebbd82c09",
+      "type": "event",
+      "title": "UC Fambus Family Gathering Paparkan Strategi Bisnis Keluarga",
+      "source": "google_news_rss (HARIAN DISWAY)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPWGlUd3h4alVKTXRzanZIRnJPNzlUR1lCNnM1Rm9UZURId2VQdHV4NXlOUFNiNDJkanktc3dmZWxLdWo1TW4wRFEyZjM2OGJkQTJzeTZXRk5Ick8yVTdKdVM5QzdpRHZMQlhmTEg4bGRQWWhDN3UtM3RqSUgySlhLejJwcmxhTi1vT2pRbjF4dlBMQmFHTWF5NW84czNYUdIBnAFBVV95cUxPNGxVclpROGNRREp6TzN1R0FYNEVJcWRVVS1ZbmtyVWZWcVVqNm0xd3d5QTlVVXNhUV9kblU0YmE3RVpVaUtYd3JwM3djY2czVUxkWmRKQVloUS1FRF83M1ZidlVvUUpYb3N6UDNGZ1liSWdILWFjVFB1NlJUc211YTQ5TGprWERIYW8ydV9MeW1BX21SWkpmNlZBLVY?oc=5",
+      "date": "2022-06-12T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_7c7c561127ec974c3cb1",
+      "type": "event",
+      "title": "Pencabutan larangan ekspor CPO disambut petani dan perusahaan di daerah",
+      "source": "google_news_rss (ANTARA News)",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPNEcwcGRHWkpDc0JFb29qUXluRWkwRFg3NkRybnRHNnVWdU9zY3hBWEFidEJDNlhNOUVQa1BDY0FMbEo1eUxRYlBwaU9rMmxaaDBLVENUMEU1OGI5T1VOOE9aaWstN2I4NmE5VGpKRUtNaXZia3MyaUFPajFMcC1HMGxuOVpyaThxUm1Ib2NWeHNkaXNTeFZVUHhCUHdzeDNkb1luaFJnYzZtd3pQVjJxeWV6MlRIUdIBuwFBVV95cUxOZHhDNWg2bHMtUHloYkc0ZjRIYjg2N1MxaE5nM2lkRmphYVNpcndHdENjT1RsVnRJbllTVkRaS3ZFeWR2R0IyRXhVRUk5SlVqbFFKWlRvMnhNNUxQRnZwaVY5NUx0Y0xkU3hlclNuV3FtOVBwZTdndGxubUdUX19KMGl1OTdwTTRvTi1mYzNSNnY1R3pwd2hkTW9QRjZTOUp2c3hSVVpfUDc2dURhOTgxdVI1SHU0eERVcHdn?oc=5",
+      "date": "2022-05-29T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_fc3f76bea8343e1d3f2e",
+      "type": "tender",
+      "title": "Kejari Simalungun Klarifikasi Kasek Terkait Pengadaan Batik",
+      "source": "google_news_rss (Beritaind)",
+      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNN01HVVJBQ25KQ0cyMWo2SEVWUGlWdHBGS1dRVjB3eXhCRFM1cjNxRnhWYXUxMFZ1THpheXkxa2hpV3FsY3JIT0hMN280MEtxTFVnQVNKOGE3cFVQd0lLdVhVcXcxY2FGclYtYnNhU1dTNGZJVUgwRDFJV2Etb2ZpUnB6YUlyVlZmTFEzQmdrWTc0TkNQTzF0a9IBngFBVV95cUxPS3dCQmpYOC1oX0V5aVl0TWZfUjlDVGNkcmowYWxTeDhHdWdSUU1hdDJEX1dyZWpaU3V3OVpRck5jNDRUcmlhRlVWS3JJTzZPQ2VQMUtHb0VnN2tMQTAtOGZwaEZ6ZFVmUzBFLXJBdTV1MWZvNGQzd0dlQ2JhR1pQUkZiTkRielh6QVAxM21qNFR2TFV2dkhPWEFQc0Zidw?oc=5",
+      "date": "2022-05-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_08d2cb91a33047e7647d",
+      "type": "tender",
+      "title": "Rp 3,2 Miliar untuk Pengadaan Seragam Endek",
+      "source": "google_news_rss (NUSABALI.com)",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSC0zNkNtcHZKRUJXcEZTYzlEVHU1QkotQWo4VFhIVW43SDZuUEhLU2tXQ25CcFBRSWVoU0t2QzJOWFByeExMa1h4VzFMVl9qeFRvdmVrUS1EOU5rUlV0TUdySkl4eXhqQnBleW5jcFB3UWxURC1fQjE0TjJQRjRlYnNzbWJ4MV8z?oc=5",
+      "date": "2022-05-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_bd758c334797e0cac479",
+      "type": "tender",
+      "title": "Ribut Jual Beli Seragam Batik SMP di Simalungun, MK2S Lempar Bola ke Disdik",
+      "source": "google_news_rss (Benteng Siantar)",
+      "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPTjhMYmNMUWJhTjM3dWlBUEtKbm9qUkNSVXV0bEtWdUZCWGliNU1qM2VnMUhObkh0Q3ZPYk9wUXBCR3Y1YlMyUURseGRVLWd5NnU0RVRNMkFrR01LNE5uRl8yWTRiQTNXUE55dnNRQjBVSnRMNW5WUlloWlJDZzBtcWVLNDFRaVNDbnpVWGZYRXFIZ0Fvd0NMekp6RzN0NEhoRDhrWWE3Vm80UG14ZEx6enhrMVZoYklMQi10cGdFSktjMFIwY3lmQ0lnRlI5LVVjdENzOU1fS0fSAd4BQVVfeXFMTzA0ek4xMXdDcER5NTJ6SmdTQ1pxa2liVEFvakRidlNKdWVSbWNKczdkQWpQaXp5SHpCZm9tamhhYUNqOG1leGVoeVNoRU5xTDNRSjQ5eEVzOW5DdTlQcFhIUjl2SjRSTkZEeW1ldkY1ZUh2NE42eXRrRk1nNEMwd0Z4Tnl1WXFVRmY1MXMtdGgyTEtyaDhtY0VNNWpaU09OWFhnTHZ2Z1BjdjBkbE5tRkdWMHhkWXNCSnBVQWNYaTd1RHJacm9USmo0eFE3T2N2MjhLSnN6STBMdWxIZmRn?oc=5",
+      "date": "2022-05-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_60c3caecaec996ef7301",
+      "type": "tender",
+      "title": "Aneh, Terkait Pengadaan Seragam Batik Sekolah SD dan SMP se – Simalungun, Kadis Pendidikan Tidak Tau",
+      "source": "google_news_rss (Mimbarsumut.com)",
+      "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNVm9aX2JSVHp2ek9YMnBEcWZLY2VqN2p0OS1MRkxib0tRRDJBd1h3UUUyd3gxZnpWRXpWQllqenAwLXU0M0xfbEVwTXRmTjFkam1IR2FFbkxad2RaQm1FVnYtX3VxUkF5T3M0NUhBVEFrbXBQRmRWTE1vMHUxVkQ1V21nOHRxYzloVE5uSFYtVWJudlZzU1kyQjVOellWNENSb1dYZXBvaDhKZkVkZUQ0NXRqY05FZlIzZk1mazZielZ5ZHBMMUktTHprQ0M1SzhtbXhndlVmSmI2QQ?oc=5",
+      "date": "2022-05-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_15d3ccfc545f5872f23d",
+      "type": "event",
+      "title": "Pelindo Regional 4 Kendari gelar Family Gathering di Pantai Toronipa",
+      "source": "google_news_rss (islnewstv.com)",
+      "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQWXFnVEplWG5pZHA2VFZfYThXekdZVEExTWYxaGdqd0hpd2Fpc282VmFDalRReTZ2ZmF2TFp4MjZ5ZExRMjlTdmdNWDFsemh0VU15WF9fOHZ2U1VPMERlN3FMRXh5TzMzemdyeFFXbzNjRVJGMmZHZENtcjUxY2cxQ1BVajc?oc=5",
+      "date": "2022-03-28T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6062e6a28a47acc09a77",
+      "type": "event",
+      "title": "Buruh sawit di Tapin laporkan dugaan kecurangan perusahaan",
+      "source": "google_news_rss (ANTARA News)",
+      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNR09IY0Ffazc3ZlRPSVFlLXlwM1d3ZEhfT0lUTWcyUkcyNUpxRXUwR3JtazVlWGhuMzg0WUlFMjZyNFcyRnhyWjlRYXNWNWxfSk9TLXVIc2RHREpDWFBjellwNFRXM2F4TWthREplNEJEWkN1MEl4b1E4X2dIelMtQkxlcW9feVVZRFhOb2s5SWdTZDA1dHdyUGVfX1dyZ0p0eC1LVtIBqgFBVV95cUxQRGhHMGFuZk9nSHRRM3NPWFBhU244UnhSUUtVbjdoOFAyYWI3d1QtakQwaGFtYUhTVkJ2bU1telVxRzZ1UGl6X1lpeEdwWVZnb3Z1Ny1NWVhWTXc2SkRyTU9EZFlXRFAzZWtncHE1eXd2QTdyWEdwX2RZNk5VVmNybDFIY3ZId2MyQk9FTGhjeTFtZlNHTWZuQUxHQ0pLZjNrcXJHNkRiZWlfQQ?oc=5",
+      "date": "2022-03-02T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3a2b46fbbf862ab605b7",
+      "type": "tender",
+      "title": "Biaya Pengadaan Seragam Satpam Bukan oleh Institusi Polri",
+      "source": "google_news_rss (Jurnal Security)",
+      "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQ09BZnROVHBXWTlrakVZT2xGSi1wMlNjMEotblh5OFlTV0NSUnIxMnd1bzByT09zVmpSa3lTYjJhY2FOd2c5VXpZZWFWVUFPb2lTaHZ1bG4xcDlVck9tNlBlZjJFUDFYNkYwclBheDlaSzQ5ODh5UThHa3ZlWTlzSlE5Tkd5Wjc0blFZZ3Bn?oc=5",
+      "date": "2022-02-09T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_00212695e0879c65c36f",
+      "type": "tender",
+      "title": "Polri Tegaskan Tidak Bertanggungjawab Terhadap Pengadaan Seragam Baru Satpam yang Berwarna Krem",
+      "source": "google_news_rss (Tribunnews.com)",
+      "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOVjY2QmxmeEdtTktSXzVma1JKZjFhTzJLVzJ1NkJxdHBYOFUyTWlHQTNNMW04OXRlT054cG9yb0prUDJhMGwyU0ZZUGNKenlNQVBWMnpmaUQ4ZEowU3dRczhaY3dHN01teVlMZ2RBLThXRE1YM3VMUHJIalFzcllMbW1oS3ZDM2dYRDFtbWYwNndpWG9TR3d4MDNEa1NLMTEtY3FqUUl6RVk3YnQtZWhhejczNnc3ZHc5UW9yb1U4b3VHSkJEbVpuNTY4T2tvVmgtSjVTSW9Mc2pBZ9IB3AFBVV95cUxOQko2Nno3YUFZVGtNSVhoXzJZaUpDUDJvalI3c2dnZkNmU0xUQnR2S1RCYVpFMW1mMEdNUExucXJpTG0yelVPNEQ2eG1fREhoUXBBSEZ4UzUtaWpBZF9KcG9wc19pb3U5Y1VYSVVmREFsU2lNdU1FUmpHTUlYUG4tZ0FicC1DN05FbkNuN2U4LVNZTzhMZ1NrQUg3ZVRkaGxwb3dCdGlKSnhlTjlrS2RrNHFOVklTMldJLVlCVW1fTlU5TF9menVGTGw0SlJ6X1JXRzdjcUVhZjRPLTYz?oc=5",
+      "date": "2022-02-04T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_dd757cd97c920c7f26a8",
+      "type": "tender",
+      "title": "Kabar Terbaru, Kasus Dugaan Korupsi Damkar Depok - Edisi",
+      "source": "google_news_rss (edisi.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxONXNNZ0lkSFpPbURVN1A0b2N5ZXJYenlFTGxJTkE5dUFhSkdqSVlCR1h0Qk8tamRFYU1jdjZUeWtvYkc0NExNWXVNTzRacnd4b3FsVHdJdktGUjBSTkc5bzUyQTdBU0pMb1oyeGJDNUJvc3h1Sko0cnUwX1pZRGFZWTJickdxUHlKMXY5ZGMtdDFXdFIxakHSAZsBQVVfeXFMT2Z6LXZpQVR6b0t4YTFUOUpTT0xEQndmVk1jaUFFa29peTlNdl94U25mMFVJandZR0FDT19wQWdnSklhNktvemYwSENVVDNXSEtFUVk4ajhsX2dyQUVOQUdtNUVfWW1RTHd2ZjNScl9sVVRRa3dLcVV2SFMweEprUzJJU1pGSmlENnJzYkg1RU91bVIwMGN3ZzA0clk?oc=5",
+      "date": "2022-01-08T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_302ed7737b30a7fd5907",
+      "type": "tender",
+      "title": "Kejari Depok Tetapkan Tersangka Dugaan Korupsi Damkar - Edisi",
+      "source": "google_news_rss (edisi.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPLXJiaVNhZm1FVVB0YU0wUTlYS09OM045T0dPSTdScTFTT3hTSVBFUEhoOFlnWVdJcjdLdU5sd0xTQ2RfVU50S0hsQlJGdUhoR2kwNlppb1JDc1l2RDd3amxlMlRWT1lWTE9kZDNLS2dzTkxTQUN2NW04dVZUeEtVNTB1bkR6cDFWVW9PdTliN0wyU3A4MU5JWVZweWZjZ9IBowFBVV95cUxPdkwxZlczRGRxZURvNE95OXpYd2FQdlFVNHZIRWxJcDA3UHFld0hIUFRnbUN3eDVEZEtKdTBxRks2Z184QmFUSjhQeFVBdUVEYXFNbW5SN2F5alE1d2NmSUpjcEUybDVvNFluLXpuaDZibGlIVE5qWVgzbVo5ZmFockYtVUNsbmF2NTk0S3FNcXRfSEl4SG1HWVhPSmdKWkp6V0pV?oc=5",
+      "date": "2021-12-31T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6559e22a1a8e27b62103",
+      "type": "tender",
+      "title": "Kejaksaan Tetapkan Dua Orang Tersangka Kasus Korupsi di Damkar Depok",
+      "source": "google_news_rss (Merdeka.com)",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOa3MzNVZ1XzF6NE9iemNLcHRPZFlreVc4UkdXMlhrMnhNRmd0dUJYMnJuaFIzcjdEZkFpU0NoaGVMSENPVWJZdzlib1FJMXlYWGt3cHo1cEdFRHFxRkg0bnJ0U0VTazQ5SzVCM3ZpT3ZVUGkyTktiSnB1R3ZGaVl3NVlkdThjRWNWTzhJQktQTkdzN2g1S2tMOFQ2cmVwbFNFY2tVMWI2ajh2LVJQSk41WjNVWk9zQQ?oc=5",
+      "date": "2021-12-30T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_52553dcc1b642a5afaa3",
+      "type": "event",
+      "title": "Family Gathering 2021 PT. Lima Putra Contrindo, Bersama Kita Maju",
+      "source": "google_news_rss (FaktualNET)",
+      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNVUxvM3JsRGRoLUFSQm1MMnNpRXNBU1NtZzBBVHVSdTFGNnBmbHg4WFg1RDR5Ml9xR2dEN2UwdkRwQ2VRekxpc1hvRk0tT2ZoeHVKcV9GREk4UU8tOHFxdmFNOEg4QnIwa0dFdmRCY3hhczQ2RUNhN0FZdlBrMmNpLVdjU0RtaEhlc0JGQtIBkgFBVV95cUxQUks5SjNYb3Y3R1RXQzZVaElEWURxZG9MZmxFTkdKX1RQTVVqdUktd0NVdlZPd3ZNekY4WDVsNUl6TFR5OFNXakVMa3JpYy1Ma2RyV0o3U0k2UDVxT1dfb28tR1JaX0gzRGVubjk0ZS1oMGdZaXJZc3pNV082U0Y3Nm5KR3d0dHEwYlJTM01meVNpdw?oc=5",
+      "date": "2021-12-18T08:00:00+00:00",
+      "organization": "PT. Lima Putra Contrindo",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_97ce31fdbfe530cb5bb9",
+      "type": "event",
+      "title": "Puluhan Pegawai Terpapar Covid-19, Kantor Pajak Pratama Bengkalis di Duri Dilockdown",
+      "source": "google_news_rss (GoRiau.com)",
+      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPYkNhSFhKelJaLVdJYWZCdkVfRUJLamNUREcxY2ZCaHJhTzQydy11U3NTSmtET0hPaVBkaUgwWjdwTEJ5VWtBX3RLMGxZdjcyX3MzenAxS0xSbDdmdWxOdWFVT1EtcFdjNk84eGJVMGlWNXFkVkZwZGdva1JDUXRIUFAyUFhCdW1MZWpmVExJMDA5SVB5REpuTm9wNjRocXZSanh0eG1jVkFPLXA2djJkVk5YWi1FMG5QSDR5aGVDdw?oc=5",
+      "date": "2021-11-23T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_23fb6361bea82cba97b7",
+      "type": "tender",
+      "title": "Dugaan KKN Proyek Disdik Tanggamus, Pejabat Teras Pilih Bungkam",
+      "source": "google_news_rss (intai lampung)",
+      "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxORG5SQ3VIR2Q2Wk5uWU5jMDdZeWV1cU5ZeFEyRFVLMEhIVWw2N3lqWjk4MmhUNmVDSk9iR1lvYXQ4X3p2TmZidkZLM3ktMThBWXNieUxWcnNDRW9vM1dUMUhCci02c3ZjZmUzX1JENVVzRWN5WG9DeHE5U0hSQWxWd2FVaWxqWTBjb3U1U2ZWdmNyQjJlQU9FdWQxMUs1M1ht?oc=5",
+      "date": "2021-11-22T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3503250c406f2e41d2f6",
+      "type": "tender",
+      "title": "Dipertanyakan, Pilihan Polyester Menjadi Bahan Kain Seragam Pelajar Kota Pasuruan",
+      "source": "google_news_rss (WartaBromo)",
+      "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPdFRIWTVpZl8yS1l2U2ZUWTlPaGk5LURQcWhUd05SR2t5c01FcHk0aDk1YzQzTVZUcnpuYkhuN0FVNnh6N01ZdzFGeGt2cnREbjFFRzdqcHEzSGJQVUg5QnY2bmEtcnJiVXM5aTVJcWROdWV4MWR1WF9RMkpxTnZucWdXNGRaZ2wxMjR2TWRrOUZvZ3NHdVJtQ3hTWjlSb0hTOFpHMWZiMHEzMkFWOXE4Z0RIVUJyS3RwZU1J?oc=5",
+      "date": "2021-10-20T07:00:00+00:00",
+      "organization": "Kota Pasuruan",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_05e3dcc932e342bf9024",
+      "type": "tender",
+      "title": "Sempat Viral, Kasus Dugaan Korupsi Damkar Depok Naik ke Penyidikan",
+      "source": "google_news_rss (iNews.ID)",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQU0FjZXNXUFlMZV9yMl83RFk1bG9sRGpZb3Z0ZDY5V25qQUlyS21yOUJpVmFqdW9aaXBkSDlZaE9FMmF2RzNmcXNoem1tWGJBVDlmZ3NwZEQ5dmFGM0IzdnZqVC1QUjAyVjh2NWRRQ1dENUZBZjg3V0t4eGVKNEJfNEh5S2tyS1pWbWtiajQwRlBkTGhGX0Z2N3lXRE5FelpwdXhBaFpR0gGrAUFVX3lxTFBSRGJ0Z3lsLVY1bXBmSEZCR0doVk93OHk0bFZPUjZtYmc3OHJxWjBTTmtCZ1FBeE9wVW1Qd2ZqdmJObTY0eXNCdTJmSUN4QkJOSXVfcEVTVTZyTG12T3VNQk9sVGtjS3ZYWDVNcC1PWnNWb2dxUHlud3RUX2dEUHV5amQ5NGhkTTI4QWtfN1ktUzRYS1dJZGpQeHRDRWYzcVRTUDh2VU9Cc200Zw?oc=5",
+      "date": "2021-09-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_168d74524b7d46eb8371",
+      "type": "tender",
+      "title": "Pengadaan Batik ASN Rp 1 M Ditunda, Walikota Madiun Prioritaskan Seragam Gratis Siswa",
+      "source": "google_news_rss (realita.co)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPdVdkemdOcnBodnpqRjIwS1VWcjY3ZGlzd250QVdtWlktQjkzSTVMdnl2emFHQ3lKU2hwSFV5TFFGNkt2bVNQaHNfS1lZOXlpcTF6RUFHTDI4dGEzQm1GMzJfenBLQzV4UW1IbU1Uejl3Y2RwbFNkMGhLaEUxbFZPQjhKRWdNa0g1NUJKdHlQcXcyZmk3c3dmamlrNUJ4RGRNVDlTR0NDdkI3ZlBSMU5jZVp3Z9IBuAFBVV95cUxOaVhDVjdQVFRVcDF3eHpNNWNBbkYxSjVyd3htOVVzVkUzbklVU3Q1QW1tWGZsMlY0RjlIeTV0Z09oQnBwV3Mxb3JmQ3pBTFpQQ0VwMjJLWHdZQm9JOWxBZFZySUpVakd3OHJKaDlPZ0dDV0ROUENwdWVZN25LQ3ExcU1La0dJN1BhQVQxbFlZM3l0c2ZZaWh4ajJUcVZjNUxvRUlkQlMyY3l6M3RQVEdyeGpqLWEyR2hm?oc=5",
+      "date": "2021-09-14T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_2ec864dc9a66c2044ec5",
+      "type": "tender",
+      "title": "Seragam Gratis di Jombang, Janji Kampanye yang Tak Teralisasi Tahun Ini",
+      "source": "google_news_rss (Kabar Jombang)",
+      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPd2tOem9QYXUyNGw5U1o2ajRENmNBRUtxd2xwU3JjVmJTTkhLSzlPNjQ1ZlAzaTBINFVmcmZJVzJIcldHUHZmMTVpV2hBUUtzdWdKbi1mT0VSOWE0R2Iwam9VcFVidkp4T1pZSEdxTWpyOHgwU284X1Fya1FXZ0Y2TExVR0NIMHFWWXBYZ2hZd1VPYk8wYnROTHBDYTVlWEtkTl9qa0dJWUJNZ202NFJZZdIBtgFBVV95cUxNU29tNFBjNU5hcGJSTEtRbEd3S0dmMHBPVlZMY1NzbUJDZkcwcWxlLXpEcG8xRVFKeV8wMnMzeVhoY2Zad0ZEeWd3OGVFdXpkR2VpUEtRYVBGVDNXQVFxdXdqSVlQUUhtYWJlZG90Qkg4NWhkMTBZM2dSYmlIQjdjY2dwUW1sV3JodldfdHFVODRRb29fUnZObnRFR2FEN0M4d0NGZFFGQ0hGUWMxd256SXA2UThzdw?oc=5",
+      "date": "2021-09-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_effa2a9939e4be96bc94",
+      "type": "tender",
+      "title": "Ditengah Pandemi, Dinas Pendidikan Tuban Belanja Baju Dinas Hampir 2 Miliar",
+      "source": "google_news_rss (suara indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOd0tJS1ZLRDZmNUY4SV9ZQzNLWV9xdk5BUTUyMHl4NFRPdk4zVGtLdUVWc01PRU9sYWFxYjdCX2otMllyYzBveWxaMWdkeFFCS0xHTllzUWhrN1JVSjZMMVR5UzhuQm9LcndnTFdkMW9BUmdRTVBVUWFKVEZkM1JTZTBsU1cydU9kMW9sTkVIR2RGcGwtNF9KdEVZbU5oTW9oQ0tjSWZWc0I4MzFwMDJwcnMtVU40amlVNTNyMGdxd0FIaGZqOFdDVjd5cFRSb0s2VkY5Ymx30gHbAUFVX3lxTE02VFF5c2ZtZldjcjlmYVdVdThuNXlfWkhTVjdMLTFqU19wc1BuV253VlZlcWZJQkk3T2ZnNWpSN3ZUY1hsam1ncnNLdzhEelNUTWkwNGFIS2s4bW1LSG91X0JMbnVTQTl3MURCeVpwUXRzYlRyYlVJTHg2TmIya0xmYlNYcjBZT1VZb3ZCYVhVMEdlRElCaGVrQkFLbDlySDJnY1ZEenhMWVZFU1A3SG9zOTNudUw1TjhWQjQyYUZKRERIMGpOXzd4MkxRX2JIczJnZV9iUUlRU0FmOA?oc=5",
+      "date": "2021-08-28T07:00:00+00:00",
+      "organization": "Dinas Pendidikan Tuban Belanja Baju Dinas",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_53768903abc21fdeefc4",
+      "type": "tender",
+      "title": "Bantuan Seragam Gratis di Jombang Batal, Wali Murid Kecewa",
+      "source": "google_news_rss (Kabar Jombang)",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPd192Z0dzNHRVS25aSWpuR0JySS12LXBSVnRiVC1ReVM0ZHMwZWZEZ2ZJZ1RWVFlkYUJ0V0R2U1RlSU5hU3FHUXBpSXZTaTAtUWl6ZEVSTUg4VUhTZWYxT2JpbEpXZFpiTE5hdnkyd2l4QzdkYy05ZVlib2IyckRTZjFpVzl5QWVwbGFuRFdSUGtIYnRNZnhoNlF5cFhpVWVjSFNYdGpMd9IBrAFBVV95cUxNTXpjWTRsWDBpWUh5UC04eG9KVUxmTEt2RUgtNFRIbi16V2s5S0V3OFlhRlhyYnN5eDZybHo4d2hFbko0WTJFM2F5eTJuM1duY3otZW5WdFg0UmVLZGJOS1Z6bG05OTQxenBjV1Z2ZGMwMHJDUlZaTUVJMzl3SE54Rk9BOW8yX1U4RXJLSndMVEJFeEd4UFRWbEd0Z2d3d3h0aHU5NDAzSXRnRWc4?oc=5",
+      "date": "2021-08-25T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_665a51d431ac53ec4e09",
+      "type": "tender",
+      "title": "Louis Vuitton Bantah Suplai Bahan Seragam Dinas DRPD Kota Tangerang",
+      "source": "google_news_rss (Merdeka.com)",
+      "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPdFRDNTNiaTlEX0tJY1ZxSUZfY09pUTBFQjl5OVZHeU1oeWVlUXEzalc0X2dQYVlyQTFaeWxoeDZ6OGZPMlc1M3d4bldOekFaNzd2X18xcjMxT3VJVVp0OWttVGU2U002VGVjWmRaLS13TXM4NkkybU8wc19tdVNkWXdSdGVSZndlUDFQRHNKaGJWdkdoUW0wUnRIVW9YOEg5WEVhWTJNQVR6SUJIV1Yya2dHZjU?oc=5",
+      "date": "2021-08-10T07:00:00+00:00",
+      "organization": "Dinas DRPD Kota Tangerang",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ebb8b50590a709737e31",
+      "type": "tender",
+      "title": "Pengadaan Baju Dinas Anggota DPRD Kota Tangerang Gunakan 4 Merek Tekstil Ternama",
+      "source": "google_news_rss (Merdeka.com)",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQRm9md3Y1SmtGZU5ncmNOckZwRGRxX3Bma05GWml2UTdhdzZjdDJYd041RVhtZTdhLWNnX1Q1LVFzTzZlSnZaN29YZU9uZjJtWVM0YVQ5NGZGWjRkVzRwaldhMExhY0hqREpxcUJ6Zy1FMk93UGlCNXpCWUtzSWNyS1VCN3hnNGpURkpuQUVKbDREMkloS1NUd05zbjNQSTV4Q3N1TWh1M2M3N05OMnFPc0RydEl0U1NNcE5CWUd2NFJGNVJMT1E?oc=5",
+      "date": "2021-08-10T07:00:00+00:00",
+      "organization": "Dinas Anggota",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_42062cad275de4b9091b",
+      "type": "tender",
+      "title": "Pengadaan Baju Dinas Rp 1,2 Miliar Dibatalkan, Ini Penjelasan Ketua DPRD Tangerang",
+      "source": "google_news_rss (Liputan6.com)",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNSzczTFRmYldCdFFyYTR2YzBGZ3NxZHBwakxtdWxRYlpxRzdyN19rbEdUUGtVcGdJS1hOd0VncnFuYzNOVmc2YTJaQ0ZNZU5pZV9NUF85ZTJuWGkyc2tmYjI2LWFxN3I3aUwyVTZncVQ4S1BHNk9SbnptYXhQa2FYS25henktTzJDWVhXUVoyUWdhTmhvdHBjVWxWcXp6VGxFNmFyVi1DUGZTeVlKRU8yald2WnJmSHMzZldpVC00QXLSAbgBQVVfeXFMT2ZHWUx1ektjWUZjeV9hVmVoV0lwRlR2cmpScnIzY3gzcEVxbG9fUlJSUktSSW5Na2h5MEl2YmpLNklhRmhZRVMxeUI1bFpET1doQVdIQWdGQmRRS09Xd1BxT0tIRjVGSnZvYWU1TnBMVWNaNEdCck9LWlA1ZW51bDNuRkUwSE1SakRwa0RJWk9HWWlfLUZPcEJaWjdLUVBSSEpOdlFGS1NoVDBfUHVrOXZPakU2cWxhSg?oc=5",
+      "date": "2021-08-10T07:00:00+00:00",
+      "organization": "Dinas Rp",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_2232e6acd85a77264a95",
+      "type": "tender",
+      "title": "Dewan Usul Pengadaan Seragam Endek",
+      "source": "google_news_rss (NUSABALI.com)",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBkNGRVZnZXa3g2cmhSX0o0cHN1aFJhUWxTTW1naTR3d25LMTRkc0tXNDRaSjM5WlRXVkJlbHFLZkdsWDVjNFBBT3R6empmWUVBY0JQR3oxc2xVZWJlY2lORzBIdjhocUNvLXRGMXpMYjR5bENVaHlTZnh1cWE?oc=5",
+      "date": "2021-05-18T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ec486e55e96c76813d34",
+      "type": "tender",
+      "title": "Begini Aturan Baru Pakaian Dinas ASN Bogor dari Senin-Jumat, Perempuan Muslim Wajib Nuansa Santri",
+      "source": "google_news_rss (SINDOnews Daerah)",
+      "link": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPU0JwbjBtcXYxdXo2TnhCa2ktaUQzM1VvQUtHWVFkVmtvcmdJUHBBRVBCM3VzOVZrTk42bGJweVhDN2g3ZHRnd2o0b2hPd0JDSk1yb19mMExpVlJHVG1BcjdORDdHZnNtS1FOeTlMWlZQZjBzM28wMVUzTmc5LWdWbTQyVXVhWENpeVVnWjRMQUtnel9iSk1Gblh3R1l6ZFBvSjR6clNOQ2NTYnQxQXpMdFlnM1hYeWtEWTBNcmdhaWdSZXpKdXp5RkxoSDVhZTduaGpzYjMxdkMwUDJLUERZNmI1TXVtX2_SAewBQVVfeXFMUHhlekFydEV4cklOMjlvOFBQRjhRMHB3OWxsbWY4elV3bjdibG1mb3dvMzNsM21xbnNzR1lLc2h3RlFRRDJOWjNmaHIwazhzbG92SVJVR0FSVnNhUlEzS2VBeTFUQWRrS2dha21FcXRHdG55TEc1a3hLYUJPN1hFY1NZRERLckdrWGJ4dUhnRWJMQTVNS2ExTkFnbDNJTUpGaThxTkRKVm81Mmt4Tm1zUGQ5ZFg0WGlycVh2cFJsbXFDV1lTYy0xcU9aV2RVNy15OG14V0RCX0t6M1dSTHZEWFhaSHNwSXBTdGRMOXE?oc=5",
+      "date": "2021-03-30T07:00:00+00:00",
+      "organization": "Dinas ASN Bogor dari Senin",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_2afac1650a39aeeccbd0",
+      "type": "event",
+      "title": "Gelar family gathering, perusahaan skincare ini salurkan santunan",
+      "source": "google_news_rss (brilio.net)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPQ0R2STJNeFpJcGJiRnV6X0NJV3BWaXhKLS0ya0VScTNzRkJHM0t5ZXhpbUhObl95Y3hqM0t1Mm1Ba29qeGhlQVU4Z09feXN3OGM1My1fUFlxNTE3QWhOX0gzeElrZ0c0SXJDZnpXUkpTb0Q3ZExwMGZLMnN6QXRZZ3h6N2dHTHJfVVItV3c3RmdxdEppS3B4d1F6UTBfcTYtS0o1NE5yWWMtNjFpWEdVNEJrQdIBswFBVV95cUxPQ0R2STJNeFpJcGJiRnV6X0NJV3BWaXhKLS0ya0VScTNzRkJHM0t5ZXhpbUhObl95Y3hqM0t1Mm1Ba29qeGhlQVU4Z09feXN3OGM1My1fUFlxNTE3QWhOX0gzeElrZ0c0SXJDZnpXUkpTb0Q3ZExwMGZLMnN6QXRZZ3h6N2dHTHJfVVItV3c3RmdxdEppS3B4d1F6UTBfcTYtS0o1NE5yWWMtNjFpWEdVNEJrQQ?oc=5",
+      "date": "2021-03-24T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_245e251cc12170858309",
+      "type": "tender",
+      "title": "Laksanakan Perpol No 4 Tahun 2020, Unpad Ganti Seragam Satpam",
+      "source": "google_news_rss (Jurnal Security)",
+      "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNSDZ2NWlkd0F0RzFBQ1JLUmoxakdNN2tPR19oN3pXbHpTV3FZNnp4dDhuU21ybEpfbzJ6R25IMGlOSWx3SFppeXV3OElHeFZLRjlzS21Cb0MzR0ZVa2h2QWZlYVV2Qm1aQ1I1X1ZDLUc0bm5tMWxreGlfV0JDdVFTRE9qblAwWU9Fdk9rcWlRTFNnUQ?oc=5",
+      "date": "2021-01-19T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6fbf19f2635c7ddb7751",
+      "type": "tender",
+      "title": "Terapkan Peraturan Kapolri, Seragam Satpam Unpad Kini Mirip Polisi",
+      "source": "google_news_rss (Medcom.id)",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOa19qSGtXQkhQXzdiNk92ZG1GNlc5dG51eDl5bUtUXzlsUGN4VUpsSjVsRDhydzAxTkFmR0NldTkyOWcxNjVpUGF4djhNRHhCUjZybXJjd3pCalNSTTlkNElHTEVKUU9wQ3RQcUdSM2pzN1hJNGVCUGpHYS1LUjdzdkZudGlGQ3VLVXhRM3V4WlVjQWJaMnh4LUwtR3BTcHBqOTBtbEdVeWJ4T05ydDZWUmhNZ0tpTUY2U2taeGszdG4?oc=5",
+      "date": "2021-01-19T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_50d1059eb8c3c8d5c589",
+      "type": "tender",
+      "title": "Lamongan Megilan Korupsine, KPK Satroni Pendopo Lamongan",
+      "source": "google_news_rss (suara-publik.com)",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSlVRMGQtOTUzUnZnTGI4REpGdDMzQ0ZoVnRrWTdYX2UxUUZFZVdiX2o1VzY0bXRHNDFOTFpZYUl0UnEyNXlMdjYwWlBOVno5bFE5WTB2eTMwUHQtWVhXX1pVazROc1VhX3dMMzlSWUdpNS1TdUJNM2tiYWlocEp1RWxfLUdrLW9DNDFYakdrM3pvNjNLLXfSAZsBQVVfeXFMT0Z5dmhpMjJjUC02ZkFXTDhPQWtyYXRWUTh5cDZ5UmRjV3dWS0pRM2VNUF95YUN5S0t6VHJlQmZrNmtkUGRVWkkwQ2VEZWhoTFh0MVpyRDNtOUNpemVRd3pZR2lidHE5RGhFd2V0VlpLOEdadzhrZDZMMW5sZDdFVGI3dmhycENaa3U3Z0tWNDBhUHlPdklGeWwwMnM?oc=5",
+      "date": "2020-12-07T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_cd432d55e1f7493a4c76",
+      "type": "tender",
+      "title": "Pengadaan Seragam Sekolah di Badung Dibidik Kejari, Disdikpora Akui Ini",
+      "source": "google_news_rss (BALIPOST.com)",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOSXNMTERNS3hCWFNNdFlCUnZlLW1sYTJiTTNMSGZLRl9JYTFseTYyRVBNS0RlbnhYR3B1ZDMweDhSbS1GVWFIWXh5ekhPRERfSWhmejIxWlYtV2Q2czg5c0c5ZE9CQUpUQUpIOEhkYVJtRllCQTIwamtrbVJ6NGhyZnV1bG9pMVZfbGJvb0lRU3lIVU1q?oc=5",
+      "date": "2020-11-27T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_bdd7235697081e5b6508",
+      "type": "tender",
+      "title": "Pengadaan dan Penjualan Seragam Baru Satpam, Bukan Kapasitas Abujapi",
+      "source": "google_news_rss (RM.ID)",
+      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPbXI0VFlJTnhRVy1WNVQ0VDJ2N3BtMi1iVkgwbmg1V05rLVh2SkFKZTBMWmdBTFNkaV9QS1NmY1Brb0VkU05SamNrcXYtNzZoazY2ckhUWC1HNUY2bnJ2blljbVMwQUJpUzJtRlBZS0RIcTJ3WnpFeklVR2hSQnBXamJDYWN0SzJrMW81Z09UTFNkWXVTYTNrbFZaeW56dWFGclQwYjd2T19ibUFL?oc=5",
+      "date": "2020-10-20T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_76fc5474303c0574ea5b",
+      "type": "tender",
+      "title": "LSM MRB Endus Praktik Pungli Pengadaan Batik ASN",
+      "source": "google_news_rss (LEAD.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1QVlZrV3VPbkNpTFRKN2dhVUxVbEV3UHVCQjRZaGdOdVo4QjRlNHN6QzhGa1V4cERxSlZjXzBIZDNQNFZZM1Jua21WYnV0MWJ3ekVXT0lsVUItQWh1YkxUTTJMY3gxWnU5eFpESkRkbHhaVl91UlVUZXpWc0vSAYIBQVVfeXFMTTAwZFNJMFJGVVhQWTZiUmxXU0lDUDM0MHQ1blhwVGE0WDVLeGtuQXI3S3VXUXNfbjFjeTB3WnpvaG1zQkZNM0RhNWxhT1pyNDcwMDJwZUlLaFU3ZWFpWEhtS1ZqaXY0c3BENEZOdmRZd1NqM1Y2NGIyVUFYcnNESHRZdw?oc=5",
+      "date": "2020-08-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9facbea493e0aec45476",
+      "type": "tender",
+      "title": "Kasek SMPN 1 Srono Akui Pengadaan Seragam Oleh Komite",
+      "source": "google_news_rss (Beritalima.com)",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPS3IxVmFUWHhYMHZQYXNUVkpPMlROVkYwN3FWTnMycnJHRDVxM2k5VEhnTlRnLXJoZGdZMHVOLWgzRm51REIzNEMtRUkwLVNFbmJwWkRfODNmN0Z4UnpHLTVkLVk4VnpxbUtBQ1BZUnlEMjQzSnA2U0kxbENhcEdoWmotUQ?oc=5",
+      "date": "2020-07-21T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_8e7a76e7a15103cef4a4",
+      "type": "tender",
+      "title": "Pengadaan Batik Kobar Jangan Bebankan Orang Tua Murid",
+      "source": "google_news_rss (Tabengan Online)",
+      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQc1RRM2hGX2Z4TkxIYjBsa25FZVRtZGhRN1YtRGFmdHNFamlnMHlfV2ZzN1d3QXRTdjF6TnRNQVhnUTd2QTZZT0ltdXlTU2ZWWmoyc1JCWjd3TEhMUTNoWTFkN0tXc2FMWmJscUE5V3p3RmItMHV0UUREa2xwTUpMMHdvQ1N4VTJVQmpxdFozeDAtNEVpcXlLT1AxZnNVc2c?oc=5",
+      "date": "2020-07-10T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_19d2dee10e289b2d8dc8",
+      "type": "tender",
+      "title": "Penjelasan Sekretaris DPRD Kota Surabaya Soal Pengadaan Pakaian Batik Tulis",
+      "source": "google_news_rss (bidiknasional.com)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOS1pVUURmVFVWWWxFNlRvX3FmcFh4QlJSWEIwUmVTWmRGSUh2Sy1QZTFsUnZHRWd4eFlwRnAxSXcwYnpjczN5bTBBc0FHRmM1eC0yUkFVci1hNkFmTkg3U0p5NHU0YnJWN0FUbElYNmhId2MzWXpvYmtDZEQtZzZpY29wU3JzNUZsMEpwWmUxbG1QM2VuQ3pFa3lhSWlMYmxXa1JIRlNwMGs0MGNNQ1VadjB0bw?oc=5",
+      "date": "2020-06-15T07:00:00+00:00",
+      "organization": "Kota Surabaya",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4a8d42b8e123123a084c",
+      "type": "tender",
+      "title": "50 Anggota DPRD Kabupaten Serang Dapat Seragam Baru - Top Media",
+      "source": "google_news_rss (topmedia.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPTEkzelE4ejQ1ZEItazJ3WnNXRWhEeG95UnduRW9jeGZoaTdIYjdkSVdMY0tGbmRyZU9qc3ZGdFJ1cTVwZmVNMUJhSnFyY2lFR042a0NlYjVHQUFrelBoTGhQVk43Z0JOMHM1YU1xUkhvdnc4Y3R2MzRPTU1pa3FsdHFOWU85Sl9tRTNtSURleXFuVXl5WXM0UWE1WFJPanY4VVVjN01zVHHSAa4BQVVfeXFMUG1VNlNXSXNtak5zZmotcVptTklqRWVkcEFjUjgyY1lfdnRJdG9WTTlxeVlzVTgtZXRoT2FxSkFNVWtRT1Nra2dvd28yR2FaX0E5eXVNUGJOR0pTbkFjcERMQTJNenBvNVFEQjlOUVFqTE1ranF6c2ZCLV8yZm1fNnpSRlU5ZDJ4QmtLcnNWY3dNLWg4SjJ4ekVuTmFKeDBjRmJIbkNIdTR6amVyNnhR?oc=5",
+      "date": "2020-04-21T07:00:00+00:00",
+      "organization": "Kabupaten Serang Dapat",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_cf8d524b88b5b92f1400",
+      "type": "tender",
+      "title": "Seragam Dewan Telan Rp287,5 juta",
+      "source": "google_news_rss (radarbanten.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE45Rmdwc3poTjlhRWRHMmtTMHgwZUFZVFJwLWhuODdjV3FRX01raXVfNGRMZW5BcjN6c0VfZ3pOcGJ5aWRiSDUzdUZ0cmJTYjYwT3FvaGdoMEM3S1E3SFVTRnc3cVRLa2hIYkxZR0ZZMHYzWEdOQU9XUktBSmxFdw?oc=5",
+      "date": "2020-04-15T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4e7cfa70982e497bdea0",
+      "type": "tender",
+      "title": "Terkait Pengadaan bahan Batik dan Belanja Makan dan Minum di Diknas Bungo , Begini Pengakuan Marjohan",
+      "source": "google_news_rss (bungo news)",
+      "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQSExzMHhXN01nSXRudmJuRkN0ajdRVC1yak9lY0tRTVBzTkw0Y3pFbWpmUFQzQk9DaXktSVZMQnIwYldicWNleFBDaUtsZi1DMnFKdk41bnFMU3J1ZW5ZV0FNMG9rZXRXclRuRmE0V2lwOWpkRjlET1lnRk41bHlQMURzaEJ2Z1VNMjlQU0wzZG8zREFsSS13NEZDc0dMRlp4aWZ4U2p5NUt3RHZYbkJnZFZ5UF96MDV4Z2RhQ2JTaFN6al9vRE5vTjZVbDdPdw?oc=5",
+      "date": "2020-03-10T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_5c7e4f2511c9a518cb95",
+      "type": "event",
+      "title": "Family Gathering 2020 Kampanye No PUNGLI, No TIPS, No KKN Dilingkungan IPC Logistics",
+      "source": "google_news_rss (mimbarmaritim.com)",
+      "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNeUNBMjRScnJUSkl6eFc1cFI0ZEcwNWFYTVkwYVlkaUZXZlZ5UVR0VDUwdnJLQ0hjZTRLdEVpZHVIV2cyVlpTTjA2RDRxbmptQlBTeVhtRXd1eEw1cUFDQ0t6N25EQkdRMVJPZGFYSHNjM2FIZmhqVWNtOXA3N1VlaUZsZ3lBMXVvd3BYYVd4SE5uUG1QM1ktb2ZKdDJmTW5lNU5KUDJpSEVfaUFpMkFyWkh1V1FKbUxlVm93?oc=5",
+      "date": "2020-03-02T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4e835e0553cf4a45f87f",
+      "type": "event",
+      "title": "Bolehkah Perusahaan Menarik Iuran untuk Outing Kantor?",
+      "source": "google_news_rss (Hukumonline)",
+      "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNY1l5cEFTQWFLdXc4cmJMcmRwMVlyZUF3ZENHVHlGc2t5bDJyVWQzSGhxcTdDWjhkcDBDQUc2QmhlS3JiZUxhUG9MWGk4Ykw2Z2ZXSHJWWDBlellNR3Y5Y2htbjZ2SElqRmllQjJkVTZxTThBaTJqZ3pjS3NTM2FHZkkzMkl6bk13R1Q4WkgyYktMUkhHYklQRG8wNkRpakROTTFpMm4zTVlaN1VfY0xn?oc=5",
+      "date": "2020-02-11T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_59dbc95f4b30de583553",
+      "type": "tender",
+      "title": "Pembelian Pakaian Kerja Lapangan PPSU Empat Kelurahan Jakarta Pusat Belum Sepenuhnya Sesuai Ketentuan",
+      "source": "google_news_rss (Klik Anggaran)",
+      "link": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxOZTZNMnM5UXliU1ByQUMzdmtFOFpfcEk2OTlMQjJYQnlveERhWE03TnQtbHNOWmpoTlV1b1JDdXBBdTcydUtKRWIza3NLbEptQVZueENidVFReTZmRWVxYmJQUEpxRW5SbV95ek1nOVhVaXg2ZDNsYXBkb0NCNzdlTF9xeldGS0djYXlSRmttN2o5Z0NmRUVZY3NpQW11aDAxSndxNkFhLWNQaWJPSllxNDlhVnZyMDRsRFZIQ09Ob0M3VFBnVlFlbDRrdTA4VFNCbklleUx4NzNJSFZmQnIwcEplWmtNNVHSAewBQVVfeXFMTkVnQ2dPUi1CaEFfOXNUc0h1SjVqTWdldHJWc0JQVXZvOG14N3NjTlpVaURCZGNpUWJldkRCRFI1Q2tZY05RNE5QalhOSkxMWlVuLUp3aWZLTkducUtNWGN2Wlo5WFktRXdiRWZ5NThNZU9uNmNncWNkemhIbmdoSEI2a2x3OUR4cGpaY0FNc090NkNRcEV1TjZLYXpZMEtvMU02YnBFOWpfV2FHN25pc2c0WXRKZnJSdHlXSExIbmY2bW04ZFVrS051N1dqamR2eTJ1RHhrc1RZQTRuWnVLMHdVVFIxem15UHVsdVQ?oc=5",
+      "date": "2020-02-03T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_6bdf86af091c6575c377",
+      "type": "event",
+      "title": "MSI Group Gelar Family Gathering di Yogyakarta (1)",
+      "source": "google_news_rss (TopBusiness.id)",
+      "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPdGh4SFh4ZEE5V09sSFA5ZFJlX0dXOUdTY1RZMHlFdTd3NjJmM0NMZEhtUnRjeUFXM2pZZFJ3REdSbC1rTW9nZ2RsVXUyWlBWR29fZUlLUm5ZaEE4WkZGdjQ5OFVwcExrcVJVT0tmdGR1LXZ0VnF3a2pSQlQ3dnE3Um5yVVhBeklXb0cwN09Fcw?oc=5",
+      "date": "2020-01-14T08:00:00+00:00",
+      "organization": "",
+      "location": "Yogyakarta",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ea0fc38d2703255cf153",
+      "type": "event",
+      "title": "PT SJSA Jalin Keakraban Lewat Family Gathering",
+      "source": "google_news_rss (Bogor-Kita.com)",
+      "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9fRFc3NmRfWlcxaUpfNl95NTdnSTBJT2dKaU9WY2FObUxjcU1JRFJTLXhyRGduYzc0LWpnUlNiTmFnbEd0cW0yOXJoeU50Z3VweThUaGY0OGpESlRyVWJZV2FRVFJMMjZfVEoyUms3aXhqeWVOMmhxa0Z3?oc=5",
+      "date": "2019-12-30T08:00:00+00:00",
+      "organization": "PT SJSA Jalin Keakraban Lewat",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_27905a6bb20a5ecfb071",
+      "type": "event",
+      "title": "Tak Sekedar Kumpul dan Makan, Gathering HUT ke-13 Koran Kaltim Ganjar Karyawan dengan Hadiah",
+      "source": "google_news_rss (Korankaltim.com)",
+      "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQaUVfd3dxMzRKZXVET1VrVTdiSFk2b1NWS0NiaDgtbmRRREZuZEFoU25EZUVZaUdib0xsUzJ6amtmUFdvcjFPWGNLNjBLSkEyTXpYSnJLVXFtdGNkX281dWtPWEtlY3pMM2lJMy0ySDlIV19JTW1STnJDYTJXQUZBM1lHZU9GUEJiN3hDdzFwUTdpODhLa0NtZjFaR2NjRzVSVEY5TlNxQUR3ZzJJYTdKQWhjME02aUtQTElSd0otelV3MWk1WE5jd3QzS0hVZXkwS2RZ?oc=5",
+      "date": "2019-11-29T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_0953ce21f8a34dd692fe",
+      "type": "event",
+      "title": "BSM KCP Tanjunguban Gelar Family Gathering",
+      "source": "google_news_rss (Batamnews)",
+      "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQTUpXNlN6OFlFZkNhRl9PQ2hzM0FnMmNDM0NlSTIxVVhCRU82YjBxd2xpSUtLRmlnTXF4T3B0dUwyMXFXQ3MteWdneDR2SWNsRlByc1gxZVdHUTlYZjhqNTNaYU5pMkxLSkthZ251aWtqNFBydEV5TmtLMnV4M2QyZm9jeU5wRGZNN1l0OENvc1RhZw?oc=5",
+      "date": "2019-11-24T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_2a5dbf36a3b42a31e1c9",
+      "type": "tender",
+      "title": "Kadinas Pendidikan: Tidak Ada Paksaan Untuk Membeli Seragam Batik",
+      "source": "google_news_rss (Purworejo24.com)",
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPSW5rU2R0LXo3MzJxMVZOZE14dUdxWlQ3WFhZMlExT2Q4OFd5bHVoSDYxaXBadXZqVDU3ZWlvbzMxTXdIQ3NwMURaWG9uVUJsUDlQSS1mZVdpd2NvRzJZamswTDRRMmNELWc0VHUwMG5VemtmV3ZscF95M3duc2dzX1o2XzFUZ0lrYzJIYTBnb2Rza0JENkFCVDN2NGFPWU1GTTA0?oc=5",
+      "date": "2019-11-22T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a67fefecd39753bcd0d9",
+      "type": "tender",
+      "title": "Kadisdik Purworejo Klarifikasi soal Komplain Baju Seragam Batik SD",
+      "source": "google_news_rss (Koranjuri.com)",
+      "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPcVhqc0drY1BjOWNHNzV4OE1pQkhyMzF2MEVlVW5kcVFNbTFZM3pGR1ZNZG9DSXZNV2pmVGVSeHd2d1o4R0JFdkFVVkNTSkxCaWVXcnpEZ2w5eV9nZG9FYW9XREExaThsa0I4Q2pQRkpMSGpBMzRnSFhYYXdzN0IwN1F3VmNtWXdyM0dwSDV0czEzTm_SAZgBQVVfeXFMTnlwR2hOY242WTdrMjRtQTdKRzAxcHBlV3FVUm5nR1NWTnhTS1Vvd0ZMSFJDXzN5aXNNU0hyNHB1RndGUUtWRm5EQjZZT2RKZ1p2RUhvdlFhOW1fWXFwTHBLclM4WlY4VFo0NG9XLWxZaXp0VFlERk5OOEtuUXZlVzc2OG9ROWd5bXI3Z1Mxcmt1aU9HdlV2QmM?oc=5",
+      "date": "2019-11-22T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a971d61e00f0b668c748",
+      "type": "tender",
+      "title": "Pengadaan Seragam Gratis SMA/SMK Gagal Lagi",
+      "source": "google_news_rss (BPK Jatim)",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNNldOcENxWGlrWU9wS2NTUWNDMmF0cjZ0LTB2U01DUnNyVFZ3b202WEJzdUcwcVNLREtKalgwbkJ4OVVXdXl3U281VDBsTlZKSFhqMW90MTN1a0hLM3ZZMXNGNm5KV25qSFNzQlRKb0d1NV9kV29VUUFreVZjeThXMWV3VTRQUQ?oc=5",
+      "date": "2019-10-08T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_8b10a383096784824801",
+      "type": "tender",
+      "title": "Plt Kepala Dindik Jatim: Kami Sudah Berupaya Lakukan Program yang Berpihak Rakyat",
+      "source": "google_news_rss (Suara Surabaya)",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPSjlNVXcwazdPdjB2bHhBYWI3ZXlPR2tnbTRVX0RZSGZ2cEE4Zm5fc1Y2R3hsRnJFeFJReHdaU0pqQjJZRVB4S3FrOWxYazZ4QjNoVDBFV3F5ZlJqMTk3eXQ2R3Vyenl1ZWVKTy1UY2tHR3NZZkR3ZEhwVEJTR3ppLUptRHJLSzdpakpQTFFGZndEZlNNNGdmbXJUY3dlbW5ZblFVa3ZlZ043VjFyekRwdGRSUU9sLUdjYXJRc0FUdk9pOHNnakHSAcsBQVVfeXFMT2tuak1tNlFZXzdiRVNuM2RGNVhkbVBFVlBpYXhreUg0NTRldURKTFhXS3hLTjA0QURTN1g1SjJRTDBYT2ozSFA2V21kOENBUk9HQi1wUnJJNXFtNjFsWko1aE9YWXpIR0RKNm5KR2dzOXVWOW8wT3R5SV9YYVBmT3hENkRJVk03R1dCaDJuWTl6OVFJNWFnbnFMT0RWcWp2emI4MFVTd0pUcXYyUGRpSEVELWJicVdIN0hUSjdpMFVuQVEyeUlYak5KNEU?oc=5",
+      "date": "2019-10-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d841ad1cdf0441efbfe5",
+      "type": "tender",
+      "title": "Denda Keterlambatan Proyek Kain Seragam di Jombang Capai Puluhan Juta Rupiah",
+      "source": "google_news_rss (Jatimtimes)",
+      "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNTlZZN0xBYmlRQXF0NmJEYUxZMzNyX29uUTRxeTV5NkdOWnUwQlhrRndwc2VHNlhLTVhuMkcyV2Y3WFo4THR1aWEzWHBDckM3a0sxUG9ZMHVySFdrVVRVQk5ObUEzbFNoNHFiNk1ieXl1di1Za1pwZ2VSRW5oZHlpZUYtTl9BZV9mdXJrZEt4ZjBfX2RZMWY3RWM0cU5hLTFRV1JvVW5pbmRBSkQ2dmg4c3ZEbVlxOFZYV1AwVHBSdDF2X2lBTzdwWXZleXB1TzTSAdQBQVVfeXFMT2lJcUJiN3lta1N5czlUakttcDhOWTNyeHFoMWxZTDlFM1FIblN4QkRmS1dLWVl1ZGJKR092UW5sSmwtWFVDRXJVZGNHWUV4eGtZbmo4aDV0WU1KS3hJS3VjelY5UkZjUlVxNXJ5NUlBM0o0TkdTdU9vZ1REWkYwQ0RENFh4RmN0ZUw0V1hJem5KNVMyNWJZem1MNTJNMWlKSTh3NVBZamhMSW91N3N0NFEtSkNaTy0wRm9jT1ZpZUM0dGthdEptbjQycjFEemhadFJMSTU?oc=5",
+      "date": "2019-10-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_02be282709c4c8b92f0f",
+      "type": "tender",
+      "title": "MKKS SMPN Berkilah Soal Harga, Ada Bagi Hasil Dibalik Pengadaan Kain Batik di Jombang ?",
+      "source": "google_news_rss (Kabar Jombang)",
+      "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPUmlPUDBkSTlETDR6ZFd4RlhFaWpFVGVYRWdGUzJUd1haeGl2VmtPWENPekp1ZVk1SVpzR0t5el9WMXdlbjhzcjladm1aV3IwSkpSdXRKcUJNTWtlSXFCSFZrdVpyU2NFci01ZVdzV3FtVGNLeEdqT3hoT1gtaVA2d1BNa1gtZHVqZUdqeXh6bmV2RmJCOHVobDNUXzB3RDkwQ2d3amRfeEtmcTZPb2JNRWpnYVFSZkk0Y1hSMHZFcWg0blRvSnByb3l4d9IB0AFBVV95cUxON05zR0NRWlg0Wm9XMk52a0JXaWNEOTdSOVVvenJUbUxCWU16VkY3aExUUG81WWtwZDJJUld0U2ZkQW5oMnhQWkpiLTlUQzVESmhpOW1LbURfWVJqQ0ZKci1fbFo5QjhKcnc2bnlzQ2FRMm1QNzBMRHZkZEUyUTVyN3Q0aEtSSkRfSGNjLS1CdUFidTZaVUlmNktCY0VwQmtvYmo1OWpPbTllbmpDVkRIZ2RCZG85ZUZpUVNnWDFxRkNnLXZGRWxCd0JBYW01Zkcx?oc=5",
+      "date": "2019-09-13T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3ffc124cf165fe268182",
+      "type": "tender",
+      "title": "Dewan Pendidikan Jombang Sikapi Polemik Kain Batik Seragam Sekolah",
+      "source": "google_news_rss (Kabar Jombang)",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPWllGV2QybDV4czF3LTRyMHNDTHdGbnNveDBvN2pSMEtEbXNIUE82aXNJcGtKSGZuUURvLU9oYUpzTFJQS0tNWlh1dGF3MFZnZ01JQXNWdnpmMnN6MGs1MlF6ZVFDZUIwUzhGek5wcmwzZGprTWdCUWxJZlE3MGlhcE9XWDRvWkRnS0NhUnFScmJhVmVKNEtPYnROZm1EWG1aV2FjV1k3TkhMQVViX29mREhINNIBuAFBVV95cUxPeTFKWFZLc1l5ZjRTLWRyNDZ3VnI0ZTZJOWRtXzNHU1lGWFdSTUNYVDRjZDlnN1B5QnBKNzFNbXhmbkdpX19kQ3l0RnRHaUhuVGdHTkpZSW5GbFFEU1NmUW1DWkVKZV9YWDUwLTY5QlRWYzJGd2dwWnNDM0JpZHQ3Y0xJWGh4LW5yOHFpQXozdm4xbnBMQ0ZkTm5RRmYxRlQyY3l2SmF0QlFJVzZlU0ltUUhjcWJLTXoz?oc=5",
+      "date": "2019-09-12T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_648a151d475c22af1bf0",
+      "type": "tender",
+      "title": "Seragam SMA SMK Gratis Dipastikan Gagal",
+      "source": "google_news_rss (beritajatim.com)",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ic0IyN2FFWW5hQVpQYS1XODhaTlAxSnV4aXlLNUZtUzQ4UDQ5VFg3UXNaZl9zUkRPTXh2VDJUa0FkZVNzQUVFM3A0VUlhQmduUTRkRUUwcmJkZWRuSzJnNzhJSU95dkxIc2tIczQ0eVQ?oc=5",
+      "date": "2019-09-11T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4af075da24af8e0a59ff",
+      "type": "event",
+      "title": "IKA MM USU Gelar Family Gathering di Royal Sumatra",
+      "source": "google_news_rss (Sumut Pos)",
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNWjA5bkRKRmhCc29SbllZV0xmZmNiUkVQZlJQbVZSQ0NvOHYzNFpRZkFhTUc5ZkFRMnpURVI3alRSRjJGUG1tOHpGOEJJOElOSDJzbXNscExCeEhLeTF2Sm5DWm5HVG5fUnF2ZFdjTnA2UjZaS1c0eHNDYlpESUtlRG1UZlViQmJyM3FmdG9tRkZVM3FYdjVDbXc2U0FmaWxGajFj0gGoAUFVX3lxTE5jTHowYjVkNmxweXUyVVVWMW8tVFdQNDJ4RThaSTctZmliOWFZVDhKYjhUT3RTODQwVWdWZ1BZVVM4UUZGbjBMQjJubnBkdFJGdUZHc0c2aW1XYmtJbldLcUlEUV9DWWRqUnV4RHd4dkpEcmx1OE5OMzlsRy1tQ29HZFJNZElVMHFiZ0dfbktralhOU3BIVlU5QVNtVHdyT3NZazc1VEFMSQ?oc=5",
+      "date": "2019-09-09T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9e154a918721899d2184",
+      "type": "tender",
+      "title": "“Monopoli” Kain Batik Seragam SMP se-Jombang, Ini Kata Kepala SMPN 2",
+      "source": "google_news_rss (Kabar Jombang)",
+      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPYlRoZlc3R3lsbmRob1V3OHdySFUzaWZEVmF2RXJwYjlOYVZIcEI3VkxxZkc3Sjd5dUJjaFNLd25KbFZOaVVnTHlZOU5DSUxhMEE0bmJ3azQ1UUVmN094b3JtUXRJd0ZMVkhUdmI1QWtPU2lETUdsNVprenBEZVRIeVRXUklTaFFJSWc1a3A2RXVLU2h0NEJHSU5JZEZXZmpManZsNW13MmV3MjFDQkNCLTFB0gG3AUFVX3lxTE5ENzAtVEhhajNyMFQzR0NfMU5lajhERzdtYnY5YVUzVlMtd0pFUEc2cEhrOXhsZTJEck52RktIczMzSGxaeUJycVhnNTRDSHBDeF9rRkdUVE5NeFZfQ0U3V21KcV9iTV9yVng2d0lwS1J0aW1EdkI2RzhDdmtVSjAwclhERnhrclRrdnNCcjdmMVhyQTZsYnZ0bWZTNGFhck5sYlB4SmVnQWU5S19DU0lkMUt2bV9mMA?oc=5",
+      "date": "2019-09-07T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_063f1ea71f7c02e44a4d",
+      "type": "event",
+      "title": "BNI Kanwil Padang merayakan hari jadi ke-73, dimeriahkan dengan Family Gathering",
+      "source": "google_news_rss (ANTARA News Sumbar)",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdzRqRnBhMHN2SVZvTUNteWNzOXBVLVB4VlBreHR1MDZRSS1VcE15WjhqS2NhdU1MSmhrZ1o1S3BaamljSS1HODhUZW1uaXktemdKZFo3YmxMWER0SHJQYzBOOWZSdGo2Wkp5Mm5NSXh3T1p2bUowNW1HWkc2alNLWFhRdFJTNXRhQUp6TndXdUVMcmdwc3pwcDJ5WmtYNllGV2FrRzRCQWp4YnczLVJ5cU03WmhpRnRSYlJXZmw2LTQ?oc=5",
+      "date": "2019-07-15T07:00:00+00:00",
+      "organization": "",
+      "location": "Padang",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d632fec884b1754a2561",
+      "type": "tender",
+      "title": "Perajin Batik Kejar Target, Selesaikan 48 Ribu Lembar Seragam Batik",
+      "source": "google_news_rss (tadatodays.com)",
+      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNOEpjSjNqUkYxU0Z4MlFMRGVEeTZQbHJGWVhKQmtvdGtiVlRWSzFwR3loc25kN3hEc3ZJTXVLYmY0UjlLcFpwcm9LUkZhX00zeVV5X0ZfT0c4WDN3ZU5tS1hkd2N3TXZ4UVFORm1XSmRHSXlXZVlEU2QzV0VNZ3ViRlFQODJ1cDZyOHBNYk5HLV81dGNSRUYzUmhieXc?oc=5",
+      "date": "2019-06-11T08:45:49+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_462dc52a820b27fb93c0",
+      "type": "tender",
+      "title": "Penggunaan Pakaian Dinas, Pemkab Simalungun Langgar Peraturan Mendagri",
+      "source": "google_news_rss (SINDOnews Daerah)",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNSFYyWHM2SmpRUGgtb1lrQ29kRnJNVUtodWlFNlU1RVNnSnNSSjBhNE14RHFqMDV0TTRVb09QTmdmcDF4WGNlWW5zbDdPSHJ2SGI5cTg2YUJhbDFZTHE1WGMxQkhaOXQ4cEpwUTdhbDc0ZlFpRXlKM0QtMDRpZ0owZnB2NTB6UGgxWXRKYlI5SjREazBwTzFDNGRKbENqMVJmaldjZ3RiYXUxelB4YnkwX3ExR3RZZk9y?oc=5",
+      "date": "2019-04-11T07:00:00+00:00",
+      "organization": "Pemkab Simalungun Langgar",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_82f14c6806b810d8a668",
+      "type": "event",
+      "title": "PT Pancakarsa Bangun Reksa Gelar Family Gathering di Sinabung Resort Hills Brastagi",
+      "source": "google_news_rss (Pengawal.id)",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPRUtvSDRTc2owcmJJYnN3OXFUMlUxWDhsTXlzaGU5dmZBWm10bnMyUFJVX1pMQVhQeEVtVFRtUmhrdUlmRHdPT1BWSi1CdGsxUlFyT0drNzJobXZCcl9WUk9EUFlVSUdBbU9mYnhnV0g3Zmt6c3lRdzdpWTR6X05tN2tB?oc=5",
+      "date": "2019-04-09T07:00:00+00:00",
+      "organization": "PT Pancakarsa Bangun Reksa",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_d2a7b9ebe8a3dc8454fc",
+      "type": "tender",
+      "title": "Ribuan ASN Simalungun Resah Diminta Beli Kain Batik Rp200 Ribu",
+      "source": "google_news_rss (SINDOnews Daerah)",
+      "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPSjJnUk03ZnExbGNQLWJYUGNUS0VIVkpfbnFJQURacUt3XzVWX3p6NW1SVDBqbllUamhxcHZXSHFDMnZ4UzRVVnVrNk1CazlwQ1dtSFlPSTVyZjZOMHZUTDh5am9RUXNYZk9Yd2oyS2VnTmZSNi0zMWR2VG1zMHRUREFzUnBKQ2wzTXA4TjNua3V3ZF92MWRJNlVSTnhCODNZNVNzYUZfaWlLaUNSRDgw?oc=5",
+      "date": "2019-03-21T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_efaf8a5d68d438ad6ff3",
+      "type": "event",
+      "title": "10 Kenangan Aa Jimmy sebelum menjadi korban tsunami Banten",
+      "source": "google_news_rss (brilio.net)",
+      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNRFdkUm1fa3A4NVhXTDZLMHNZdWIzLWtQOE82WjkzNFlSMXhwNjJScnpUcE51SlRNdmg2UmpDN2F3YVRVU3ZqR2ZvYU80SHJaV3ltOWltZC13SjRPbFZqSF9lSDl5Y3hxMUVHRFhPalBHME5raElXaGdtM1czOU9KQkl2SEJpMmRnWC1Ock9zR0Rfd0JVZFZlYkpwbnFuODdOY3lmYVpfRUk?oc=5",
+      "date": "2018-12-23T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_c2bb0335eea638beb88c",
+      "type": "event",
+      "title": "Tsunami Banten, 14 Peserta \"Family Gathering\" PLN Tewas",
+      "source": "google_news_rss (Kompas.com)",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOQThiZnUwS0w0TkZPb0JtUGtxeFc5RXd0dUxFczJPNVQyc04xdy1yLXB3am5XcjRXRTloeTloSlZFd3BCRVNoelhQaTJGWWhLUTNFbmUxU1Z2ZWFqWl9uU1ZQVnlrTHJjNFNOd2M5dGJIOWhJeGdCeTI5eDBFa09xLVJ2X1ZhTkNtZ3JRRUVEaTF5S01xdUxiY2FLM2hWRHpqOGYwX1N3?oc=5",
+      "date": "2018-12-23T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_cc342981fc2a2ac89ca8",
+      "type": "event",
+      "title": "Tsunami Banten, 7 dari 256 Peserta \"Family Gathering\" PLN Meninggal Dunia",
+      "source": "google_news_rss (Kompas.com)",
+      "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPSVJ2TjVSVm11QlpLc2pMNWl6V3UzV2g4aVJESHdBQ3B5UXpYczRjYUNPR3pkcE5Da0d1eE45MWgtYlpjQ0hUOW82VF85TTZFQmRCMlU4cGllOXNGc3U1V25FTi1kRThndlR3emdJREZOSWJSRHhpQ1RpNTVlTVJWUUlsY0N3blNJTWJ0ZzRPcHlBSDN4VzZkbWo3Y3BWQW8yaWZlNG8yWkh4UXBlUjFYUTF3VHdKYV9EOTRoaXRR?oc=5",
+      "date": "2018-12-23T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_8f6a1369c9653cfef19e",
+      "type": "event",
+      "title": "Peringati Hari Listrik Nasional Ke-73, Arcandra: Pelayanan Listrik Harus Lebih Baik",
+      "source": "google_news_rss (Kementerian ESDM)",
+      "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOaGZudTFCaDdxLVNlc243ZUsxTFJ2TlVCcUtTa09ncmdNLUtKN0gtc1FHRUpoQS1vVGw1VUN6dEtMcXd6OXYzek5naEltQ2xNRWM2a3ZzdkJoQThWYzN4OE1jbWNLWExZZ2FfZE1pNjFaOW5iTjNBelBwbzFjbHJXV21vSmNLN3dXaXFuc1B3V2ZHWVdBY21rYjItTEFKRy1qaXZaakQ4eWQ0NUZWVVRpSGJoSmxhN2J6Nk9ja2ZzWnFPMWZTOFhYVlAyanNMbEk?oc=5",
+      "date": "2018-11-18T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_0214cce999d8cc3a7adf",
+      "type": "event",
+      "title": "Rayakan HUT Ke-10, KNI Gelar Family Gathering",
+      "source": "google_news_rss (Bontang Post)",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9uOUlJNGFTaDNKNVNNdkJGUnV6MEJFXzlPN2pVdG12Zi1BQlR5QW9qLUlCWlVwWWM1U293NVdZeE5RdE9pdktsS1lvMG5YR1VYUEp2X25XNTlZUFRDZ2tGSjN6UHBIWWlwX1RZYUhDVHVwdzlVcW44?oc=5",
+      "date": "2018-10-01T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ff2d6b86dc7342aeb27d",
+      "type": "event",
+      "title": "Tetra Pak Berkomitmen Ciptakan Lingkungan Hidup Berkelanjutan",
+      "source": "google_news_rss (ANTARA News Banten)",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQVzdwRkw2Nk56bEZwbnJ2VnlWODBMQVFlTVRrNkpVenpteDQtSGJtVnZGTVZsZWs2Wmtkd0pLbkZZQThzVnBwOWo3UHIzQjNkSWJEbks1T0VmQTBQbTRmc2tZdmtKeDFWdENFS0QwdlJOSldyQlBqaGhSQjhIRjRJZHNuQWlobHJYZ3JTN2pkQk56SGZlcXF5YlZBMkQ2R0cyQjY5elNSNNIBrAFBVV95cUxPeGo3enpDaG84NzBpVTFTN2JHd0lnMmJOdmhWX0Qwc2U0MkRkZWt1VjhwTFZDSWtJYjJtQVBsLUx3TThqaDVkcnhrZm01Zm0xQTh0QXk4cXdhY0NRazhWVmh2MFdKcng2ZVdQWDZadl9FM09HLUhNa2thZFRtTkM2a1BFWkhhMWhrZFUtQndlTjc1T2M0WXdwMDZPSWNYWEVULWgtdE5iSnZ1NlBm?oc=5",
+      "date": "2018-07-23T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_84c990504166010ee6a1",
+      "type": "event",
+      "title": "Berita Foto: Kemeriahan Family Gathering Sekertaris Perusahaan Pupuk Kaltim",
+      "source": "google_news_rss (TIMES Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNSVlzSjdVamlhMHBrZmp3dnpORkJabnRxZDA2Ul9UTjZDaG5tUEFVaF9Sb3pBMHo4MHY5dHNLU2xNZ3BiV2RVVHRYaWlRVlRGVW42SExqRmVTNEdNendYelpRVDhfN3NWdTQyYnNRbXpzWGRCRFlwSFZkYmVoVm5McThmOEktLV9hSmNOUEVac1czRzhVZGJXT2IyNUU2TVRrUkcwV2JwMmc5b1IyVC16c0VSclJnMWdVdFEtUVMwOXJTQjZCUEE?oc=5",
+      "date": "2018-04-16T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_7743df2a8d9ede8dc3b3",
+      "type": "event",
+      "title": "SEKAR Telkom Fun Run 2018",
+      "source": "google_news_rss (SWA.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBEeGxZR2s4VDBiejNxVTdQNmNBTkFhS01xUlNhVmlYcjd4SXo0ejBzczQ5TkxIZnRLeWRiTTNFV01meEE1aXVYRHJrYXZnSi1CdEZhR0JvMXRqZ0hNaGJhcnNGdl9KQQ?oc=5",
+      "date": "2018-04-09T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_763f5c4d85822813f2eb",
+      "type": "tender",
+      "title": "BPK Periksa Satu Per Satu Seragam Batik Dinas",
+      "source": "google_news_rss (Suara Merdeka)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNenAwelhfZ3NZR1RQcWlnNzVMZ2tNS2Y5UXRKUkNvSEpQR0liRnlaN1VoMkNBaldHSlBlV0ZxMzJzZlc1eWFMVXkwOThrRDhZLW1zNzNMVy1NenUxQjlHMnR6ZjFtcjZkamhLWDlEN3BPVDhxRnJpMjJkd2Z5RTcydEMydVp4X0dHYm5XQ3ZZUVVjM3BBUU9sYkdUZWhrd9IBowFBVV95cUxOUlRQSk1DOXlSS3AzRW43VzU4OWF0eTlqYXA2YklJUkE2UGwwVjVLM0VzUUJOQmVEQzZMMmJPZmJHMTZNN3phcjMtcjFPMXMxSnoxU1ZFOTliMjhjS2lfYjJUUTlsOXB2blhqZTNZRERGVlphYUtkSXkybGdRU1lzZUJlYnF6WW12dE8xNjVhSXA4VmRfRUVYbEZpUVFLNVQwRmI4?oc=5",
+      "date": "2018-03-01T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9f864ef592b4c0e921cf",
+      "type": "event",
+      "title": "Penyerahan SK Pergantian Direktur Keuangan & Administrasi PT Pindad (Persero)",
+      "source": "google_news_rss (PT. Pindad (Persero))",
+      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOSzE4ZG4tUHc5aUZrVk95NUxncHdMU0g0RURjZmVkdERmVnFaWE9RbnZNdTZ0eUpMY0h3UzU3TF9tdm4wcnBVWnB5enhwOGZMZ3JxV1BQdnNEaksyZXRmRllhYmZEUHRiUVZqUjRTUzBJYXZqaFdNM2d4RktHdVJrSDB1YXZkT2xFNnRDZkF5WTBqQ2VhOVJ3?oc=5",
+      "date": "2018-02-21T08:00:00+00:00",
+      "organization": "PT Pindad",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_13c71fded05e05e68625",
+      "type": "tender",
+      "title": "Woow Pakaian Dinas Bupati Bekasi dan Wakilnya Setahun Rp 1 Miliyar",
+      "source": "google_news_rss (infobekasi.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPMlEtbTMteDIxa3Y4Y1NGcm12bHlXWmI2dHVhemJNVmNuZDByMDlvbUg4bmJNbEw2MUJ5c1E0a1FuRF9oS1g4T0FMMnpFc1N2SHV3NkxENHNDeWpXbzRkVWp2YldSdm9CNlZtX0tPYVE0ckxPQTRnSmpGZm5vcHJhRVdhSW9aWVlQbmJWZnNGelBpYzhwM0xONzQ2LW5IbGRGNmN1dl9R?oc=5",
+      "date": "2018-01-23T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_9e37707ef1c7061e14b5",
+      "type": "event",
+      "title": "Strategi ACC Menggodok Calon Pemimpin",
+      "source": "google_news_rss (SWA.co.id)",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5OMmk4VlQxWDlsWUNuclJyVmJTRUJGaVE0dEViVTZUT041cWF2OHZnVUNnS2xYckplZEliQy1DbkEtVjRiTjJoR18tM3FQQTlNVzk3Zmx2ZVhGRlJpTW13M2xubG5GdkFTcllieXVvTF9ZcWlMZUE?oc=5",
+      "date": "2017-11-12T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_fbafce9e172e34740767",
+      "type": "tender",
+      "title": "Waduh, Kain Seragam Gratis untuk Siswa di Gresik Molor Lagi!",
+      "source": "google_news_rss (redaksi.duta.co)",
+      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQSjVkeTBfLTBhem1yQWdaMlFkbU03VHpsRkV3N0ZkeWhOajJkOFdrMmoyV3hzR1FuLUt4TkJIRHFVX2RWdDNYY1FCRE8yeHdRR1NMUEJMYmFsOWwzbFlESFJONzF2NHVGNGpqYVo0VVZnUGNBNW5lWlRrWVItVG52enhLUFc1LUxlOG5r?oc=5",
+      "date": "2017-10-24T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a14500109e310f2e18b6",
+      "type": "event",
+      "title": "Hadiri Penutupan IBD Expo 2017, Direktur Keuangan & Kinerja Pindad berikan testimoni dan masukan",
+      "source": "google_news_rss (PT. Pindad (Persero))",
+      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPdkZLMjRSU3BWZ0VPTFN1SnhvRlZEc1B2MGRBM1BhUTh5YV9VUHczN0g5ODBMbmpjRHpOLUV6d0xCTjhqczAtUEtTWmZVWk10SUhud09oTVpWckd0d09seXQxTVdUQmxwMVZUQzk1bmxnQjdEV3ZUTmFrTGJ5NUpubmJXb0p5OGtNM3plWnpVWm1NWG5UMC1uNlVnel9DdjdReUZrMEZEbFpyX2hfWmM4N2NR?oc=5",
+      "date": "2017-09-23T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_56cd483db11b0dbcab23",
+      "type": "tender",
+      "title": "Ditanya Soal Pengadaan PSH dan Batik Melayu Sebesar Rp300 Juta, Sekwan Siak Amrul Bungkam",
+      "source": "google_news_rss (riaurealita.com)",
+      "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxObzFnNmxRc1dJWTE0ZXBhQkpIUUtmNWtVT1V4b1dxUDZiaDVhbVdKaXRLNDA0WDUtR2JXejc4eHg3Sy0wWkFHczZuMW9GMmRZdzAwWURhNGQyYi1JY0V6WTl5OXFyaS12eVZqMmdwX1NTVmhhZ282ZVFtUjNiWXhxTTRiTjNpSEZ3ckVyVDExTE1Mbm9TVWlCWktNMzR0X3FRZ0I0Y1p4ZlFQZVd6LUFkLXZ5bGRvQlVSazF6ODRaandFSnNjN3NuWNIBxwFBVV95cUxOVThGT1ZBR1lSUzVfdjQyVGFLOU9PQTVsME4xck9nNXA5blNQM1JaT28xQlZ2ay1QSllBZV9LUk1ZeGdpUTk1QXRoSUVJbFRwTEUtaGh0V0J6VHhJbTQ5SXhPZkh0LU9kejFQZWx1OUhHZjQ4ZG9wNmRtbFoxVWxRWHlzSUlKc2dnSjZuZ3Itc3VYa0RPVzhud29iNlZYYU9RS3M5RjlVLWlIeUQ2NXQxOXpLN21naTVZZHBvMmk3S0JqYVRncWc4?oc=5",
+      "date": "2017-08-26T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_068e921b58fa2224f8a2",
+      "type": "event",
+      "title": "Rumah Kreatif BUMN di Pekanbaru.",
+      "source": "google_news_rss (RiauTribune.com)",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9Ed1ZyZVNlamhQdHZfNElLYVkyaDZ0UlNEVTM1YWZ6Wm1iTmwtTUh0T0xITmcwZmd5aDFUbklzWlBfWml5c25QYmkzbnZCTWZYZl93YXhuZnJUVl9PaTYxS3dUSzhlNDRRUlRjTVdoclhkNlpUbEhZXzlVdWM?oc=5",
+      "date": "2017-08-25T07:00:00+00:00",
+      "organization": "",
+      "location": "Pekanbaru",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_21ab815a0dec4bb57381",
+      "type": "event",
+      "title": "Dorong Penetrasi Asuransi di Masyarakat, Avrist Gelar 'Family Day'",
+      "source": "google_news_rss (Indonesia Satu)",
+      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTjhZRUlVOHVlaUFvN0hvYTVvbW4tQ0g4dGcwdmgxUnczU182RnJYaWpjcElRTVhiYnhrNjBrcG8xNHB3SDIxdHp5QXRneHo2RFd4d1Z0WHlyUjQ2RE9OdDVDV0VINlRkeVFCem1jRW1oTjlJZGRiZjFzMTVDRjdpc1lQbmxpTHlUejFtR1Z6UTlEU2JHWFAzamRJN18?oc=5",
+      "date": "2017-08-09T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ff62533cc8e11ed494a4",
+      "type": "event",
+      "title": "Chef Marinka Unjuk Kebolehan Olah Menu Nusantara",
+      "source": "google_news_rss (ANTARA News Banten)",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNR25NazBiSW9FWFVJX1FSNExaUjFCNk5ZU3VyREwzcFM2VklDbEJ1SU5UdWRJN2RNbDdIVnNUNGdqMTZrajNwbDFTZ1RyZkE3Qk5SdXVlaURHMGxvdUhXUTNtQnhHeEc3UnJqcnJubG80empzWVVsb29VV01UeTVPa2xubzNpaXBfRFRnY0VnamJObC1oWVHSAZsBQVVfeXFMTUpDS2E1UUFSNUc5VWJIZUp0NlBpRlNFWVJ0aWhkTDlYYXF3SGRNN0E3b1pLOFNQWTRiSlBIM1Y2dHlJbTJSLWdaMEJQT09HMTRnYnhNZjdnUGt4OGZJZ1hLLUpUSDdhdlFJdFJHUzN1NG1DMndTM1VCd1IzNk1EU2N1d1M3Q2gtcE1IVENwSk9BdUlPMDVFaVRjNkk?oc=5",
+      "date": "2017-07-23T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_582b9f516d82cb126d08",
+      "type": "tender",
+      "title": "Pembagian Kain Seragam Gratis SD dan SMP di Kota Mojokerto Molor",
+      "source": "google_news_rss (detikNews)",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQ21lOHZBVHVWU21PaUdBaWpzRTBJWWhNa0NGcHN2V2xBZThIV1k5aDBMMnlQTmJTV0I1R1ppMVF1c3p2MmlzMGJ4bnA3NzVZWGN5OHdDLWQyNVA3QnBQa0ZGQmZPS2JiWlh3czBLTlNxb0d1SkM2dDJUbUcyXzNibUJneldpSU1YVmJYVnNHU3cwQlJ1R0tNRXRhWW90YTFTVU1YdktBSnpEZXBKbnJ2Q3Zxbk9zUQ?oc=5",
+      "date": "2017-07-18T07:00:00+00:00",
+      "organization": "Kota Mojokerto",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_87e366388278ddbee72d",
+      "type": "tender",
+      "title": "Proyek Pengadaan Batik PNS Pemkab Bekasi Dinilai Terlalu Mahal, Tercium Aroma Mark-Up",
+      "source": "google_news_rss (kupas merdeka)",
+      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQcUN4UTJsLWY3Z0JCVmJsSjcxUUd3enJ0MHVrdUlmTDNhSjhoTnltYjhMN1pCTnd4UGttZmI3SXlmazFsRXpRZ3lmNmszbXg3NDdTc1A0d3FvQWw3bmJKNmEtU1UxU2tZNzNtVHhuaW1Pam9oUF92WFFWcDlNakswQTYwVXJtZ1R2a1lPV3Vnbzk2X241Q0RIeEhkSjQtaE5KSm5TS1pydW1XODFLN3hlZ0tlS2w5TENqY205ZHBSNA?oc=5",
+      "date": "2017-04-04T07:00:00+00:00",
+      "organization": "Pemkab Bekasi",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_08d9aa6523678e5b4f81",
+      "type": "event",
+      "title": "Senayan Tolak Rencana Penjualan Aset BUMN",
+      "source": "google_news_rss (RiauTribune.com)",
+      "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNUDV0N0MxVVBGakhQejMwa3pQV0lPdkMwQUN5bUlMR2d3c2R0cm12UzVRV2RCMW5hbGZyN0RPdkQ4azF0VHdKR2g5cVRPamlKWEgyWDF2N3IwU1JXNm5NTVlaeEVHczMzRFF4TTI3TGNpY1dQZnhFM0Z6OHAxUi05blVHWXJBU3JYSXfSAYgBQVVfeXFMT2s5UEZUOUVoNzVEVFZvUFV1b0dqVHJxRUp2WlRld051TWQ5Y2RqaWF0Z1J2aGlNVWFTNmVxODFmaXRMZXo0S2NRVEVZaWJYX19PbERqLWF0TmNxdTdzWEk2RTI3XzViLWJncWhMSEhNLU1IUUJrYnIzTnRoX0RXckotbmZ5S0NCcQ?oc=5",
+      "date": "2016-11-28T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3797a72c90926533e2da",
+      "type": "event",
+      "title": "Sebanyak 6.000 Pelari Ikuti Gelaran Pertamina Eco Run 2016",
+      "source": "google_news_rss (Dunia Energi)",
+      "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQaUFNV2V1ejhfUnVjUWlSZlc2VHkxRHBfbE1tTUZEMmFfamJydkdub25XUFJ0WnpzSEZxQ2RDM25nd2YzbktGMWRoaVFhOUJOYnBIVUJPV1dsbVRITjBBT213VHRabWEyeUR6MGVObE9CSUoxNXR1Xzd1RWNrN2VrX0MtNlczU3IzQWoyM01xZEZ4dw?oc=5",
+      "date": "2016-11-20T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ad49794eff9ca6067191",
+      "type": "event",
+      "title": "Berita General - Grup Jaya Gelar Family Gathering Untuk Rayakan HUT Ke-55 Di Ancol",
+      "source": "google_news_rss (Ancol Korporat)",
+      "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQbGRPMnVLZDBxMDFWcnNFYTFNdGtBT2ZXTkdvSW1vbGZ3Rm5vVGNNRmViaVRlc1Jvb2cwa1VvbDhwblFCdlItdGtRYjJoMkxxUzcta1phbDJQc2kyOWNDN19qWFdKeVpzOTc5X0xpOV9rODFrRU1UdnVPUmE5MG1wMlE2a2gwX3lyTkpDUTkxYU4wTHBWZjFGWlFRZFlHUjU0NFUyNUN2dW1PTmQ2eC1xY0czRkhJVHc?oc=5",
+      "date": "2016-09-19T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_1c5162c251a0534a7d7b",
+      "type": "event",
+      "title": "Ada Yamaha Family Day, 22-24 Juli Motor Yamaha Gratis Masuk Taman Impian Jaya Ancol",
+      "source": "google_news_rss (gridoto.com)",
+      "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQNzYzelhyTE1pem1OSjhoWU8xUS03T3h0VVpKUmJ1amxxcHNLSnVDQnpQSEdBMHdPRzJNWkxoS28tOWxPRkRKWXFKRzVBMk9NcjMzcGlrV0dQQVQtaHFRTGt3MFlBQkJHUjM4QnBJNkJPbFdQc3dkSUZ2M25hajhSNWlZa1hSbk9wNjBONnFJQkdxS3V6aTZkTXpsSXBiS1NTUlNhSVZNSkxfenpnTEtIa2FmUHZjdFc4akhYTGJkalhGNHA0akNsRNIBzgFBVV95cUxQMG1XdWhLZWMzclhfcExhazZzR3QtQW93cWpvZHJXempVTTFtdFJuM0dHOTRMTlFfY3ZFUnc4eVRpVFp0QUdORDhFT05BZDVIaHEyRUpZVU85WVVYVUQwVzlGRjQ1b1BINkpoVlI5b1RCUWZtaUQyeGxXYVlyWEt3NE50ek9aMzJEeDNBa3d4YmNZd25wb24wLWVMbS1aaHZucXhYU0h2LTdnWXFOX2JUOVhOYWZTNTFkUnpPOVlyQ3NBanYza0RUeWh2V3FyUQ?oc=5",
+      "date": "2016-07-22T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_ec36533cf505bcdd4569",
+      "type": "tender",
+      "title": "Tiap Rabu, PNS di Pacitan Pakai Baju Seragam Ala Presiden Jokowi",
+      "source": "google_news_rss (Pacitanku)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQZFR5WVl2cVFnM3Z4aTN3NGhyanVkbTY4dHJITkR0dDBQdGdXbEx5YTZ4UkhZM1pvMmdiMWpDd1ZPYzlpNTlHLXlYNGozQlNfNG1pV1ExWTBpSjdqQllROEN0b0NvM3JUdzh0LTRBUmNtUm03QTNJYmplMnd0eFBGRGpkMFY0X2p5aU9rZFF2Vm1CQ3FTWGVyQkNFNW1sdw?oc=5",
+      "date": "2016-06-17T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_fc07fc0448b7320a0d53",
+      "type": "event",
+      "title": "Lenovo perkenalkan jajaran server teranyar di Technology Day 2016",
+      "source": "google_news_rss (ANTARA News Gorontalo)",
+      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOck8xVDBvd0RKdUp0OEhuVXdrUFFvcWozVmRqQm1KMUV4RzZGLWt1c3hqc3FfOEdDc24wcmlUN3ZqYnNfTlV1bGU4U2V6by1PRXpFNDNGWGxCdlptSV9XRzUyTTJveVFUVWM0SEhjd1JiTjlQLXl1cnlfam9hbGdQZjhScWZhS0VQNVhFQ29OS2ZVZFI4NV9meExMTUtjSW10OGdSMXRqM20wbUJCSWNaedIBtgFBVV95cUxQMUJnQ0RoTHBvRjZvN0xtbVhKcnJnc2ZqajNMN09RaGxNaVdhYU90eFZtcndxZ0Y2U21RMTR0bUNxUVVEQ2d6Y2o4alNxMDlqN0pnV1lURjRMc2Frc2RFTkpRZTlEOXpvRm9lVlRmdG1FRTRZLTBiRHNXZ2x3dDN4NWUyLXBSUVl1WF9QQVVDRTBVRldhRmJMVmVCZkF6dnBhVFhqQnNCcS1VVXMyenhRWm5GYzdtUQ?oc=5",
+      "date": "2016-06-01T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_e84458452ddd307af2e2",
+      "type": "tender",
+      "title": "Seragam Putih PNS Jatim Tunggu Keputusan Gubernur",
+      "source": "google_news_rss (Antara News jatim)",
+      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObXFLT3l4TDVJLUVxZlp2dXJmTTlBUmFtWndXNXNZRU9WMGFQbEx2aHk4Z2VjWUJLSkdwMjdkRnlZM0thazJEZU85S0hhRWJIYTB5dTR1eTVNRUpKYkY1blFFeHQzc25sN1VncUhGaGxJYVhHeTJXNk4xR2lYSXc2QnZmemtzc0psZ2ZmUlgxYV9XRkxuVFJj0gGcAUFVX3lxTE80bWhQR2hlaUtVMVBUOXZyVzRqWF9qdU4xQ3JfZWdWQXVrdWJENGtxeDNRb2pPWVlfQUhPaVd1YXFwTF8yN295eEQtcTZLNmc0VjRxZkFxWGFHcVpOYUNVcDNQdXE0Zjk3XzZpQ05MNWptR1RHUHpDQnJybEF2eml1S0IwM0g1bHRQRXNvaDE2TW43R3JudjBtelh4UQ?oc=5",
+      "date": "2016-04-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_3f84fb8fe51c1f8e9895",
+      "type": "event",
+      "title": "Qajoo Studio Umumkan Dimulainya \"Dewaraja War Tournament\"",
+      "source": "google_news_rss (ANTARA News Banten)",
+      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPVXpULUtxSDdEQnVRdnB1MmxjaTlwWF9mN1dKYlJjWTM4REhxRnVzazZCNjNGVnZZVzhGUElaSFI0dHFiY0tGVkZfV1U3UG5NNjZoNDFuQ1VPdlowdERhRC1fWk9ma1FRRWRqdjFIYUIwbHdRZkFYYUhmRU95OVFob2xUU01fUzZZekNIbVg4Vi1mYVMxMGpDa3g4ZjlraVnSAaQBQVVfeXFMUDVQU2ZsdnY2Ymsxeks3Z1RmQTdCNy1veUhxTzQwQnlxenhTbWFJbUxEaTQ2cHJGR0pqSmRqQlFSeVRZRTYtM0daZUJoeUJzZVU2dWROWHpmRWYtMVNTbmpLem9PSk9nejNjM0x2LS01YmpqYkFEX1hhNTdYQUlWeXRneHgtSFU0Y3lXV1hGNU12b1FTTU1fTHRoTXpKT3N3eUlnd0E?oc=5",
+      "date": "2016-03-14T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_a86bb05cc9cd5ae58c07",
+      "type": "tender",
+      "title": "Rp 3 M untuk Seragam Putih–Hitam PNS",
+      "source": "google_news_rss (NUSABALI.com)",
+      "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9ZZEFMRXAyY1ljTy1ONnhjY2paNVpMTk5SSkswME5FVlg4V2N0a1prZmk5NzJZcmdnSERzbjZNd3l1eGJheFF4eTBlRG5XUTNjOFZDcEZqY3NacS00bkZRek9HZkZuaUNfTnlZUEszOXVWY2h6MlZIMXJ2RVMzUQ?oc=5",
+      "date": "2016-03-12T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_4f64e5e3806751c491c9",
+      "type": "event",
+      "title": "Peresmian Lagoi Bay Langkah Awal Jadikan Lagoi Kawasan Pariwisata Nomor Satu di Indonesia",
+      "source": "google_news_rss (Batamtoday.com)",
+      "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNLVBnVWZKbEh1U3FkLXRzQXRjdUlGakVCeHdRZzVnZ0RFYjI3N1pRdGJxak5jSzhrdTBxZEpEVUppNEh1OTdycjd4Q0t2RVFGcW5lcGc4b0NTbGpFalBRcmJlQlRZTDVlUXU0bm84cUJIdjhIaU1pZ2paQTQ2eUtHTWdvd1JUTEM4OVg2X0pFcUFxWkhMa3JVQWFFVkkwcmt4d3F5YzhJaC1sdWNNSTRPZ1M5UjNyM2VmQ0ktaGJLTTBNQzZqWWNDNEhJWQ?oc=5",
+      "date": "2015-06-06T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_186d73e404d8dff1d70b",
+      "type": "tender",
+      "title": "Seragam Baru PNS Sedot Rp 1,8 Miliar",
+      "source": "google_news_rss (JPNN.com)",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1OOXNnWXVLOTEzRUtBUFdaZUs5XzhPcXJqb0dNUTdxNGo2UGE1SGhlV2ZhWVkyT3ZMSHU1OTFmM09WZV93czlKQTVxcUlSeWZFVVZid2FhVUxHa0N2TzZHYlZXTEVWWVdrVWc3VEFR0gFwQVVfeXFMT0dZbHF6SElWYUd5aE5rZndkWkdYd0ZSRnVoOTlOYXFJaUJnWVJncktHYmNTQ0RjMWh1dE92NHBlWlJvS3pRNDJoeWFvRG5aSE1XT3JVWTg1Wm8tYkMteHh2UGxpWVlvR1NFem5qczNBUQ?oc=5",
+      "date": "2014-11-15T08:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_319d135ca3ee294900fe",
+      "type": "tender",
+      "title": "ANGGOTA DPRD JATIM TOLAK PENGADAAN SERAGAM BATIK",
+      "source": "google_news_rss (Dinas Komunikasi dan Informatika Provinsi Jawa Timur)",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE5Qc0s4bDVYUFplNkVscDRJMEFMZWlBOXFHdmhjUzBIUm1UQTlGLWlSM0NNUnE3eXV2TkJwbUN0dlB2RlNuZl9fWHNsT25EMFpVWGNKaDZmcw?oc=5",
+      "date": "2014-09-17T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_76323e19df52c7540f82",
+      "type": "tender",
+      "title": "SERAGAM PRAMUKA PNS: Pegawai Pemkab Sukoharjo Beli Sendiri",
+      "source": "google_news_rss (Espos Indonesia)",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNdmxKdkZzWDdLbG9jMEZrLUkwMWV5cFQ4ZV90cGhPZDhxTWNUeEwzZW1OOUVORkVEZmtQLVFJN3VPRG5ZYXRvaVJDdkc1aWgwLWc5MENqc2Z6aDBLa09KMlZrTTFsUjNTeWJGZXZqeE1hWGpyX2JmTlVfRGYzcVJFNzF6cGx5UlFwX0ZST2hSUzZwQUNScUJtNENFak9IQdIBowFBVV95cUxNS3Q0VHRkbWJFbmdQaEpHVzRwVDZOUHBlWUZUelFHRkpETzk2WHdLQVhkUGZ1Slo5SThudjJELXpwYVZLdjVrUEE4OHpGZWxRc2d1aUtyc1NzZV9HcGhsSjItODRIRXdZNkxpZG9KZ0ZFRmlMUzRXcHZKN2FjYUd0WVJUbEZoOFg2Und3WDNleTk0bkFfdkhkSTBHam8waWJsX2tn?oc=5",
+      "date": "2012-09-07T07:00:00+00:00",
+      "organization": "Pemkab Sukoharjo",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_5eafe5df668fd271651b",
+      "type": "event",
+      "title": "Pentas Seni Etude House Mendapat Sambutan Masyarakat",
+      "source": "google_news_rss (ANTARA News Banten)",
+      "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPc1BIc1diQVg0ek9OM1pUSExGQUNhdG5PME0zazR5ck8tMko0YkNoWVpmeldnN3pGQlVpZkVNR3NiWHlnTXZqVHZtMjRVTG9NMUROOG54enBRc2pMZ2VXMmtPY0V6RjZGaHFiMXV3MW5MeEVxVUpRZGMzSGVaVC15dnBVY0dMaHlGbnJpQ00yY3E0ZGJwWjI1ckg5Y9IBoAFBVV95cUxQN0p4YjhKVWRlMWRGVXVOc0sxd0tlQzdrbUdtOXVWUl9PSE9FUWRUT29ENHdpOUljSjJjb0dBbWd2TER1b1h6dUV6aV80WEcxdFptZEpQMEVWRWRURnlRRUhyQVNkaTlQd2xJQ0RqdlhJeGo1MzJEOG9qM3FfTEVZZlV6NVdsSG11VGVJUGVUeEhwT1RCbXdBeGpOSjViZlBJ?oc=5",
+      "date": "2011-10-10T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    },
+    {
+      "id": "rq_821f3fd7ddbf6d165a43",
+      "type": "tender",
+      "title": "Siswa di Sukoharjo Keluhkan Kewajiban Beli Seragam Sekolah",
+      "source": "google_news_rss (Tempo.co)",
+      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNRG1hdWk3ZWdJaXVjdjRkSVhjSUgwUlhFVFYxV3hwYWF3UGIxa2JoSjJRTEo1cWR3amFWbWFIcDNWWEpLY3daUEN2MHlNM2U0NXY3MzdjWTRHNTRQa2ZCczh5TUI4X25qTUNXNEtPSmNOR0lYS0laVUdyR2pQUUpxMUxXYjRDWF9lRi1qM1lFY3kxNGFUd2ZYMg?oc=5",
+      "date": "2011-06-23T07:00:00+00:00",
+      "organization": "",
+      "location": "",
+      "issue_codes": [
+        "OLD_ITEM"
+      ],
+      "issue_labels": [
+        "Item lama"
+      ],
+      "severity": "low",
+      "suggested_action": "review_manual"
+    }
+  ]
+}
