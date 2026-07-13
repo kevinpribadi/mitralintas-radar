@@ -1,0 +1,337 @@
+{
+  "version": "1.0.0",
+  "states": [
+    {
+      "code": "READY_FOR_HUMAN_QUALIFICATION",
+      "label_id": "Siap Ditinjau untuk Kualifikasi",
+      "description_id": "Sinyal memiliki bukti minimum untuk dibawa ke pemeriksaan manusia."
+    },
+    {
+      "code": "NEEDS_MORE_INFORMATION",
+      "label_id": "Perlu Informasi Tambahan",
+      "description_id": "Sinyal belum memiliki bukti minimum pada satu atau beberapa aspek inti."
+    },
+    {
+      "code": "NEEDS_DATA_REVIEW",
+      "label_id": "Perlu Review Kualitas Data",
+      "description_id": "Sinyal memiliki issue kualitas data high atau medium dari review queue."
+    },
+    {
+      "code": "EXPIRED_OR_HISTORICAL",
+      "label_id": "Referensi Historis",
+      "description_id": "Tanggal valid menunjukkan sinyal sudah melewati ambang historical."
+    },
+    {
+      "code": "LOW_PRODUCT_RELEVANCE",
+      "label_id": "Relevansi Produk Rendah",
+      "description_id": "Relevansi produk rendah berdasarkan aturan saat ini."
+    }
+  ],
+  "checks": {
+    "SOURCE_TRACEABLE": {
+      "output_key": "source_traceable",
+      "requires": ["source_non_empty", "http_or_https_link"]
+    },
+    "TITLE_INFORMATIVE": {
+      "output_key": "title_informative",
+      "min_chars": 10,
+      "min_words": 2,
+      "generic_titles": [
+        "berita",
+        "news",
+        "update",
+        "artikel",
+        "info",
+        "informasi",
+        "rss",
+        "home",
+        "homepage",
+        "index",
+        "null",
+        "undefined",
+        "event",
+        "tender",
+        "pengumuman"
+      ]
+    },
+    "ORGANIZATION_IDENTIFIABLE": {
+      "output_key": "organization_identifiable"
+    },
+    "NEED_EVIDENCE_PRESENT": {
+      "output_key": "need_evidence_present"
+    },
+    "PRODUCT_FIT_PLAUSIBLE": {
+      "output_key": "product_fit_plausible"
+    },
+    "TIMING_ACTIONABLE": {
+      "output_key": "timing_actionable"
+    },
+    "DATA_QUALITY_ACCEPTABLE": {
+      "output_key": "data_quality_acceptable",
+      "blocking_severities": ["high", "medium"],
+      "non_blocking_issue_codes": ["OLD_ITEM"]
+    },
+    "NEXT_ACTION_POSSIBLE": {
+      "output_key": "next_action_possible"
+    }
+  },
+  "reason_codes": {
+    "SOURCE_MISSING": {
+      "label_id": "Sumber kosong"
+    },
+    "SOURCE_INVALID": {
+      "label_id": "Link sumber tidak valid"
+    },
+    "TITLE_UNINFORMATIVE": {
+      "label_id": "Judul belum informatif"
+    },
+    "ORGANIZATION_UNCLEAR": {
+      "label_id": "Organisasi belum jelas"
+    },
+    "NEED_EVIDENCE_WEAK": {
+      "label_id": "Bukti kebutuhan atau trigger lemah"
+    },
+    "PRODUCT_NEED_UNCONFIRMED": {
+      "label_id": "Kebutuhan produk belum terkonfirmasi"
+    },
+    "PRODUCT_FIT_WEAK": {
+      "label_id": "Relevansi produk rendah berdasarkan aturan saat ini"
+    },
+    "DATE_EXPIRED": {
+      "label_id": "Tanggal melewati ambang historical"
+    },
+    "DATE_UNKNOWN": {
+      "label_id": "Tanggal belum tersedia"
+    },
+    "QUALITY_REVIEW_REQUIRED": {
+      "label_id": "Perlu review kualitas data"
+    },
+    "NEXT_ACTION_UNCLEAR": {
+      "label_id": "Next action belum jelas"
+    },
+    "READY_FOR_HUMAN_REVIEW": {
+      "label_id": "Siap diperiksa manusia"
+    },
+    "HISTORICAL_REFERENCE": {
+      "label_id": "Referensi historis"
+    }
+  },
+  "next_action_map": {
+    "READY_FOR_HUMAN_QUALIFICATION": "PREPARE_FOR_HUMAN_QUALIFICATION",
+    "NEEDS_MORE_INFORMATION": "VERIFY_SOURCE",
+    "NEEDS_DATA_REVIEW": "REVIEW_DATA_QUALITY",
+    "EXPIRED_OR_HISTORICAL": "VERIFY_TIMING",
+    "LOW_PRODUCT_RELEVANCE": "ADD_TO_WATCHLIST",
+    "SOURCE_MISSING": "VERIFY_SOURCE",
+    "SOURCE_INVALID": "OPEN_OFFICIAL_SOURCE",
+    "TITLE_UNINFORMATIVE": "VERIFY_SOURCE",
+    "ORGANIZATION_UNCLEAR": "VERIFY_ORGANIZATION",
+    "NEED_EVIDENCE_WEAK": "VERIFY_PRODUCT_NEED",
+    "PRODUCT_NEED_UNCONFIRMED": "VERIFY_PRODUCT_NEED",
+    "PRODUCT_FIT_WEAK": "ADD_TO_WATCHLIST",
+    "DATE_EXPIRED": "VERIFY_TIMING",
+    "DATE_UNKNOWN": "VERIFY_TIMING",
+    "QUALITY_REVIEW_REQUIRED": "REVIEW_DATA_QUALITY",
+    "NEXT_ACTION_UNCLEAR": "VERIFY_SOURCE"
+  },
+  "allowed_next_actions": [
+    "VERIFY_SOURCE",
+    "VERIFY_ORGANIZATION",
+    "VERIFY_TIMING",
+    "VERIFY_PRODUCT_NEED",
+    "REVIEW_DATA_QUALITY",
+    "OPEN_OFFICIAL_SOURCE",
+    "ADD_TO_WATCHLIST",
+    "PREPARE_FOR_HUMAN_QUALIFICATION"
+  ],
+  "product_relevance_terms": {
+    "apparel": [
+      "seragam",
+      "pakaian dinas",
+      "pakaian sekolah",
+      "baju dinas",
+      "wearpack",
+      "kaos",
+      "polo",
+      "jaket",
+      "rompi",
+      "tekstil",
+      "apparel",
+      "merchandise tekstil",
+      "pakaian kerja",
+      "pakaian event",
+      "pdh",
+      "psh",
+      "hospitality uniform",
+      "safety apparel",
+      "batik",
+      "jersey",
+      "uniform"
+    ]
+  },
+  "indirect_product_fit_terms": {
+    "event_or_activity": [
+      "fun run",
+      "fun bike",
+      "jalan sehat",
+      "family gathering",
+      "family day",
+      "gathering",
+      "hut",
+      "anniversary",
+      "festival",
+      "konferensi",
+      "seminar",
+      "wisuda",
+      "event olahraga",
+      "olahraga",
+      "marathon",
+      "lari",
+      "run",
+      "runner",
+      "race",
+      "sepeda santai",
+      "jalan santai"
+    ],
+    "business_trigger": [
+      "perekrutan massal",
+      "pembukaan cabang",
+      "pembukaan hotel",
+      "pembukaan rumah sakit",
+      "pembukaan pabrik",
+      "ekspansi",
+      "rebranding",
+      "peluncuran armada",
+      "safety campaign"
+    ]
+  },
+  "need_evidence_terms": {
+    "procurement": [
+      "pengadaan",
+      "permintaan",
+      "tender",
+      "lelang",
+      "belanja",
+      "pembelian",
+      "anggaran",
+      "penyedia",
+      "verifikasi",
+      "program",
+      "pesanan"
+    ],
+    "event": [
+      "event",
+      "kegiatan",
+      "gelar",
+      "gelaran",
+      "fun run",
+      "jalan sehat",
+      "family day",
+      "family gathering",
+      "gathering",
+      "hut",
+      "expo",
+      "pameran",
+      "festival",
+      "marathon",
+      "lari",
+      "sepeda santai",
+      "jalan santai"
+    ],
+    "trigger": [
+      "pembukaan",
+      "peresmian",
+      "ekspansi",
+      "rekrutmen",
+      "lowongan",
+      "rebranding",
+      "operasional",
+      "launching",
+      "sosialisasi",
+      "rakerda",
+      "rapat kerja"
+    ]
+  },
+  "counter_signal_terms": [
+    "hoaks",
+    "hoax",
+    "korupsi",
+    "dugaan korupsi",
+    "mark-up",
+    "markup"
+  ],
+  "generic_organization_terms": [
+    "dinas",
+    "dinas pendidikan",
+    "dinas kesehatan",
+    "pemerintah",
+    "pemda",
+    "pemkab",
+    "pemkot",
+    "provinsi",
+    "kabupaten",
+    "kota",
+    "sekolah",
+    "panitia",
+    "penyelenggara",
+    "perusahaan",
+    "instansi",
+    "bank",
+    "pt",
+    "cv",
+    "universitas",
+    "kampus",
+    "komunitas",
+    "lembaga"
+  ],
+  "organization_artifact_terms": [
+    "akan",
+    "ada",
+    "bakal",
+    "anggaran",
+    "bantah",
+    "bahas",
+    "berpeluang",
+    "buka",
+    "capai",
+    "dalami",
+    "digeledah",
+    "dorong",
+    "dukung",
+    "gelar",
+    "gelaran",
+    "hingga",
+    "ingatkan",
+    "juta",
+    "kenalkan",
+    "kembali",
+    "libatkan",
+    "masih",
+    "melonjak",
+    "minta",
+    "nilai",
+    "nyaris",
+    "pengadaan",
+    "periksa",
+    "resmi",
+    "respon",
+    "rp",
+    "seragam",
+    "selidiki",
+    "siap",
+    "siapkan",
+    "sukses",
+    "tender",
+    "terima",
+    "tangan",
+    "turun",
+    "usai",
+    "wajibkan",
+    "titipkan"
+  ],
+  "organization_field_fallback": {
+    "tender": ["instansi_terdeteksi"],
+    "event": ["penyelenggara"]
+  },
+  "expired_threshold_days": 1095
+}

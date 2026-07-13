@@ -92,6 +92,101 @@ data otomatis, tidak mengubah scoring, tidak menolak peluang, tidak mengirim pes
 tidak membuat keputusan komersial. Keputusan tetap dilakukan manusia. Tanggal atau lokasi
 kosong saja tidak dianggap error.
 
+## Fase H: qualification readiness
+
+Fase H menambahkan definisi Qualified Opportunity dan penilaian kesiapan berbasis aturan.
+Outputnya adalah [docs/data/qualification_readiness.json](docs/data/qualification_readiness.json),
+dibaca dashboard pada panel **Kesiapan Kualifikasi Peluang**. Fase ini tidak otomatis
+menjadikan item sebagai Qualified Opportunity.
+
+Istilah yang dipakai:
+
+- **Raw Signal**: item tender/event yang baru ditemukan dan belum dinilai.
+- **Qualification Readiness**: rekomendasi deterministik apakah item siap diperiksa manusia.
+- **Qualified Opportunity**: item yang memenuhi syarat dan sudah disetujui manusia; status ini
+  belum diterapkan pada Fase H.
+
+Definisi lengkap ada di [QUALIFIED_OPPORTUNITY.md](QUALIFIED_OPPORTUNITY.md). Prinsipnya:
+source harus traceable, judul informatif, organisasi jelas, need/trigger terlihat di data,
+product fit masuk akal, timing belum jelas terlewat, next action netral tersedia, dan human
+approval tetap wajib.
+
+State readiness:
+
+- `READY_FOR_HUMAN_QUALIFICATION`: siap ditinjau manusia untuk kualifikasi.
+- `NEEDS_MORE_INFORMATION`: masih ada bukti sumber, organisasi, kebutuhan, atau waktu yang
+  belum cukup.
+- `NEEDS_DATA_REVIEW`: review queue menunjukkan issue high/medium atau kualitas data gagal.
+- `EXPIRED_OR_HISTORICAL`: tanggal valid sudah melewati ambang historical.
+- `LOW_PRODUCT_RELEVANCE`: tidak ada hubungan produk yang cukup masuk akal berdasarkan aturan
+  saat ini.
+
+State `QUALIFIED`, `WON`, `LOST`, dan `REJECTED` sengaja tidak dipakai karena itu keputusan
+manusia atau fase berikutnya.
+
+Checks yang dievaluasi per item:
+
+- `SOURCE_TRACEABLE`
+- `TITLE_INFORMATIVE`
+- `ORGANIZATION_IDENTIFIABLE`
+- `NEED_EVIDENCE_PRESENT`
+- `PRODUCT_FIT_PLAUSIBLE`
+- `TIMING_ACTIONABLE`
+- `DATA_QUALITY_ACCEPTABLE`
+- `NEXT_ACTION_POSSIBLE`
+
+Reason code utama:
+
+- `SOURCE_MISSING`, `SOURCE_INVALID`, `TITLE_UNINFORMATIVE`
+- `ORGANIZATION_UNCLEAR`, `NEED_EVIDENCE_WEAK`, `PRODUCT_NEED_UNCONFIRMED`,
+  `PRODUCT_FIT_WEAK`
+- `DATE_EXPIRED`, `DATE_UNKNOWN`, `QUALITY_REVIEW_REQUIRED`
+- `NEXT_ACTION_UNCLEAR`, `READY_FOR_HUMAN_REVIEW`, `HISTORICAL_REFERENCE`
+
+Jalankan lokal setelah `tenders.json`, `events.json`, dan `review_queue.json` tersedia:
+
+```bash
+node radar/scripts/build_review_queue.js
+node radar/scripts/build_qualification_readiness.js
+```
+
+Environment variable qualification readiness:
+
+- `RADAR_DATA_DIR`: folder input `tenders.json` dan `events.json`, default `radar/data`.
+- `RADAR_REVIEW_QUEUE_FILE`: input review queue, default `radar/docs/data/review_queue.json`.
+- `RADAR_QUALIFICATION_RULES_FILE`: config aturan, default `radar/config/qualification_rules.json`.
+- `RADAR_QUALIFICATION_OUTPUT`: file output, default `radar/docs/data/qualification_readiness.json`.
+- `RADAR_QUALIFICATION_MAX_ITEMS`: batas item output bila diperlukan; default `0` berarti semua.
+- `RADAR_QUALIFICATION_EXPIRED_DAYS`: override ambang historical; default dari config.
+
+Tidak ada numeric opportunity scoring pada Fase H. Sistem tidak memberi nilai tambahan karena
+pembeli Pemerintah/BUMN, tidak mengambil kontak pribadi, tidak mengirim outreach, tidak membuat
+harga, dan tidak memperkirakan nilai proyek tanpa bukti. Suggested next action yang muncul hanya
+tindakan netral seperti verifikasi sumber, organisasi, timing, kebutuhan produk, review kualitas
+data, buka sumber, tambah watchlist, atau siapkan untuk review manusia.
+
+Product fit dibagi menjadi tiga kondisi:
+
+- Explicit product fit: istilah apparel/tekstil eksplisit seperti seragam, pakaian dinas,
+  baju dinas, wearpack, kaos, polo, jaket, rompi, batik, jersey, atau tekstil ditemukan;
+  `product_fit_plausible = pass`.
+- Indirect product need unconfirmed: event/trigger seperti fun run, jalan sehat, family
+  gathering, HUT, festival, konferensi, seminar, wisuda, ekspansi, rebranding, pembukaan
+  cabang, peluncuran armada, atau safety campaign ditemukan tetapi produk belum disebut;
+  `product_fit_plausible = unknown`, reason `PRODUCT_NEED_UNCONFIRMED`, dan next action
+  `VERIFY_PRODUCT_NEED`.
+- Weak product fit: tidak ada explicit product fit dan tidak ada indirect trigger yang cukup;
+  `product_fit_plausible = fail`, reason `PRODUCT_FIT_WEAK`.
+
+Organization fallback berdasarkan audit schema aktual:
+
+- Tender: `instansi_terdeteksi`.
+- Event: `penyelenggara`.
+
+Field seperti `organization`, `organizer`, `instansi`, `nama_instansi`, `buyer`, `agency`,
+`institution`, dan `entity` tidak ditemukan dalam dataset saat ini, sehingga tidak dipakai
+sebagai fallback aktif. Source/media publisher tidak dipakai sebagai organisasi.
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root
