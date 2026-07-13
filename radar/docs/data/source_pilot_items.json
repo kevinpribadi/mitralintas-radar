@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0.0",
+  "content_reference_date": "2026-06-30",
+  "source_summary": {
+    "configured_sources": 2,
+    "healthy_sources": 0,
+    "degraded_sources": 1,
+    "unavailable_sources": 1,
+    "raw_items": 10,
+    "normalized_items": 10,
+    "duplicate_items": 0,
+    "invalid_items": 0
+  },
+  "deduplication": {
+    "reason_counts": {
+      "canonical_url": 0,
+      "content_hash": 0,
+      "normalized_title_source": 0
+    }
+  },
+  "items": [
+    {
+      "id": "src_8d300c59b0667a5b1fdc",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Bidik Investor Australia, Wamen Investasi Tawarkan Kerjasama Pangan dan Infrastruktur",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/bidik-investor-australia-wamen-investasi-tawarkan-kerjasama-pangan-dan-infrastruktur",
+      "published_at": "2026-06-30",
+      "organization_hint": "",
+      "excerpt": "Sydney, 30 Juni 2026 — Indonesia-Australia terus memperkuat kemitraan ekonomi strategis melalui penyelenggaraan Indonesia–Australia Business Summit (IABS) for Indonesia Updates 2026 yang berlangsung di Grand Ballroom 1, Four Seasons Hotel Sydney, Selasa (30/6). Mengusung tema \"Financing Sustainable Growth: Strengthening Food Systems, Infrastructure, and Economic Resilience between Indonesia and Australia\", forum ini mempertemukan pejabat pemerintah, pelaku usaha, lembaga keuangan, serta pemangku",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/bidik-investor-australia-wamen-investasi-tawarkan-kerjasama-pangan-dan-infrastruktur",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Sydney, 30 Juni 2026 — Indonesia-Australia terus memperkuat kemitraan ekonomi strategis melalui penyelenggaraan Indonesia–Australia Business Summit (IABS) for Indonesia Updates 2026 yang berlangsung di Grand Ballroom 1, Four Seasons Hotel Sydney, Selasa (30/6). Mengusung tema \"Financing Sustainable Growth: Strengthening Food Systems, Infrastructure, and Economic Resilience between Indonesia and Australia\", forum ini mempertemukan pejabat pemerintah, pelaku usaha, lembaga keuangan, serta pemangku",
+        "human_review_required": true
+      },
+      "content_hash": "504b3c7cd544263eba18302c5ab065c75dac9586512bb0e253e405a3b9a2837f"
+    },
+    {
+      "id": "src_ed8c421fd19e096a4f37",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Wamen Todotua: Indonesia dan Australia Berada pada Momentum Tepat Perkuat Kemitraan Investasi",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/wamen-todotua-indonesia-dan-australia-berada-pada-momentum-tepat-perkuat-kemitraan-investasi",
+      "published_at": "2026-06-30",
+      "organization_hint": "",
+      "excerpt": "Sydney, 30 Juni 2026 - Wakil Menteri Investasi dan Hilirisasi/Wakil Kepala Badan Koordinasi Penanaman Modal (BKPM) Todotua Pasaribu menegaskan, Indonesia dan Australia berada pada momentum yang sangat tepat karena hubungan ekonomi kedua negara yang saling melengkapi, didukung implementasi Indonesia-Australia Comprehensive Economic Partnership Agreement (IA-CEPA) yang semakin matang. Hal ini diungkapkan saat menjadi pembicara kunci dalam Indonesia-Australia Business Summit (IABS) for Indonesia Up",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/wamen-todotua-indonesia-dan-australia-berada-pada-momentum-tepat-perkuat-kemitraan-investasi",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Sydney, 30 Juni 2026 - Wakil Menteri Investasi dan Hilirisasi/Wakil Kepala Badan Koordinasi Penanaman Modal (BKPM) Todotua Pasaribu menegaskan, Indonesia dan Australia berada pada momentum yang sangat tepat karena hubungan ekonomi kedua negara yang saling melengkapi, didukung implementasi Indonesia-Australia Comprehensive Economic Partnership Agreement (IA-CEPA) yang semakin matang. Hal ini diungkapkan saat menjadi pembicara kunci dalam Indonesia-Australia Business Summit (IABS) for Indonesia Up",
+        "human_review_required": true
+      },
+      "content_hash": "6c23581c0abe0e85068cc4951607d93326b1aeb763d8b0ebc13a4b5e25762905"
+    },
+    {
+      "id": "src_f9ccda24fb7db98e5432",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Investor Australia Minati Peluang Rantai Pasok Baterai RI",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/investor-australia-minati-peluang-rantai-pasok-baterai-ri",
+      "published_at": "2026-06-29",
+      "organization_hint": "",
+      "excerpt": "Sydney, 29 Juni 2026 - Pemerintah Indonesia terus memperkuat agenda hilirisasi industri nikel nasional melalui pendalaman rencana investasi pembangunan fasilitas precursor Cathode Active Material (pCAM) bersama perusahaan teknologi pemrosesan material baterai asal Australia, Pure Battery Technologies (PBT). Investasi ini merupakan bagian penting dari strategi pemerintah untuk melengkapi rantai nilai hilirisasi nikel, khususnya pada tahap midstream, yaitu produksi precursor untuk baterai kendaraa",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/investor-australia-minati-peluang-rantai-pasok-baterai-ri",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Sydney, 29 Juni 2026 - Pemerintah Indonesia terus memperkuat agenda hilirisasi industri nikel nasional melalui pendalaman rencana investasi pembangunan fasilitas precursor Cathode Active Material (pCAM) bersama perusahaan teknologi pemrosesan material baterai asal Australia, Pure Battery Technologies (PBT). Investasi ini merupakan bagian penting dari strategi pemerintah untuk melengkapi rantai nilai hilirisasi nikel, khususnya pada tahap midstream, yaitu produksi precursor untuk baterai kendaraa",
+        "human_review_required": true
+      },
+      "content_hash": "bdd48208b4218f8cb72257bf0d9658607c1a2f3e5dc6415b03ffb7d487be40b1"
+    },
+    {
+      "id": "src_9524a3eff9c9aff75acd",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Menteri Rosan: Kolaborasi Riset dan Industri Jadi Kunci Hilirisasi Bernilai Tambah",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/menteri-rosan-kolaborasi-riset-dan-industri-jadi-kunci-hilirisasi-bernilai-tambah",
+      "published_at": "2026-06-27",
+      "organization_hint": "",
+      "excerpt": "Jakarta, 27 Juni 2026 – Menteri Investasi dan Hilirisasi/Kepala Badan Koordinasi Penanaman Modal (BKPM) sekaligus CEO Danantara Rosan P. Roeslani menyampaikan, investasi dan hilirisasi tidak hanya bertujuan meningkatkan nilai tambah sumber daya alam, tetapi juga menjadi fondasi bagi terwujudnya industri nasional yang produktif, transparan, berdaya saing, serta memberikan manfaat nyata bagi kesejahteraan pekerja. Hal tersebut disampaikan dalam Keynote Speech pada Sarasehan Kebangsaan Konvensi Sai",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/menteri-rosan-kolaborasi-riset-dan-industri-jadi-kunci-hilirisasi-bernilai-tambah",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Jakarta, 27 Juni 2026 – Menteri Investasi dan Hilirisasi/Kepala Badan Koordinasi Penanaman Modal (BKPM) sekaligus CEO Danantara Rosan P. Roeslani menyampaikan, investasi dan hilirisasi tidak hanya bertujuan meningkatkan nilai tambah sumber daya alam, tetapi juga menjadi fondasi bagi terwujudnya industri nasional yang produktif, transparan, berdaya saing, serta memberikan manfaat nyata bagi kesejahteraan pekerja. Hal tersebut disampaikan dalam Keynote Speech pada Sarasehan Kebangsaan Konvensi Sai",
+        "human_review_required": true
+      },
+      "content_hash": "e5335f6fee1a99fb378809646b62dd105e6c7c03c1626461b43a5bebbdf63bfc"
+    },
+    {
+      "id": "src_9982ed3a5e6331ce0875",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Keminveshil/BKPM: Kepercayaan Investor Global Tetap Terjaga",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/keminveshil-bkpm-kepercayaan-investor-global-tetap-terjaga",
+      "published_at": "2026-06-26",
+      "organization_hint": "",
+      "excerpt": "Jakarta, 26 Juni 2026 – Di tengah dinamika ekonomi global yang masih berlangsung, persepsi mengenai kondisi investasi Indonesia kerap dinilai berdasarkan pergerakan pasar keuangan maupun sentimen jangka pendek. Padahal, untuk melihat tingkat kepercayaan investor terhadap suatu negara, salah satu indikator yang lebih akurat dalam mencerminkan keputusan investasi jangka panjang adalah Foreign Direct Investment (FDI) atau Penanaman Modal Asing (PMA).",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/keminveshil-bkpm-kepercayaan-investor-global-tetap-terjaga",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Jakarta, 26 Juni 2026 – Di tengah dinamika ekonomi global yang masih berlangsung, persepsi mengenai kondisi investasi Indonesia kerap dinilai berdasarkan pergerakan pasar keuangan maupun sentimen jangka pendek. Padahal, untuk melihat tingkat kepercayaan investor terhadap suatu negara, salah satu indikator yang lebih akurat dalam mencerminkan keputusan investasi jangka panjang adalah Foreign Direct Investment (FDI) atau Penanaman Modal Asing (PMA).",
+        "human_review_required": true
+      },
+      "content_hash": "e91d7e396a6e88fd2ce8d12e6a68ba928d632232052d533c8315c493248c6fda"
+    },
+    {
+      "id": "src_ce62b33affe50c7aad71",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Dorong Hilirisasi Perkebunan, Wamen Investasi Percepat Pabrik Bioetanol 60 Ribu Kilo Liter di Lampung",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/dorong-hilirisasi-perkebunan-wamen-investasi-percepat-pabrik-bioetanol-60-ribu-kilo-liter-di-lampung",
+      "published_at": "2026-06-09",
+      "organization_hint": "",
+      "excerpt": "Lampung, 9 Juni 2026 – Pemerintah terus mempercepat pengembangan industri bioetanol nasional sebagai bagian dari strategi hilirisasi dan transisi energi untuk memperkuat ketahanan energi Indonesia. Salah satu upaya yang tengah dilakukan adalah penjajakan pengembangan bioetanol terintegrasi di Provinsi Lampung yang diharapkan dapat menjadi model pengembangan energi terbarukan berbasis pertanian dan sumber daya domestik.",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/dorong-hilirisasi-perkebunan-wamen-investasi-percepat-pabrik-bioetanol-60-ribu-kilo-liter-di-lampung",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Lampung, 9 Juni 2026 – Pemerintah terus mempercepat pengembangan industri bioetanol nasional sebagai bagian dari strategi hilirisasi dan transisi energi untuk memperkuat ketahanan energi Indonesia. Salah satu upaya yang tengah dilakukan adalah penjajakan pengembangan bioetanol terintegrasi di Provinsi Lampung yang diharapkan dapat menjadi model pengembangan energi terbarukan berbasis pertanian dan sumber daya domestik.",
+        "human_review_required": true
+      },
+      "content_hash": "251d2c905a6db8368a3b311e38988a3205a6b63e1a8c3eb6ae7622dc519ae71f"
+    },
+    {
+      "id": "src_13b73dd065d3740c2547",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Tanjung Carat Diproyeksikan Jadi Simpul Baru Konektivitas Logistik di Sumatera Selatan",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/tanjung-carat-diproyeksikan-jadi-simpul-baru-konektivitas-logistik-di-sumatera-selatan",
+      "published_at": "2026-05-13",
+      "organization_hint": "",
+      "excerpt": "Jakarta, 13 Mei 2026 – Pemerintah terus memperkuat komitmen pembangunan ekosistem hilirisasi nasional melalui penandatanganan Nota Kesepahaman (MoU) Rencana Kerja Sama Integrasi Pembangunan Jalan Tol Menuju Pelabuhan Palembang Baru di Tanjung Carat, Kabupaten Banyuasin, Provinsi Sumatera Selatan, Rabu (13/5), di Jakarta.",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/tanjung-carat-diproyeksikan-jadi-simpul-baru-konektivitas-logistik-di-sumatera-selatan",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Jakarta, 13 Mei 2026 – Pemerintah terus memperkuat komitmen pembangunan ekosistem hilirisasi nasional melalui penandatanganan Nota Kesepahaman (MoU) Rencana Kerja Sama Integrasi Pembangunan Jalan Tol Menuju Pelabuhan Palembang Baru di Tanjung Carat, Kabupaten Banyuasin, Provinsi Sumatera Selatan, Rabu (13/5), di Jakarta.",
+        "human_review_required": true
+      },
+      "content_hash": "a5cd90bfb4a7e300dc0624450c0adf2ce73ada20a08496eea6744c48888b8282"
+    },
+    {
+      "id": "src_0d9d9acd4970f290b87f",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Kementerian Investasi dan Hilirisasi Dukung Percepatan 13 Proyek Hilirisasi Strategis Tahap II",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/kementerian-investasi-dan-hilirisasi-dukung-percepatan-13-proyek-hilirisasi-strategis-tahap-ii",
+      "published_at": "2026-04-29",
+      "organization_hint": "",
+      "excerpt": "Cilacap, 29 April 2026 – Kementerian Investasi dan Hilirisasi/Badan Koordinasi Penanaman Modal (BKPM) menegaskan komitmennya dalam mendukung percepatan pembangunan proyek investasi hilirisasi nasional melalui pelaksanaan groundbreaking 13 proyek hilirisasi tahap II dengan nilai investasi mencapai sekitar Rp116 triliun, yang dikerjakan oleh sejumlah Badan Usaha Milik Negara (BUMN) di bawah koordinasi Danantara Indonesia.",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/kementerian-investasi-dan-hilirisasi-dukung-percepatan-13-proyek-hilirisasi-strategis-tahap-ii",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Cilacap, 29 April 2026 – Kementerian Investasi dan Hilirisasi/Badan Koordinasi Penanaman Modal (BKPM) menegaskan komitmennya dalam mendukung percepatan pembangunan proyek investasi hilirisasi nasional melalui pelaksanaan groundbreaking 13 proyek hilirisasi tahap II dengan nilai investasi mencapai sekitar Rp116 triliun, yang dikerjakan oleh sejumlah Badan Usaha Milik Negara (BUMN) di bawah koordinasi Danantara Indonesia.",
+        "human_review_required": true
+      },
+      "content_hash": "a56af2d1e5c62774125773e99780a8858d05f9959b8944fb86dc63df1f66102f"
+    },
+    {
+      "id": "src_d20bb70e200b874ee2c2",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Investasi Awal Tahun Tumbuh 7,2%, Pemerintah Implementasikan KBLI yang Lebih Adaptif",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/investasi-awal-tahun-tumbuh-7-2-pemerintah-implementasikan-kbli-yang-lebih-adaptif",
+      "published_at": "2026-04-23",
+      "organization_hint": "",
+      "excerpt": "Jakarta, 23 April 2026 – Sepanjang Triwulan I 2026, ekonomi global dihadapkan pada ketidakpastian akibat meningkatnya risiko geopolitik terutama di kawasan Timur Tengah. Eskalasi perang Amerika Serikat-Israel dan Iran turut menyebabkan penurunan prospek perekonomian global.",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/investasi-awal-tahun-tumbuh-7-2-pemerintah-implementasikan-kbli-yang-lebih-adaptif",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Jakarta, 23 April 2026 – Sepanjang Triwulan I 2026, ekonomi global dihadapkan pada ketidakpastian akibat meningkatnya risiko geopolitik terutama di kawasan Timur Tengah. Eskalasi perang Amerika Serikat-Israel dan Iran turut menyebabkan penurunan prospek perekonomian global.",
+        "human_review_required": true
+      },
+      "content_hash": "dc2b0211673ab1a6637d30d73d155611e7d811ec23659a3bb1dec6c49bea69bb"
+    },
+    {
+      "id": "src_64d14663c39d02da1ab6",
+      "source_code": "BKPM_PRESS_RELEASES",
+      "source_name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "source_type": "official_press_release",
+      "title": "Proyek Bioetanol Lampung Memasuki Tahap Baru",
+      "link": "https://www.bkpm.go.id/id/info/siaran-pers/proyek-bioetanol-lampung-memasuki-tahap-baru",
+      "published_at": "2026-04-20",
+      "organization_hint": "",
+      "excerpt": "Jakarta, 10 April 2026 – Pemerintah melalui Kementerian Investasi dan Hilirisasi/BKPM terus mendorong pembentukan kesepakatan strategis dalam pengembangan Proyek Bioetanol di Provinsi Lampung sebagai bagian dari upaya mempercepat transisi energi nasional. Konstruksi proyek yang diharapkan mulai pada kuartal III 2026 ini melibatkan Toyota, PT Pertamina New & Renewable Energy (PNRE), dan Danantara Investment Management.",
+      "provenance": {
+        "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+        "detail_url": "https://www.bkpm.go.id/id/info/siaran-pers/proyek-bioetanol-lampung-memasuki-tahap-baru",
+        "official_domain": "www.bkpm.go.id",
+        "retrieval_method": "static_html"
+      },
+      "quality": {
+        "title_valid": true,
+        "link_valid": true,
+        "date_status": "valid",
+        "organization_status": "unknown",
+        "excerpt_status": "available"
+      },
+      "classification_hint": {
+        "code": "OTHER_OFFICIAL_NEWS",
+        "matched_terms": [],
+        "evidence_excerpt": "Jakarta, 10 April 2026 – Pemerintah melalui Kementerian Investasi dan Hilirisasi/BKPM terus mendorong pembentukan kesepakatan strategis dalam pengembangan Proyek Bioetanol di Provinsi Lampung sebagai bagian dari upaya mempercepat transisi energi nasional. Konstruksi proyek yang diharapkan mulai pada kuartal III 2026 ini melibatkan Toyota, PT Pertamina New & Renewable Energy (PNRE), dan Danantara Investment Management.",
+        "human_review_required": true
+      },
+      "content_hash": "7096c800ecc613cfb08f0de28130987790fbe7bc97e180140d08d607b4572751"
+    }
+  ]
+}

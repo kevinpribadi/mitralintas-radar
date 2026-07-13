@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "user_agent": "MitraLintasRadar/1.0 public-source-research",
+  "request_timeout_ms": 15000,
+  "request_interval_ms": 1000,
+  "max_items_per_source": 50,
+  "max_detail_requests_per_source": 25,
+  "sources": [
+    {
+      "code": "BKPM_PRESS_RELEASES",
+      "name": "Kementerian Investasi dan Hilirisasi/BKPM - Siaran Pers",
+      "official_domain": "www.bkpm.go.id",
+      "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
+      "source_type": "official_press_release",
+      "enabled_for_pilot": true,
+      "allowed_path_prefixes": [
+        "/id/info/siaran-pers"
+      ],
+      "target_signal_types": [
+        "FACILITY_OPENING_CANDIDATE",
+        "BUSINESS_EXPANSION_CANDIDATE"
+      ],
+      "fixture_prefix": "bkpm",
+      "parser": {
+        "listing_strategy": "static_anchor_cards",
+        "detail_strategy": "meta_description",
+        "selectors": {
+          "detail_path_prefix": "/id/info/siaran-pers/",
+          "listing_title_tag": "h3",
+          "listing_date_class": "date",
+          "detail_title_tag": "h1",
+          "detail_excerpt_meta": "description",
+          "canonical_rel": "canonical"
+        }
+      }
+    },
+    {
+      "code": "KEMENPERIN_IMC_NEWS",
+      "name": "Industrial Manufacturing Center Kemenperin - Berita",
+      "official_domain": "imc.kemenperin.go.id",
+      "listing_url": "https://imc.kemenperin.go.id/berita",
+      "source_type": "official_news",
+      "enabled_for_pilot": true,
+      "allowed_path_prefixes": [
+        "/berita"
+      ],
+      "target_signal_types": [
+        "FACILITY_OPENING_CANDIDATE",
+        "BUSINESS_EXPANSION_CANDIDATE"
+      ],
+      "fixture_prefix": "kemenperin",
+      "parser": {
+        "listing_strategy": "static_anchor_cards",
+        "detail_strategy": "meta_description",
+        "selectors": {
+          "detail_path_prefix": "/berita/",
+          "listing_title_tag": "h2",
+          "listing_date_class": "date",
+          "detail_title_tag": "h1",
+          "detail_excerpt_meta": "description",
+          "canonical_rel": "canonical"
+        }
+      }
+    }
+  ]
+}
