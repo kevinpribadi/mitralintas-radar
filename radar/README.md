@@ -375,3 +375,15 @@ repo** (bukan `radar/.github/`) karena GitHub hanya mengeksekusi workflow di lok
   `.github/workflows/` (batasan GitHub).
 - Folder `pipeline/` Fase 1 belum ada di repo ini saat radar dibangun; bila Fase 1 tinggal
   di tempat lain, pindahkan ke `pipeline/` tanpa perubahan apa pun pada radar.
+
+## Refresh manual sumber resmi (J.2C)
+
+Workflow **Source Pilot Refresh** di `.github/workflows/source-pilot-refresh.yml` hanya berjalan
+melalui `workflow_dispatch` dan hanya menawarkan BKPM. Ia mengambil live source ke path sementara,
+membandingkannya dengan snapshot committed, membangun proposed trigger output secara opsional, lalu
+mengunggah JSON diff, Markdown summary, dan report HTML statis. Workflow tidak mempunyai schedule,
+cron, auto-commit, push, PR, atau merge; snapshot dan trigger production committed tidak ditulis.
+
+Report audit memakai asset lokal, aman dibuka tanpa network, dan mobile-friendly pada lebar 360px dan
+390px. Kemenperin tetap ditolak karena `TLS_CERT_EXPIRED`. Petunjuk reviewer dan proses penerimaan
+manual tersedia di [SOURCE_REFRESH.md](SOURCE_REFRESH.md).
