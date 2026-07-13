@@ -1,5 +1,6 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
+  "future_signal_max_published_age_days": 60,
   "class_precedence": [
     "direct",
     "historical",
@@ -25,8 +26,20 @@
       "akan gelar",
       "akan menggelar",
       "akan berlangsung",
+      "ayo ramaikan",
+      "ayo ikuti",
+      "ayo hadiri",
+      "mari ramaikan",
+      "mari ikuti",
+      "mari hadiri",
+      "yuk ramaikan",
+      "yuk ikuti",
+      "jangan lewatkan",
+      "segera daftar",
+      "daftar sekarang",
       "segera dibuka",
       "pendaftaran dibuka",
+      "pendaftaran masih dibuka",
       "membuka pendaftaran",
       "open registration",
       "membuka tender",
@@ -35,22 +48,88 @@
       "rencana pengadaan",
       "rup 2026",
       "siap ramaikan",
+      "akan diikuti",
+      "bakal diikuti",
+      "siap diikuti",
+      "akan ikuti",
+      "bakal ikuti",
+      "siap ikuti",
+      "siap meramaikan",
+      "akan meramaikan",
+      "bakal meramaikan",
+      "diharapkan hadir",
+      "terbuka untuk umum",
+      "mengajak masyarakat",
+      "undangan mengikuti",
+      "diajak ramaikan",
+      "diajak mengikuti",
+      "targetkan",
       "dijadwalkan"
+    ],
+    "invitation_lead_terms": [
+      "ayo",
+      "mari",
+      "yuk"
+    ],
+    "invitation_action_terms": [
+      "ramaikan",
+      "ikuti",
+      "hadiri"
     ],
     "completed_or_past_phrases": [
       "telah digelar",
       "telah menggelar",
       "selesai digelar",
       "sukses digelar",
-      "diikuti",
-      "meriahkan",
-      "meramaikan",
-      "ramaikan",
-      "berlangsung pada",
+      "telah berlangsung",
+      "sudah berlangsung",
+      "usai digelar",
       "usai",
       "resmi berakhir",
-      "telah berlangsung",
-      "sudah digelar"
+      "sudah digelar",
+      "diikuti ribuan peserta",
+      "diramaikan ribuan peserta",
+      "dimeriahkan peserta",
+      "warga meramaikan",
+      "peserta mengikuti",
+      "sukses berlangsung"
+    ],
+    "completed_actor_terms": [
+      "warga",
+      "peserta",
+      "pelari",
+      "karyawan",
+      "masyarakat",
+      "anak",
+      "penari"
+    ],
+    "completed_action_terms": [
+      "ramaikan",
+      "meramaikan",
+      "meriahkan",
+      "ikuti",
+      "mengikuti"
+    ],
+    "completed_passive_terms": [
+      "diikuti",
+      "diramaikan",
+      "dimeriahkan"
+    ],
+    "completed_quantity_terms": [
+      "puluhan",
+      "ratusan",
+      "ribuan",
+      "seribu",
+      "10 ribu"
+    ],
+    "ambiguous_verbs": [
+      "ramaikan",
+      "meriahkan",
+      "ikuti",
+      "mengikuti",
+      "gelar",
+      "berlangsung",
+      "hadir"
     ]
   },
   "editorial_rules": {

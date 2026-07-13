@@ -49,13 +49,19 @@ function hashFiles(files) {
   };
 }
 
-function candidate(title, type = "event", organization = "Organisasi Contoh", eventDate = "") {
+function candidate(
+  title,
+  type = "event",
+  organization = "Organisasi Contoh",
+  eventDate = "",
+  publishedDate = "2026-07-12T01:00:00.000Z"
+) {
   const item = type === "tender"
     ? {
         judul: title,
         sumber: "Sumber Publik",
         link: "https://example.test/source",
-        published: "2026-07-13T01:00:00.000Z",
+        published: publishedDate,
         instansi_terdeteksi: organization,
       }
     : {
@@ -63,15 +69,21 @@ function candidate(title, type = "event", organization = "Organisasi Contoh", ev
         sumber: "Sumber Publik",
         link_resmi: "https://example.test/source",
         tanggal: eventDate || null,
-        published: "2026-07-13T01:00:00.000Z",
+        published: publishedDate,
         penyelenggara: organization,
       };
   return builder.normalizeItem(item, type, 0);
 }
 
-function evaluate(title, type = "event", organization = "Organisasi Contoh", eventDate = "") {
+function evaluate(
+  title,
+  type = "event",
+  organization = "Organisasi Contoh",
+  eventDate = "",
+  publishedDate = "2026-07-12T01:00:00.000Z"
+) {
   return builder.evaluateCandidate(
-    candidate(title, type, organization, eventDate), taxonomy, output.generated_at
+    candidate(title, type, organization, eventDate, publishedDate), taxonomy, output.generated_at
   );
 }
 
@@ -127,6 +139,7 @@ function createDashboardVmContext(fetchImplementation) {
 
 test("1. taxonomy valid", () => {
   assert.strictEqual(builder.validateTaxonomy(taxonomy), true);
+  assert.strictEqual(taxonomy.future_signal_max_published_age_days, 60);
 });
 
 test("2. trigger code unik", () => {
@@ -480,9 +493,106 @@ test("53. dashboard timing priority, filter, dan limit 20", async () => {
   assert.ok(initialHtml.indexOf(firstFutureDirect.title) >= 0);
   runtime.context.state.triggerFilters.timing = "COMPLETED_OR_PAST";
   runtime.context.renderTriggerSignals();
-  assert.ok(runtime.elements.triggerSignalsStatus.textContent.includes("dari 60"));
+  assert.ok(runtime.elements.triggerSignalsStatus.textContent.includes(
+    "dari " + output.trigger_summary.timing_counts.COMPLETED_OR_PAST));
   assert.ok(runtime.elements.triggerSignalsItems.innerHTML.includes("Selesai / lewat"));
   assert.ok(!runtime.elements.triggerSignalsItems.innerHTML.includes("Akan datang / terbuka"));
+});
+
+test("54. ayo ramaikan adalah future atau open", () => {
+  assert.strictEqual(evaluate("Ayo Ramaikan Fun Run 2026").timing_status, "FUTURE_OR_OPEN");
+});
+
+test("55. mari ikuti adalah future atau open", () => {
+  assert.strictEqual(evaluate("Mari Ikuti Fun Run 2026").timing_status, "FUTURE_OR_OPEN");
+});
+
+test("56. akan diikuti adalah future atau open", () => {
+  assert.strictEqual(evaluate("Acara Fun Run Akan Diikuti Ribuan Peserta").timing_status,
+    "FUTURE_OR_OPEN");
+});
+
+test("57. siap meramaikan adalah future atau open", () => {
+  assert.strictEqual(evaluate("Komunitas Siap Meramaikan Fun Run").timing_status,
+    "FUTURE_OR_OPEN");
+});
+
+test("58. warga meramaikan adalah completed atau past", () => {
+  assert.strictEqual(evaluate("Warga Meramaikan Jalan Sehat").timing_status,
+    "COMPLETED_OR_PAST");
+});
+
+test("59. diikuti ribuan peserta adalah completed atau past", () => {
+  assert.strictEqual(evaluate("Fun Run Diikuti Ribuan Peserta").timing_status,
+    "COMPLETED_OR_PAST");
+});
+
+test("60. sukses digelar adalah completed atau past", () => {
+  assert.strictEqual(evaluate("Fun Run Sukses Digelar").timing_status,
+    "COMPLETED_OR_PAST");
+});
+
+test("61. ramaikan tanpa context adalah current atau unclear", () => {
+  assert.strictEqual(evaluate("Ramaikan Fun Run Organisasi").timing_status,
+    "CURRENT_OR_UNCLEAR");
+});
+
+test("62. ikuti tanpa context adalah current atau unclear", () => {
+  assert.strictEqual(evaluate("Ikuti Fun Run Organisasi").timing_status,
+    "CURRENT_OR_UNCLEAR");
+});
+
+test("63. ayo masyarakat ramaikan adalah future atau open", () => {
+  assert.strictEqual(evaluate("Ayo Masyarakat Kalteng, Ramaikan Jalan Sehat").timing_status,
+    "FUTURE_OR_OPEN");
+});
+
+test("64. berlari bersama tanpa evidence waktu adalah current atau unclear", () => {
+  assert.strictEqual(evaluate("Berlari Bersama Bang Didi di AJS 5K Fun Run").timing_status,
+    "CURRENT_OR_UNCLEAR");
+});
+
+test("65. pendaftaran stale tanpa future date turun menjadi unclear", () => {
+  const item = evaluate(
+    "Pendaftaran Dibuka untuk Fun Run 2026", "event", "Organisasi Contoh", "",
+    "2026-01-01T00:00:00.000Z"
+  );
+  assert.strictEqual(item.timing_status, "CURRENT_OR_UNCLEAR");
+  assert.strictEqual(item.suggested_next_action, "VERIFY_TIMING");
+});
+
+test("66. pendaftaran fresh tetap future atau open", () => {
+  const item = evaluate(
+    "Pendaftaran Dibuka untuk Fun Run 2026", "event", "Organisasi Contoh", "",
+    "2026-07-01T00:00:00.000Z"
+  );
+  assert.strictEqual(item.timing_status, "FUTURE_OR_OPEN");
+});
+
+test("67. explicit future date mengalahkan stale published guard", () => {
+  const item = evaluate(
+    "Pendaftaran Dibuka untuk Fun Run 25 Juli 2026", "event", "Organisasi Contoh", "",
+    "2026-01-01T00:00:00.000Z"
+  );
+  assert.strictEqual(item.timing_status, "FUTURE_OR_OPEN");
+  assert.strictEqual(builder.hasExplicitFutureDate(item.title, output.generated_at), true);
+});
+
+test("68. warga ramaikan memiliki completed actor context", () => {
+  assert.strictEqual(evaluate("Warga Ramaikan Jalan Sehat").timing_status,
+    "COMPLETED_OR_PAST");
+});
+
+test("69. pelari akan ikuti adalah future atau open", () => {
+  assert.strictEqual(evaluate("Ratusan Pelari Akan Ikuti Fun Run").timing_status,
+    "FUTURE_OR_OPEN");
+});
+
+test("70. freshness boundary hanya stale setelah 60 hari", () => {
+  assert.strictEqual(builder.isPublishedDateStale(
+    "2026-05-13T00:00:00.000Z", output.generated_at, 60), false);
+  assert.strictEqual(builder.isPublishedDateStale(
+    "2026-05-12T00:00:00.000Z", output.generated_at, 60), true);
 });
 
 async function runTests() {

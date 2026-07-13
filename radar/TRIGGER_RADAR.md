@@ -63,6 +63,23 @@ ditampilkan sebagai metadata, tetapi tidak dianggap event date. Reference date b
 berada di taxonomy dan phrase spesifik seperti `akan gelar` atau `telah menggelar` tidak
 disimpulkan dari kata `gelar` saja.
 
+Invitation marker seperti `ayo`, `mari`, atau `yuk` yang muncul sebelum action `ramaikan`,
+`ikuti`, atau `hadiri` menjadi future/open. Planning phrase seperti `akan diikuti`, `siap
+meramaikan`, `diajak ramaikan`, dan `targetkan` juga menjadi future/open. Phrase future selalu
+diperiksa sebelum completed context, sehingga `akan diikuti` tidak salah dibaca sebagai kegiatan
+yang sudah selesai.
+
+Completed membutuhkan phrase selesai yang eksplisit atau context yang lebih kuat, misalnya actor
+sebelum action (`warga meramaikan`) atau passive action dengan kuantitas dan actor (`diikuti
+ribuan peserta`). Verba `ramaikan`, `meriahkan`, `ikuti`, `mengikuti`, `gelar`, `berlangsung`, dan
+`hadir` tanpa context tersebut tetap `CURRENT_OR_UNCLEAR`.
+
+`future_signal_max_published_age_days` bernilai 60. Published date hanya menjadi freshness guard:
+future yang berasal dari phrase diturunkan ke `CURRENT_OR_UNCLEAR` jika publikasinya lebih tua
+dari batas tersebut. Guard tidak berlaku bila field event date memang future atau judul memiliki
+tanggal/tahun eksplisit yang terbukti berada setelah reference date. Tidak ada wall-clock runtime
+atau asumsi bahwa published date adalah event date.
+
 ## Evidence strength
 
 - `STRONG`: direct/historical phrase eksplisit ditemukan serta source, link, dan tanggal valid.

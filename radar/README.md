@@ -257,6 +257,13 @@ reference date berasal dari `generated_at` input. Artikel editorial/listicle dis
 trigger event, sedangkan keyword generik investasi dan tenaga kerja tidak cukup untuk expansion
 atau recruitment.
 
+Invitation phrase (`ayo`, `mari`, `yuk`) dan planning phrase spesifik diperiksa sebelum completed
+context. Verba seperti `ramaikan` atau `ikuti` tanpa invitation, completed phrase, actor/action,
+atau passive quantity context tetap `CURRENT_OR_UNCLEAR`. Published date hanya dipakai sebagai
+freshness guard 60 hari untuk phrase-based future signal. Signal stale diturunkan ke verifikasi
+waktu, kecuali judul memuat tanggal future yang dapat dibuktikan terhadap reference date
+deterministic.
+
 Jalankan setelah data sumber tersedia:
 
 ```bash

@@ -69,8 +69,14 @@ function validateTaxonomy(taxonomy) {
       !TIMING_STATUSES.every((value) => taxonomy.timing_statuses.includes(value))) {
     errors.push("timing_statuses tidak lengkap atau tidak valid.");
   }
+  if (!Number.isInteger(taxonomy.future_signal_max_published_age_days) ||
+      taxonomy.future_signal_max_published_age_days < 0) {
+    errors.push("future_signal_max_published_age_days wajib integer non-negative.");
+  }
   validateRuleTerms(taxonomy.timing_rules, [
-    "future_or_open_phrases", "completed_or_past_phrases",
+    "future_or_open_phrases", "invitation_lead_terms", "invitation_action_terms",
+    "completed_or_past_phrases", "completed_actor_terms", "completed_action_terms",
+    "completed_passive_terms", "completed_quantity_terms", "ambiguous_verbs",
   ], "timing_rules", errors);
   validateRuleTerms(taxonomy.editorial_rules, [
     "terms", "suppressed_trigger_codes",
@@ -222,6 +228,7 @@ function normalizeItem(item, type, index) {
     ? firstText(safe.instansi_terdeteksi)
     : firstText(safe.penyelenggara);
   const eventDate = type === "event" ? firstText(safe.tanggal) : "";
+  const publishedDate = firstText(safe.published);
 
   return {
     id: stableItemId({ type, title, source, link }),
@@ -232,6 +239,7 @@ function normalizeItem(item, type, index) {
     link,
     date,
     eventDate,
+    publishedDate,
     organization,
     normalizedTitle: normalizeSearchText(title),
   };
@@ -357,10 +365,43 @@ function determineTimingStatus(candidate, primary, taxonomy, referenceDate) {
     return "CURRENT_OR_UNCLEAR";
   }
 
-  if (matchTerms(candidate.normalizedTitle,
-    taxonomy.timing_rules.future_or_open_phrases).length) return "FUTURE_OR_OPEN";
-  if (matchTerms(candidate.normalizedTitle,
-    taxonomy.timing_rules.completed_or_past_phrases).length) return "COMPLETED_OR_PAST";
+  const timingRules = taxonomy.timing_rules;
+  const hasFuturePhrase = matchTerms(
+    candidate.normalizedTitle, timingRules.future_or_open_phrases).length > 0;
+  const hasInvitationContext = hasOrderedTermContext(
+    candidate.normalizedTitle,
+    timingRules.invitation_lead_terms,
+    timingRules.invitation_action_terms
+  );
+  if (hasFuturePhrase || hasInvitationContext) {
+    const isStale = isPublishedDateStale(
+      candidate.publishedDate,
+      referenceDate,
+      taxonomy.future_signal_max_published_age_days
+    );
+    if (isStale && !hasExplicitFutureDate(candidate.title, referenceDate)) {
+      return "CURRENT_OR_UNCLEAR";
+    }
+    return "FUTURE_OR_OPEN";
+  }
+
+  const hasCompletedPhrase = matchTerms(
+    candidate.normalizedTitle, timingRules.completed_or_past_phrases).length > 0;
+  const hasCompletedActorContext = hasOrderedTermContext(
+    candidate.normalizedTitle,
+    timingRules.completed_actor_terms,
+    timingRules.completed_action_terms
+  );
+  const hasCompletedPassiveContext = matchTerms(
+    candidate.normalizedTitle, timingRules.completed_passive_terms).length > 0 &&
+    matchTerms(candidate.normalizedTitle, timingRules.completed_quantity_terms).length > 0 &&
+    matchTerms(candidate.normalizedTitle, timingRules.completed_actor_terms).length > 0;
+  if (hasCompletedPhrase || hasCompletedActorContext || hasCompletedPassiveContext) {
+    return "COMPLETED_OR_PAST";
+  }
+  if (matchTerms(candidate.normalizedTitle, timingRules.ambiguous_verbs).length) {
+    return "CURRENT_OR_UNCLEAR";
+  }
   return "CURRENT_OR_UNCLEAR";
 }
 
@@ -518,6 +559,25 @@ function containsTerm(terms, candidateTerm) {
   return (terms || []).some((term) => normalizeSearchText(term) === normalized);
 }
 
+function hasOrderedTermContext(normalizedText, leadTerms, actionTerms) {
+  const padded = ` ${normalizedText} `;
+  return (leadTerms || []).some((leadTerm) => {
+    const leadNeedle = ` ${normalizeSearchText(leadTerm)} `;
+    if (!leadNeedle.trim()) return false;
+    let leadIndex = padded.indexOf(leadNeedle);
+    while (leadIndex >= 0) {
+      const actionFound = (actionTerms || []).some((actionTerm) => {
+        const actionNeedle = ` ${normalizeSearchText(actionTerm)} `;
+        return actionNeedle.trim() &&
+          padded.indexOf(actionNeedle, leadIndex + leadNeedle.length - 1) >= 0;
+      });
+      if (actionFound) return true;
+      leadIndex = padded.indexOf(leadNeedle, leadIndex + leadNeedle.length);
+    }
+    return false;
+  });
+}
+
 function evidenceExcerpt(title, matchedTerms) {
   const sourceText = String(title == null ? "" : title);
   if (sourceText.length <= 220) return sourceText;
@@ -582,6 +642,50 @@ function utcDay(value) {
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 }
 
+function isPublishedDateStale(publishedDate, referenceDate, maxAgeDays) {
+  if (!hasValidDate(publishedDate) || !hasValidDate(referenceDate)) return false;
+  const ageDays = (utcDay(referenceDate) - utcDay(publishedDate)) / 86400000;
+  return ageDays > maxAgeDays;
+}
+
+function hasExplicitFutureDate(title, referenceDate) {
+  if (!hasValidDate(referenceDate)) return false;
+  const referenceDay = utcDay(referenceDate);
+  const reference = new Date(referenceDate);
+  const source = normalizeLoose(title);
+  const numericDates = [];
+  let match;
+  const isoPattern = /\b(20\d{2})[-\/.](\d{1,2})[-\/.](\d{1,2})\b/g;
+  while ((match = isoPattern.exec(source))) {
+    numericDates.push(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  }
+  const localPattern = /\b(\d{1,2})[-\/](\d{1,2})[-\/](20\d{2})\b/g;
+  while ((match = localPattern.exec(source))) {
+    numericDates.push(Date.UTC(Number(match[3]), Number(match[2]) - 1, Number(match[1])));
+  }
+  if (numericDates.some((value) => Number.isFinite(value) && value > referenceDay)) return true;
+
+  const monthNumbers = {
+    januari: 0, january: 0, februari: 1, february: 1, maret: 2, march: 2,
+    april: 3, mei: 4, may: 4, juni: 5, june: 5, juli: 6, july: 6,
+    agustus: 7, august: 7, september: 8, oktober: 9, october: 9,
+    november: 10, desember: 11, december: 11,
+  };
+  const tokens = normalizeSearchText(title).split(" ").filter(Boolean);
+  for (let index = 0; index < tokens.length; index += 1) {
+    if (!Object.prototype.hasOwnProperty.call(monthNumbers, tokens[index])) continue;
+    const previous = Number(tokens[index - 1]);
+    const next = Number(tokens[index + 1]);
+    const day = Number.isInteger(previous) && previous >= 1 && previous <= 31 ? previous : 1;
+    const year = Number.isInteger(next) && next >= 2000 && next <= 2100
+      ? next : (day !== 1 ? reference.getUTCFullYear() : null);
+    if (year != null && Date.UTC(year, monthNumbers[tokens[index]], day) > referenceDay) return true;
+  }
+
+  return tokens.some((token) => /^20\d{2}$/.test(token) &&
+    Number(token) > reference.getUTCFullYear());
+}
+
 function latestIsoDate(values) {
   let latest = null;
   values.forEach((value) => {
@@ -633,6 +737,8 @@ module.exports = {
   determineEvidenceStrength,
   selectPrimaryTrigger,
   determineTimingStatus,
+  isPublishedDateStale,
+  hasExplicitFutureDate,
   selectSuggestedAction,
   buildTriggerSummary,
   validateOutput,

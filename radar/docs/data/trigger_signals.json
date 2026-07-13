@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-07-12T22:54:59.286Z",
-  "taxonomy_version": "1.1.0",
+  "taxonomy_version": "1.1.1",
   "source_summary": {
     "tender_total": 448,
     "event_total": 631,
@@ -33,9 +33,9 @@
       "WEAK": 134
     },
     "timing_counts": {
-      "FUTURE_OR_OPEN": 10,
+      "FUTURE_OR_OPEN": 13,
       "CURRENT_OR_UNCLEAR": 589,
-      "COMPLETED_OR_PAST": 60,
+      "COMPLETED_OR_PAST": 57,
       "HISTORICAL_REFERENCE": 68,
       "INFORMATIONAL_OR_EDITORIAL": 0
     }
@@ -191,8 +191,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -222,8 +222,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "FUTURE_OR_OPEN",
-      "suggested_next_action": "VERIFY_ORGANIZATION",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -297,8 +297,8 @@
         }
       ],
       "primary_trigger": "CORPORATE_OR_INSTITUTIONAL_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -871,8 +871,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -1736,8 +1736,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -1887,8 +1887,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -2780,8 +2780,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -3812,8 +3812,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -4023,8 +4023,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -4962,8 +4962,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -4992,8 +4992,8 @@
         }
       ],
       "primary_trigger": "CORPORATE_OR_INSTITUTIONAL_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -5338,8 +5338,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -5747,8 +5747,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -6139,8 +6139,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "FUTURE_OR_OPEN",
-      "suggested_next_action": "VERIFY_ORGANIZATION",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -7540,8 +7540,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -8523,8 +8523,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -8781,8 +8781,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -8826,8 +8826,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -8857,8 +8857,8 @@
         }
       ],
       "primary_trigger": "CORPORATE_OR_INSTITUTIONAL_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -9266,8 +9266,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -9663,8 +9663,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -10223,8 +10223,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -11095,8 +11095,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -11336,8 +11336,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -11837,8 +11837,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -11882,8 +11882,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -12109,8 +12109,8 @@
         }
       ],
       "primary_trigger": "CORPORATE_OR_INSTITUTIONAL_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -12184,8 +12184,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -12995,8 +12995,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -13115,8 +13115,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -13310,8 +13310,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -13400,8 +13400,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -14441,8 +14441,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -15377,8 +15377,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
@@ -15482,8 +15482,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "CURRENT_OR_UNCLEAR",
-      "suggested_next_action": "VERIFY_TIMING",
+      "timing_status": "COMPLETED_OR_PAST",
+      "suggested_next_action": "ADD_TO_WATCHLIST",
       "human_review_required": true
     },
     {
@@ -15767,8 +15767,8 @@
         }
       ],
       "primary_trigger": "SPORTS_OR_COMMUNITY_EVENT",
-      "timing_status": "COMPLETED_OR_PAST",
-      "suggested_next_action": "ADD_TO_WATCHLIST",
+      "timing_status": "FUTURE_OR_OPEN",
+      "suggested_next_action": "VERIFY_ORGANIZATION",
       "human_review_required": true
     },
     {
@@ -20163,8 +20163,8 @@
         }
       ],
       "primary_trigger": "DIRECT_PROCUREMENT",
-      "timing_status": "FUTURE_OR_OPEN",
-      "suggested_next_action": "PREPARE_FOR_HUMAN_QUALIFICATION",
+      "timing_status": "CURRENT_OR_UNCLEAR",
+      "suggested_next_action": "VERIFY_TIMING",
       "human_review_required": true
     },
     {
