@@ -123,6 +123,14 @@
     border-radius: 8px; margin: 0 0 10px; padding: 10px; background: #fbfdff;
   }
   .review-list { display: grid; gap: 8px; }
+  .review-list-actions {
+    display: flex; justify-content: flex-start; margin-top: 10px;
+  }
+  .review-list-actions button {
+    padding: 7px 12px; font-size: .82rem; border: 1px solid var(--line);
+    border-radius: 7px; background: #f8fafc; cursor: pointer; color: var(--ink);
+  }
+  .review-list-actions button:hover { background: #eef2f6; }
   .review-item {
     border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
     background: #fff; overflow-wrap: anywhere;
@@ -162,6 +170,7 @@
     .filters label, .filters select, .filters input[type=text] { width: 100%; min-width: 0; }
     .filters { flex-direction: column; align-items: stretch; }
     .review-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .review-list-actions button { width: 100%; }
   }
 </style>
 </head>
@@ -291,13 +300,15 @@ var state = {
   },
   reviewQueueAvailable: false,
   reviewQueueError: null,
-  reviewFilters: { severity: "", type: "" }
+  reviewFilters: { severity: "", type: "" },
+  reviewOldReferencesExpanded: false
 };
 
 var JENIS_TENDER = ["pemerintah", "bumn", "sekolah", "swasta", "tidak_diketahui"];
 var SEGMEN_EVENT = ["pemerintah_bumn", "korporat", "komunitas", "sekolah", "tidak_diketahui"];
 var GOV_TENDER = { pemerintah: true, bumn: true };
 var GOV_EVENT = { pemerintah_bumn: true };
+var INITIAL_OLD_REFERENCE_LIMIT = 5;
 
 /* ============ Muat data ============ */
 function fetchFirst(paths) {
@@ -855,6 +866,60 @@ function reviewItemsAfterFilter() {
   });
 }
 
+function hasReviewIssue(item, code) {
+  return item.issue_codes.indexOf(code) >= 0;
+}
+
+function isOldReference(item) {
+  return hasReviewIssue(item, "OLD_ITEM");
+}
+
+function reviewPriorityBucket(item) {
+  if (item.severity === "high") return 0;
+  if (item.severity === "medium") return 1;
+  return isOldReference(item) ? 3 : 2;
+}
+
+function orderedReviewItems(items) {
+  return items.map(function (item, index) {
+    return { item: item, index: index };
+  }).sort(function (a, b) {
+    var bucketDiff = reviewPriorityBucket(a.item) - reviewPriorityBucket(b.item);
+    if (bucketDiff !== 0) return bucketDiff;
+    return a.index - b.index;
+  }).map(function (entry) {
+    return entry.item;
+  });
+}
+
+function visibleReviewItems(items) {
+  var ordered = orderedReviewItems(items);
+  var collapseOldReferences = !state.reviewOldReferencesExpanded &&
+    !state.reviewFilters.severity &&
+    !state.reviewFilters.type;
+  var hiddenOld = 0;
+  var oldShown = 0;
+  var visible = [];
+
+  ordered.forEach(function (item) {
+    if (collapseOldReferences && isOldReference(item)) {
+      if (oldShown >= INITIAL_OLD_REFERENCE_LIMIT) {
+        hiddenOld += 1;
+        return;
+      }
+      oldShown += 1;
+    }
+    visible.push(item);
+  });
+
+  return { visible: visible, hiddenOld: hiddenOld };
+}
+
+function reviewIssueLabel(code) {
+  if (code === "OLD_ITEM") return "Referensi lama";
+  return code;
+}
+
 function sortedIssueCounts(issueCounts) {
   return Object.keys(issueCounts || {}).map(function (code) {
     return { code: code, count: Number(issueCounts[code]) || 0 };
@@ -897,15 +962,17 @@ function renderReviewQueue() {
 
   var topIssues = sortedIssueCounts(summary.issue_counts).slice(0, 5);
   issuesEl.textContent = topIssues.length
-    ? "Issue code terbanyak: " + topIssues.map(function (entry) {
-        return entry.code + " (" + entry.count + ")";
+    ? "Jenis review terbanyak: " + topIssues.map(function (entry) {
+        return reviewIssueLabel(entry.code) + " (" + entry.count + ")";
       }).join(", ")
-    : "Issue code terbanyak: -";
+    : "Jenis review terbanyak: -";
 
   var filtered = reviewItemsAfterFilter();
-  var visible = filtered.slice(0, 20);
+  var display = visibleReviewItems(filtered);
+  var visible = display.visible;
   statusEl.textContent = "Total item perlu diperiksa: " + (summary.total_flagged || 0) +
-    ". Ditampilkan: " + visible.length + " dari " + filtered.length + " sesuai filter.";
+    ". Ditampilkan: " + visible.length + " dari " + filtered.length + " sesuai filter" +
+    (display.hiddenOld > 0 ? " (" + display.hiddenOld + " referensi lama disembunyikan)." : ".");
 
   if ((summary.total_flagged || 0) === 0) {
     itemsEl.innerHTML = '<div class="empty">Tidak ada item yang terdeteksi memerlukan review berdasarkan aturan saat ini.</div>';
@@ -916,7 +983,7 @@ function renderReviewQueue() {
     return;
   }
 
-  itemsEl.innerHTML = '<div class="review-list">' + visible.map(function (item) {
+  var listHtml = '<div class="review-list">' + visible.map(function (item) {
     var meta = [];
     if (item.date) meta.push("Tanggal: " + (fmtTanggal(item.date) || item.date));
     if (item.source) meta.push("Sumber: " + item.source);
@@ -934,11 +1001,17 @@ function renderReviewQueue() {
       '<h3>' + esc(item.title || "(judul tidak tersedia)") + '</h3>' +
       '<div class="meta">' + meta.map(function (m) { return "<span>" + esc(m) + "</span>"; }).join("") + '</div>' +
       '<div>' + issueCodes.map(function (code) {
-        return '<span class="badge issue">' + esc(code) + '</span>';
+        return '<span class="badge issue">' + esc(reviewIssueLabel(code)) + '</span>';
       }).join("") + '</div>' +
       sourceLink +
       '</div>';
   }).join("") + '</div>';
+  if (display.hiddenOld > 0) {
+    listHtml += '<div class="review-list-actions">' +
+      '<button type="button" id="showAllOldReferencesBtn">Tampilkan semua referensi lama</button>' +
+      '</div>';
+  }
+  itemsEl.innerHTML = listHtml;
 }
 
 /* ============ Init ============ */
@@ -983,6 +1056,12 @@ function bindEvents() {
   });
   document.getElementById("reviewTypeFilter").addEventListener("change", function (e) {
     state.reviewFilters.type = e.target.value; renderReviewQueue();
+  });
+  document.getElementById("reviewQueueItems").addEventListener("click", function (e) {
+    if (e.target && e.target.id === "showAllOldReferencesBtn") {
+      state.reviewOldReferencesExpanded = true;
+      renderReviewQueue();
+    }
   });
   document.getElementById("copySummaryBtn").addEventListener("click", function (e) {
     copyText(buildSummary(), e.target);
