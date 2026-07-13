@@ -181,3 +181,16 @@ JSON dilakukan secara atomik, sehingga input identik menghasilkan output dan has
 Builder tidak pernah memanggil `fetch_source_pilot.js`. File pilot yang hilang menghasilkan warning
 dan build production tetap berjalan. Registry invalid membuat pilot fail-closed tanpa menggagalkan
 build production. Semua hasil pilot tetap `human_review_required: true`.
+
+## Proposed trigger diff pada refresh manual J.2C
+
+Workflow **Source Pilot Refresh** dapat menjalankan builder terhadap proposed BKPM snapshot dengan
+`RADAR_TRIGGER_OUTPUT` diarahkan ke path sementara. Committed `trigger_signals.json` tidak ditulis.
+Comparator mengabaikan urutan, mempertahankan audit stable ID, dan memisahkan signal pilot baru/dihapus,
+perubahan klasifikasi, timing, evidence, serta perubahan semantik production. Production semantic
+changes wajib 0; nilai lebih besar membuat proposal `REJECT_PROPOSAL` setelah artifact aman diunggah.
+
+Proposed signal tetap wajib mempunyai provenance resmi, source-derived evidence, dan
+`human_review_required: true`; numeric scoring, ranking komersial, dan outreach tidak ditambahkan.
+Workflow tidak terjadwal dan tidak menerima proposal otomatis. Detail penggunaan dan report mobile
+ada di [SOURCE_REFRESH.md](SOURCE_REFRESH.md).

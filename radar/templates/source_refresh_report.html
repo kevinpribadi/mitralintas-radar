@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit Refresh Sumber Resmi</title>
+  <link rel="stylesheet" href="source_refresh_report.css">
+</head>
+<body>
+  <header class="report-header">
+    <div class="header-inner">
+      <p class="eyebrow">Controlled Source Refresh</p>
+      <h1>Audit Refresh Sumber Resmi</h1>
+      <div class="header-meta">
+        <span id="sourceCode">Sumber belum tersedia</span>
+        <span id="referenceDate">Reference date belum tersedia</span>
+      </div>
+      <p id="proposalStatus" class="proposal-status" role="status">Memuat status proposal…</p>
+      <p class="proposal-note">Laporan ini merupakan proposal snapshot dan belum menjadi data produksi.</p>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section aria-labelledby="summaryTitle">
+      <h2 id="summaryTitle">Ringkasan</h2>
+      <div id="summaryCards" class="summary-grid"></div>
+    </section>
+
+    <section class="quality-legend" aria-labelledby="qualityLegendTitle">
+      <h2 id="qualityLegendTitle">Status metadata</h2>
+      <p><strong>Warning — perlu verifikasi:</strong> metadata tidak tersedia atau belum diketahui; bukan bukti fabrikasi.</p>
+      <p><strong>Critical error — proposal ditolak:</strong> metadata invalid/fabricated, atau link/provenance gagal integrity check.</p>
+    </section>
+
+    <section class="filter-panel" aria-labelledby="filterTitle">
+      <div class="section-heading">
+        <h2 id="filterTitle">Filter audit</h2>
+        <p id="filterResult" aria-live="polite">Memuat hasil…</p>
+      </div>
+      <div class="filter-grid">
+        <label>Jenis perubahan
+          <select id="changeTypeFilter">
+            <option value="">Semua perubahan</option>
+            <option value="ADDED">Added</option>
+            <option value="REMOVED">Removed</option>
+            <option value="CHANGED">Changed</option>
+            <option value="TRIGGER">Trigger</option>
+            <option value="VALIDATION">Validation</option>
+          </select>
+        </label>
+        <label>Kategori trigger
+          <select id="triggerFilter"><option value="">Semua trigger</option></select>
+        </label>
+        <label>Status waktu
+          <select id="timingFilter"><option value="">Semua timing</option></select>
+        </label>
+        <label>Status validasi
+          <select id="validationFilter">
+            <option value="">Semua status</option>
+            <option value="WARNING">Warning</option>
+            <option value="ERROR">Error</option>
+            <option value="VALID">Valid</option>
+          </select>
+        </label>
+      </div>
+      <div class="detail-actions" aria-label="Kontrol detail">
+        <button type="button" id="showAllDetails">Tampilkan detail</button>
+        <button type="button" id="hideAllDetails">Sembunyikan detail</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="healthTitle"><h2 id="healthTitle">Source Health</h2><div id="sourceHealth" class="card-grid"></div></section>
+    <section aria-labelledby="addedTitle"><h2 id="addedTitle">Added Items</h2><div id="addedItems" class="card-grid"></div></section>
+    <section aria-labelledby="removedTitle"><h2 id="removedTitle">Removed Items</h2><div id="removedItems" class="card-grid"></div></section>
+    <section aria-labelledby="changedTitle"><h2 id="changedTitle">Changed Items</h2><div id="changedItems" class="card-grid"></div></section>
+    <section aria-labelledby="newTriggersTitle"><h2 id="newTriggersTitle">New Trigger Signals</h2><div id="newTriggers" class="card-grid"></div></section>
+    <section aria-labelledby="classificationTitle"><h2 id="classificationTitle">Trigger Classification Changes</h2><div id="classificationChanges" class="card-grid"></div></section>
+    <section aria-labelledby="timingTitle"><h2 id="timingTitle">Timing Changes</h2><div id="timingChanges" class="card-grid"></div></section>
+    <section aria-labelledby="evidenceTitle"><h2 id="evidenceTitle">Evidence Changes</h2><div id="evidenceChanges" class="card-grid"></div></section>
+    <section aria-labelledby="warningsTitle"><h2 id="warningsTitle">Validation Warnings</h2><div id="validationWarnings" class="card-grid"></div></section>
+    <section aria-labelledby="errorsTitle"><h2 id="errorsTitle">Validation Errors</h2><div id="validationErrors" class="card-grid"></div></section>
+  </main>
+
+  <footer>Review manusia wajib sebelum snapshot diterima melalui proses Git manual terpisah.</footer>
+  <script id="report-data" type="application/json">__REPORT_DATA__</script>
+  <script src="source_refresh_report.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+name: Source Pilot Refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_code:
+        description: Sumber resmi yang akan dibuatkan proposal snapshot
+        required: true
+        type: choice
+        options:
+          - BKPM_PRESS_RELEASES
+        default: BKPM_PRESS_RELEASES
+      max_items:
+        description: Jumlah item (minimum 1, maksimum 50)
+        required: true
+        type: string
+        default: "25"
+      max_detail_requests:
+        description: Jumlah detail request (minimum 1, maksimum 25)
+        required: true
+        type: string
+        default: "15"
+      run_trigger_build:
+        description: Bangun proposed trigger output
+        required: true
+        type: boolean
+        default: true
+      include_html_report:
+        description: Sertakan report HTML mobile-friendly
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-pilot-refresh
+  cancel-in-progress: false
+
+jobs:
+  propose-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      WORK_DIR: .source-refresh-work
+      SOURCE_CODE: ${{ inputs.source_code }}
+      MAX_ITEMS: ${{ inputs.max_items }}
+      MAX_DETAIL_REQUESTS: ${{ inputs.max_detail_requests }}
+      RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT: "70"
+    steps:
+      - name: Checkout read-only
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Validate inputs and accepted source registry
+        run: |
+          mkdir -p "$WORK_DIR"
+          node - <<'NODE'
+          const fs = require("fs");
+          const registry = JSON.parse(fs.readFileSync("radar/config/source_registry.json", "utf8"));
+          const sourceCode = process.env.SOURCE_CODE;
+          const maxItems = Number(process.env.MAX_ITEMS);
+          const maxDetails = Number(process.env.MAX_DETAIL_REQUESTS);
+          if (sourceCode !== "BKPM_PRESS_RELEASES") throw new Error("SOURCE_NOT_SELECTABLE");
+          if (!Number.isInteger(maxItems) || maxItems < 1 || maxItems > 50) throw new Error("MAX_ITEMS_OUT_OF_RANGE");
+          if (!Number.isInteger(maxDetails) || maxDetails < 1 || maxDetails > 25) throw new Error("MAX_DETAIL_REQUESTS_OUT_OF_RANGE");
+          if (!Array.isArray(registry.sources)) throw new Error("SOURCE_REGISTRY_INVALID");
+          const source = registry.sources.find((entry) => entry.code === sourceCode);
+          if (!source || source.acceptance_status !== "ACCEPTED_FOR_TRIGGER_PILOT") throw new Error("SOURCE_NOT_ACCEPTED");
+          const rejected = registry.sources.find((entry) => entry.code === "KEMENPERIN_IMC_NEWS");
+          if (!rejected || rejected.acceptance_status !== "REJECTED" || rejected.acceptance_reason !== "TLS_CERT_EXPIRED") {
+            throw new Error("REJECTED_SOURCE_CONFIG_INVALID");
+          }
+          registry.max_items_per_source = maxItems;
+          registry.max_detail_requests_per_source = maxDetails;
+          fs.writeFileSync(process.env.WORK_DIR + "/temporary_source_registry.json", JSON.stringify(registry, null, 2) + "\n");
+          NODE
+
+      - name: Run source pilot tests
+        run: node radar/scripts/test_source_pilot.js
+
+      - name: Run controlled refresh and regression tests
+        run: node radar/scripts/test_source_refresh.js
+
+      - name: Capture immutable baselines
+        run: |
+          cp radar/docs/data/source_pilot_items.json "$WORK_DIR/baseline_source_pilot_items.json"
+          cp radar/docs/data/source_pilot_health.json "$WORK_DIR/baseline_source_pilot_health.json"
+          cp radar/docs/data/trigger_signals.json "$WORK_DIR/baseline_trigger_signals.json"
+          sha256sum radar/docs/data/source_pilot_items.json radar/docs/data/source_pilot_health.json radar/docs/data/trigger_signals.json > "$WORK_DIR/committed.sha256"
+
+      - name: Fetch live BKPM proposal to temporary outputs
+        id: fetch
+        continue-on-error: true
+        env:
+          RADAR_SOURCE_REGISTRY: .source-refresh-work/temporary_source_registry.json
+          RADAR_SOURCE_PILOT_OUTPUT: .source-refresh-work/proposed_source_pilot_items.json
+          RADAR_SOURCE_HEALTH_OUTPUT: .source-refresh-work/proposed_source_pilot_health.json
+          RADAR_SOURCE_CODES: BKPM_PRESS_RELEASES
+          RADAR_SOURCE_MAX_ITEMS: ${{ inputs.max_items }}
+        run: node radar/scripts/fetch_source_pilot.js
+
+      - name: Create safe rejected audit payload after fetch failure
+        if: steps.fetch.outcome != 'success'
+        run: |
+          node - <<'NODE'
+          const fs = require("fs");
+          const dir = process.env.WORK_DIR;
+          if (!fs.existsSync(dir + "/proposed_source_pilot_items.json")) {
+            fs.writeFileSync(dir + "/proposed_source_pilot_items.json", JSON.stringify({
+              schema_version: "1.0.0", content_reference_date: "", source_summary: {
+                configured_sources: 1, healthy_sources: 0, degraded_sources: 0, unavailable_sources: 1,
+                raw_items: 0, normalized_items: 0, duplicate_items: 0, invalid_items: 0
+              }, items: []
+            }, null, 2) + "\n");
+          }
+          if (!fs.existsSync(dir + "/proposed_source_pilot_health.json")) {
+            fs.writeFileSync(dir + "/proposed_source_pilot_health.json", JSON.stringify({
+              schema_version: "1.0.0", sources: [{ source_code: "BKPM_PRESS_RELEASES",
+                status: "UNAVAILABLE", http_status: 0, content_type: "", listing_links_found: 0,
+                detail_pages_attempted: 0, valid_items: 0, invalid_items: 0,
+                warnings: [], errors: ["LIVE_FETCH_FAILED"] }]
+            }, null, 2) + "\n");
+          }
+          NODE
+
+      - name: Validate and compare source proposal
+        id: source_diff
+        run: |
+          node radar/scripts/compare_source_snapshots.js \
+            --old "$WORK_DIR/baseline_source_pilot_items.json" \
+            --new "$WORK_DIR/proposed_source_pilot_items.json" \
+            --old-health "$WORK_DIR/baseline_source_pilot_health.json" \
+            --new-health "$WORK_DIR/proposed_source_pilot_health.json" \
+            --source-code "$SOURCE_CODE" --requested-max-items "$MAX_ITEMS" \
+            --output "$WORK_DIR/source_snapshot_diff.json"
+          node -e 'const d=require("./.source-refresh-work/source_snapshot_diff.json"); console.log("eligible="+String(d.validation.proposal_eligible))' >> "$GITHUB_OUTPUT"
+
+      - name: Build proposed trigger output to temporary path
+        id: trigger_build
+        if: inputs.run_trigger_build && steps.source_diff.outputs.eligible == 'true'
+        env:
+          RADAR_DATA_DIR: radar/data
+          RADAR_TRIGGER_TAXONOMY_FILE: radar/config/trigger_taxonomy.json
+          RADAR_TRIGGER_OUTPUT: .source-refresh-work/proposed_trigger_signals.json
+          RADAR_SOURCE_PILOT_FILE: .source-refresh-work/proposed_source_pilot_items.json
+          RADAR_SOURCE_REGISTRY: .source-refresh-work/temporary_source_registry.json
+          RADAR_TRIGGER_INCLUDE_SOURCE_PILOT: "true"
+        run: node radar/scripts/build_trigger_signals.js
+
+      - name: Compare trigger proposal
+        if: inputs.run_trigger_build && steps.trigger_build.outcome == 'success'
+        run: |
+          node radar/scripts/compare_trigger_outputs.js \
+            --old "$WORK_DIR/baseline_trigger_signals.json" \
+            --new "$WORK_DIR/proposed_trigger_signals.json" \
+            --output "$WORK_DIR/trigger_diff.json"
+
+      - name: Record intentionally disabled trigger comparison
+        if: (!inputs.run_trigger_build)
+        run: node radar/scripts/compare_trigger_outputs.js --skipped --output "$WORK_DIR/trigger_diff.json"
+
+      - name: Record rejected trigger comparison after build cannot run
+        if: inputs.run_trigger_build && steps.trigger_build.outcome != 'success'
+        run: node radar/scripts/compare_trigger_outputs.js --skipped --reject-skipped --output "$WORK_DIR/trigger_diff.json"
+
+      - name: Generate JSON Markdown and optional HTML audit report
+        if: always() && hashFiles('.source-refresh-work/source_snapshot_diff.json') != '' && hashFiles('.source-refresh-work/trigger_diff.json') != ''
+        run: |
+          node radar/scripts/build_source_refresh_report.js \
+            --source-diff "$WORK_DIR/source_snapshot_diff.json" \
+            --trigger-diff "$WORK_DIR/trigger_diff.json" \
+            --committed-trigger "$WORK_DIR/baseline_trigger_signals.json" \
+            --proposed-trigger "$WORK_DIR/proposed_trigger_signals.json" \
+            --output-dir "$WORK_DIR" \
+            --minimum-date-completeness-percent "$RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT" \
+            --include-html "${{ inputs.include_html_report }}"
+
+      - name: Verify committed source and trigger outputs are unchanged
+        id: integrity
+        if: always()
+        continue-on-error: true
+        run: sha256sum --check "$WORK_DIR/committed.sha256"
+
+      - name: Upload safe audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-pilot-refresh-${{ github.run_id }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            .source-refresh-work/proposed_source_pilot_items.json
+            .source-refresh-work/proposed_source_pilot_health.json
+            .source-refresh-work/source_snapshot_diff.json
+            .source-refresh-work/source_snapshot_summary.md
+            .source-refresh-work/source_refresh_summary.json
+            .source-refresh-work/source_refresh_report.html
+            .source-refresh-work/source_refresh_report.css
+            .source-refresh-work/source_refresh_report.js
+            .source-refresh-work/proposed_trigger_signals.json
+            .source-refresh-work/trigger_diff.json
+            .source-refresh-work/trigger_diff_summary.md
+
+      - name: Enforce proposal gate after artifact upload
+        if: always()
+        run: |
+          node - <<'NODE'
+          const fs = require("fs");
+          const dir = process.env.WORK_DIR;
+          if ("${{ steps.integrity.outcome }}" !== "success") throw new Error("COMMITTED_OUTPUT_CHANGED");
+          if ("${{ steps.fetch.outcome }}" !== "success") throw new Error("LIVE_FETCH_FAILED");
+          if ("${{ inputs.run_trigger_build }}" === "true" && "${{ steps.trigger_build.outcome }}" !== "success") {
+            throw new Error("TRIGGER_BUILD_FAILED_OR_SKIPPED");
+          }
+          const trigger = JSON.parse(fs.readFileSync(dir + "/trigger_diff.json", "utf8"));
+          const report = JSON.parse(fs.readFileSync(dir + "/source_refresh_summary.json", "utf8"));
+          if (report.status === "REJECT_PROPOSAL") throw new Error("SOURCE_PROPOSAL_REJECTED");
+          if (trigger.summary.production_semantic_change_count !== 0) throw new Error("PRODUCTION_SEMANTIC_CHANGE");
+          if (!trigger.validation.proposal_eligible) throw new Error("TRIGGER_PROPOSAL_REJECTED");
+          NODE

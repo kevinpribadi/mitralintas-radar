@@ -131,3 +131,23 @@ organisasi, timing, trigger, serta kebutuhan produk.
 Audit per item, termasuk keputusan `TRUE_TRIGGER`, `PLAUSIBLE_BUT_UNCONFIRMED`, dan
 `NOT_A_TRIGGER`, tersedia di `SOURCE_PILOT_AUDIT_J2B.md`. Audit tersebut bersifat pelaporan dan
 tidak digunakan untuk mengubah hasil deterministic builder.
+
+## Controlled refresh J.2C
+
+Snapshot quarantine dapat diperbarui sebagai proposal melalui workflow manual **Source Pilot Refresh**.
+Input source hanya BKPM yang accepted; Kemenperin tidak selectable dan tetap ditolak karena
+`TLS_CERT_EXPIRED`. Live fetch menulis proposed items dan health hanya ke direktori temporary runner.
+Committed `source_pilot_items.json`, `source_pilot_health.json`, serta last-known-good tidak ditimpa.
+
+Proposal divalidasi fail-closed untuk access/HTTP/content type/allowlist, minimum valid item, output
+kosong, link dan provenance 100%, metadata invalid/fabricated, date completeness di bawah threshold,
+duplicate abnormal, source Kemenperin, serta perubahan file committed. Artifact mencakup diff dan laporan
+order-independent yang mobile-friendly, tetapi tidak memuat raw source HTML. Tidak ada scheduled fetch
+atau penerimaan otomatis. Lihat [SOURCE_REFRESH.md](SOURCE_REFRESH.md) untuk prosedur audit dan
+penerimaan manual.
+
+Missing organization/date bukan integrity failure. Nilai kosong dengan status `unknown`/`missing`
+dipertahankan apa adanya, dihitung, dan diberi warning tanpa menggunakan publisher, retrieval time,
+atau inference sebagai pengganti. Metadata invalid/fabricated, link/provenance invalid, serta date
+completeness di bawah default gate 70% tetap fail-closed. Seluruh missing metadata dan trigger timing
+terkait tetap memerlukan verifikasi manusia.
