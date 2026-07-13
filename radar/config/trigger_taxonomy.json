@@ -1,0 +1,438 @@
+{
+  "version": "1.0.0",
+  "class_precedence": [
+    "historical",
+    "direct",
+    "indirect"
+  ],
+  "strength_precedence": [
+    "STRONG",
+    "MODERATE",
+    "WEAK"
+  ],
+  "allowed_actions": [
+    "VERIFY_TRIGGER",
+    "VERIFY_ORGANIZATION",
+    "VERIFY_TIMING",
+    "VERIFY_PRODUCT_NEED",
+    "OPEN_OFFICIAL_SOURCE",
+    "ADD_TO_WATCHLIST",
+    "PREPARE_FOR_HUMAN_QUALIFICATION"
+  ],
+  "triggers": [
+    {
+      "code": "DIRECT_PROCUREMENT",
+      "label": "Sinyal Pengadaan Langsung",
+      "description": "Data menyebut proses atau kebutuhan pengadaan secara langsung.",
+      "trigger_class": "direct",
+      "positive_terms": [
+        "pengadaan",
+        "tender",
+        "belanja",
+        "kontrak"
+      ],
+      "phrase_terms": [
+        "pengadaan seragam",
+        "pengadaan pakaian",
+        "pakaian dinas",
+        "seragam gratis",
+        "belanja pakaian",
+        "kontrak apparel",
+        "tender seragam",
+        "tender pakaian"
+      ],
+      "negative_terms": [
+        "perkara pengadaan",
+        "kasus pengadaan",
+        "audit pengadaan",
+        "penyimpangan pengadaan",
+        "korupsi pengadaan",
+        "dugaan korupsi",
+        "temuan bpk",
+        "kerugian negara",
+        "kelebihan bayar",
+        "tahap penyidikan",
+        "kejari",
+        "tersangka"
+      ],
+      "product_hypotheses": [
+        "Seragam kerja atau pakaian dinas",
+        "Apparel sesuai spesifikasi pengadaan"
+      ],
+      "allowed_actions": [
+        "PREPARE_FOR_HUMAN_QUALIFICATION",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "OPEN_OFFICIAL_SOURCE"
+      ]
+    },
+    {
+      "code": "FACILITY_OPENING",
+      "label": "Pembukaan Fasilitas",
+      "description": "Data menyebut pembukaan fasilitas atau lokasi operasi baru.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "pembukaan",
+        "dibuka",
+        "fasilitas baru",
+        "gerai baru"
+      ],
+      "phrase_terms": [
+        "pembukaan pabrik",
+        "pembukaan hotel",
+        "pembukaan rumah sakit",
+        "pembukaan cabang",
+        "fasilitas baru",
+        "gerai baru",
+        "resmi dibuka"
+      ],
+      "negative_terms": [
+        "pembukaan perdagangan",
+        "pembukaan pasar",
+        "pembukaan rekening",
+        "pembukaan lowongan",
+        "upacara pembukaan",
+        "pembukaan pendaftaran"
+      ],
+      "required_any_terms": [
+        "pabrik",
+        "hotel",
+        "rumah sakit",
+        "cabang",
+        "fasilitas",
+        "gerai",
+        "lokasi operasi"
+      ],
+      "product_hypotheses": [
+        "Seragam staf fasilitas",
+        "Pakaian kerja operasional"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "BUSINESS_EXPANSION",
+      "label": "Ekspansi Operasional",
+      "description": "Data menyebut perluasan kapasitas, operasi, fasilitas, atau armada.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "ekspansi",
+        "kapasitas",
+        "perluasan",
+        "investasi",
+        "armada"
+      ],
+      "phrase_terms": [
+        "penambahan kapasitas",
+        "perluasan operasi",
+        "investasi fasilitas",
+        "penambahan armada",
+        "ekspansi operasional"
+      ],
+      "negative_terms": [
+        "ekspansi kredit",
+        "ekspansi pembiayaan",
+        "ekspansi moneter",
+        "ekspansi fiskal",
+        "ekspansi pasar modal",
+        "perluasan akses kredit"
+      ],
+      "product_hypotheses": [
+        "Tambahan pakaian kerja untuk operasi baru",
+        "Apparel operasional untuk kapasitas tambahan"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "MASS_RECRUITMENT",
+      "label": "Rekrutmen Massal",
+      "description": "Data menyebut penambahan tenaga kerja atau onboarding dalam skala besar.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "rekrutmen",
+        "pegawai",
+        "tenaga kerja",
+        "onboarding"
+      ],
+      "phrase_terms": [
+        "rekrutmen massal",
+        "penerimaan ribuan pegawai",
+        "penambahan tenaga kerja",
+        "onboarding pegawai"
+      ],
+      "negative_terms": [
+        "rekrutmen politik",
+        "rekrutmen partai",
+        "rekrutmen calon legislatif",
+        "rekrutmen peserta",
+        "rekrutmen relawan"
+      ],
+      "product_hypotheses": [
+        "Pakaian kerja untuk pegawai baru",
+        "Seragam onboarding"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "REBRANDING_OR_IDENTITY_CHANGE",
+      "label": "Perubahan Identitas",
+      "description": "Data menyebut perubahan brand, logo, atau identitas institusi.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "rebranding",
+        "logo",
+        "identitas",
+        "brand"
+      ],
+      "phrase_terms": [
+        "logo baru",
+        "identitas baru",
+        "perubahan brand",
+        "transformasi identitas"
+      ],
+      "negative_terms": [
+        "logo sponsor",
+        "identitas pelaku",
+        "identitas korban",
+        "brand ambassador"
+      ],
+      "product_hypotheses": [
+        "Pembaruan identitas pada seragam",
+        "Apparel dengan identitas visual baru"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "CORPORATE_OR_INSTITUTIONAL_EVENT",
+      "label": "Event Korporasi atau Institusi",
+      "description": "Data menyebut kegiatan korporasi, institusi, atau perayaan organisasi.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "hut",
+        "anniversary",
+        "gathering",
+        "konferensi",
+        "seminar",
+        "festival"
+      ],
+      "phrase_terms": [
+        "family gathering",
+        "family day",
+        "ulang tahun perusahaan",
+        "hari ulang tahun",
+        "konferensi tahunan",
+        "seminar nasional"
+      ],
+      "negative_terms": [
+        "seminar proposal",
+        "festival film dokumenter lama",
+        "hut tanpa kegiatan",
+        "rekomendasi tempat",
+        "tempat outing",
+        "tempat family gathering",
+        "tempat gathering",
+        "tema family gathering",
+        "ide family gathering",
+        "tips gathering"
+      ],
+      "product_hypotheses": [
+        "Kaos atau polo kegiatan",
+        "Jaket atau merchandise tekstil acara"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "SPORTS_OR_COMMUNITY_EVENT",
+      "label": "Event Olahraga atau Komunitas",
+      "description": "Data menyebut kegiatan olahraga atau komunitas yang eksplisit.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "marathon",
+        "turnamen",
+        "olahraga",
+        "pelari"
+      ],
+      "phrase_terms": [
+        "fun run",
+        "jalan sehat",
+        "jalan santai",
+        "event lari",
+        "lomba lari",
+        "event olahraga",
+        "kegiatan olahraga",
+        "fun bike"
+      ],
+      "negative_terms": [
+        "run time",
+        "runtime",
+        "run dalam url",
+        "hoaks",
+        "uji coba mesin"
+      ],
+      "product_hypotheses": [
+        "Kaos atau jersey peserta",
+        "Apparel panitia atau komunitas"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "GRADUATION_OR_EDUCATION_EVENT",
+      "label": "Kegiatan Pendidikan",
+      "description": "Data menyebut wisuda, orientasi, penerimaan siswa, atau awal tahun ajaran.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "wisuda",
+        "orientasi",
+        "siswa",
+        "mahasiswa"
+      ],
+      "phrase_terms": [
+        "penerimaan siswa",
+        "penerimaan mahasiswa",
+        "tahun ajaran baru",
+        "masa orientasi",
+        "upacara wisuda"
+      ],
+      "negative_terms": [
+        "penerimaan siswa ditutup",
+        "orientasi seksual",
+        "wisuda virtual lama"
+      ],
+      "product_hypotheses": [
+        "Seragam siswa atau atribut orientasi",
+        "Apparel kegiatan pendidikan"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "SAFETY_OR_OPERATIONAL_PROGRAM",
+      "label": "Program Keselamatan atau Operasional",
+      "description": "Data menyebut program keselamatan kerja atau kegiatan operasi lapangan.",
+      "trigger_class": "indirect",
+      "positive_terms": [
+        "k3",
+        "safety",
+        "keselamatan",
+        "operasi lapangan",
+        "armada"
+      ],
+      "phrase_terms": [
+        "safety campaign",
+        "keselamatan kerja",
+        "operasi lapangan",
+        "peluncuran armada",
+        "program k3"
+      ],
+      "negative_terms": [
+        "keselamatan lalu lintas umum",
+        "operasi tangkap tangan",
+        "operasi politik",
+        "armada perang historis"
+      ],
+      "product_hypotheses": [
+        "Safety apparel atau rompi",
+        "Pakaian kerja lapangan"
+      ],
+      "allowed_actions": [
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "VERIFY_TRIGGER",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "HISTORICAL_PROCUREMENT_PATTERN",
+      "label": "Pola Pengadaan Historis",
+      "description": "Data membahas perkara, audit, atau referensi pengadaan yang bersifat historis.",
+      "trigger_class": "historical",
+      "positive_terms": [
+        "perkara",
+        "audit",
+        "kasus",
+        "penyimpangan",
+        "korupsi",
+        "penyidikan",
+        "kejari",
+        "tersangka"
+      ],
+      "phrase_terms": [
+        "perkara pengadaan",
+        "audit pengadaan",
+        "kasus pengadaan",
+        "penyimpangan pengadaan",
+        "korupsi pengadaan",
+        "dugaan korupsi",
+        "temuan bpk",
+        "kerugian negara",
+        "kelebihan bayar",
+        "tahap penyidikan",
+        "pengadaan lama"
+      ],
+      "negative_terms": [
+        "audit internal rutin tanpa pengadaan",
+        "kasus kesehatan",
+        "perkara olahraga"
+      ],
+      "required_any_terms": [
+        "pengadaan",
+        "tender",
+        "seragam",
+        "pakaian",
+        "apparel"
+      ],
+      "product_hypotheses": [
+        "Referensi historis spesifikasi apparel",
+        "Pola pembelian tekstil untuk verifikasi lebih lanjut"
+      ],
+      "allowed_actions": [
+        "ADD_TO_WATCHLIST",
+        "VERIFY_TRIGGER",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "OPEN_OFFICIAL_SOURCE"
+      ]
+    }
+  ]
+}

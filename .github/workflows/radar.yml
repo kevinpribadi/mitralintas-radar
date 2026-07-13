@@ -81,6 +81,16 @@ jobs:
           RADAR_QUALIFICATION_EXPIRED_DAYS: "1095"
         run: node radar/scripts/build_qualification_readiness.js
 
+      - name: Buat trigger signals
+        env:
+          RADAR_DATA_DIR: radar/data
+          RADAR_TRIGGER_TAXONOMY_FILE: radar/config/trigger_taxonomy.json
+          RADAR_TRIGGER_OUTPUT: radar/docs/data/trigger_signals.json
+        run: node radar/scripts/build_trigger_signals.js
+
+      - name: Uji trigger signals
+        run: node radar/scripts/test_trigger_signals.js
+
       # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
       - name: Salin JSON ke docs/data
         run: |

@@ -234,6 +234,40 @@ node --check radar/scripts/test_human_feedback.js
 node radar/scripts/test_human_feedback.js
 ```
 
+## Fase J: Trigger Radar V1
+
+Trigger Radar mendeteksi peristiwa yang dapat mendahului kebutuhan tekstil atau apparel pada
+data tender/event yang sudah tersedia. Trigger adalah indikasi awal berbasis aturan, bukan bukti
+kebutuhan atau pembelian. Dokumentasi lengkap tersedia di
+[TRIGGER_RADAR.md](TRIGGER_RADAR.md), sedangkan taxonomy machine-readable berada di
+[config/trigger_taxonomy.json](config/trigger_taxonomy.json).
+
+Trigger dibagi menjadi kelas `direct`, `indirect`, dan `historical`, dengan evidence strength
+non-numerik `STRONG`, `MODERATE`, dan `WEAK`. Satu item dapat memiliki beberapa trigger.
+Primary trigger dipilih deterministic dengan precedence historical, direct, lalu indirect;
+dalam kelas yang sama, evidence strength lebih kuat dipilih sebelum urutan taxonomy. Aturan
+kategorikal ini bukan ranking komersial atau opportunity score.
+
+Jalankan setelah data sumber tersedia:
+
+```bash
+node radar/scripts/build_trigger_signals.js
+node radar/scripts/test_trigger_signals.js
+```
+
+Output ditulis atomik ke `docs/data/trigger_signals.json`. `generated_at` berasal dari timestamp
+input terbaru sehingga dua run dengan input identik menghasilkan hash identik. Environment
+variables yang tersedia:
+
+- `RADAR_DATA_DIR`: folder input, default `radar/data`.
+- `RADAR_TRIGGER_TAXONOMY_FILE`: taxonomy, default `radar/config/trigger_taxonomy.json`.
+- `RADAR_TRIGGER_OUTPUT`: output, default `radar/docs/data/trigger_signals.json`.
+
+Dashboard menampilkan maksimal 20 item awal pada panel **Trigger Kebutuhan**, dengan filter
+kategori, class, evidence strength, dan type. Product hypotheses selalu diberi label perlu
+verifikasi. Tidak ada scoring numerik, ranking penjualan, sumber scraping baru, keputusan manusia
+otomatis, atau outreach pada Fase J.
+
 ## Setup GitHub Actions + GitHub Pages
 
 Workflow: [.github/workflows/radar.yml](../.github/workflows/radar.yml) — berada di **root
