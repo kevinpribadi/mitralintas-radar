@@ -46,6 +46,8 @@ section { min-width: 0; margin-bottom: 24px; }
 }
 .summary-card strong { display: block; font-size: 1.35rem; line-height: 1.2; }
 .summary-card span { color: var(--muted); font-size: .82rem; }
+.quality-legend { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.quality-legend p { margin: 7px 0 0; overflow-wrap: anywhere; }
 .audit-card h3, .health-card h3 { margin: 0 0 8px; font-size: 1rem; line-height: 1.35; overflow-wrap: anywhere; }
 .card-status { display: inline-block; margin-bottom: 8px; font-size: .76rem; font-weight: 700; }
 .status-warning { background: var(--warning-bg); color: var(--warning-ink); }
@@ -54,6 +56,13 @@ section { min-width: 0; margin-bottom: 24px; }
 .card-status, .tag { border-radius: 999px; padding: 3px 9px; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
 .tag { background: #e8f0f4; color: #294853; font-size: .73rem; }
+.metadata-messages { display: grid; gap: 6px; margin: 10px 0; min-width: 0; }
+.validation-label {
+  display: block; min-width: 0; border-left: 4px solid currentColor; border-radius: 7px;
+  padding: 7px 9px; font-size: .78rem; font-weight: 650; overflow-wrap: anywhere;
+}
+.validation-label.warning { background: var(--warning-bg); color: var(--warning-ink); }
+.validation-label.error { background: var(--error-bg); color: var(--error-ink); }
 
 dl { display: grid; grid-template-columns: minmax(98px, .42fr) minmax(0, 1fr); gap: 5px 9px; margin: 0; }
 dt { color: var(--muted); font-size: .78rem; }
@@ -89,6 +98,7 @@ footer { padding: 8px 12px 30px; color: var(--muted); font-size: .8rem; }
 @media (min-width: 390px) {
   body { font-size: 16px; }
   .report-header { padding-inline: 18px; }
+  .metadata-messages { gap: 7px; }
 }
 @media (min-width: 768px) {
   .report-header { padding: 32px 24px; }

@@ -140,7 +140,14 @@ Input source hanya BKPM yang accepted; Kemenperin tidak selectable dan tetap dit
 Committed `source_pilot_items.json`, `source_pilot_health.json`, serta last-known-good tidak ditimpa.
 
 Proposal divalidasi fail-closed untuk access/HTTP/content type/allowlist, minimum valid item, output
-kosong, link dan provenance 100%, tanggal atau organisasi yang tidak terverifikasi, duplicate abnormal,
-source Kemenperin, serta perubahan file committed. Artifact mencakup diff order-independent dan laporan
-audit mobile-friendly, tetapi tidak memuat raw source HTML. Tidak ada scheduled fetch atau penerimaan
-otomatis. Lihat [SOURCE_REFRESH.md](SOURCE_REFRESH.md) untuk prosedur audit dan penerimaan manual.
+kosong, link dan provenance 100%, metadata invalid/fabricated, date completeness di bawah threshold,
+duplicate abnormal, source Kemenperin, serta perubahan file committed. Artifact mencakup diff dan laporan
+order-independent yang mobile-friendly, tetapi tidak memuat raw source HTML. Tidak ada scheduled fetch
+atau penerimaan otomatis. Lihat [SOURCE_REFRESH.md](SOURCE_REFRESH.md) untuk prosedur audit dan
+penerimaan manual.
+
+Missing organization/date bukan integrity failure. Nilai kosong dengan status `unknown`/`missing`
+dipertahankan apa adanya, dihitung, dan diberi warning tanpa menggunakan publisher, retrieval time,
+atau inference sebagai pengganti. Metadata invalid/fabricated, link/provenance invalid, serta date
+completeness di bawah default gate 70% tetap fail-closed. Seluruh missing metadata dan trigger timing
+terkait tetap memerlukan verifikasi manusia.

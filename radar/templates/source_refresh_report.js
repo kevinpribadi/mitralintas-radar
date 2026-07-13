@@ -41,6 +41,21 @@
     actions.appendChild(link);
   }
 
+  function validationLabel(code) {
+    var value = String(code || "");
+    if (value.indexOf("ORGANIZATION_MISSING") === 0) return "Warning — Organisasi belum tersedia";
+    if (value.indexOf("PUBLISHED_DATE_MISSING") === 0) return "Warning — Tanggal belum tersedia";
+    if (value.indexOf("HUMAN_REVIEW_REQUIRED") === 0) return "Warning — Perlu verifikasi manusia";
+    if (value.indexOf("CLASSIFICATION_HINT_UNKNOWN") === 0) return "Warning — Classification hint belum diketahui";
+    if (value.indexOf("ORGANIZATION_INVALID") === 0) return "Critical error — Organisasi invalid";
+    if (value.indexOf("ORGANIZATION_FABRICATION_DETECTED") === 0) return "Critical error — Organisasi fabricated";
+    if (value.indexOf("PUBLISHED_DATE_INVALID") === 0) return "Critical error — Tanggal invalid";
+    if (value.indexOf("PUBLISHED_DATE_FABRICATION_DETECTED") === 0) return "Critical error — Tanggal fabricated";
+    if (value.indexOf("DATE_COMPLETENESS_BELOW_THRESHOLD") === 0) return "Critical error — Kelengkapan tanggal di bawah threshold";
+    if (/LINK|PROVENANCE/.test(value)) return "Critical error — Link atau provenance invalid";
+    return value;
+  }
+
   function itemCard(item, changeType) {
     var card = element("article", "audit-card");
     card.dataset.changeType = changeType || "";
@@ -57,9 +72,19 @@
     appendDefinition(list, "Classification hint", item.classification_hint || "—");
     appendDefinition(list, "Detected trigger", item.detected_trigger || "—");
     appendDefinition(list, "Timing", item.timing_status || "—");
+    if (item.timing_verification_required) {
+      appendDefinition(list, "Timing verification", "Wajib — published date belum tersedia");
+    }
     appendDefinition(list, "Evidence", item.evidence || "—");
     appendDefinition(list, "Human review", item.human_review_required === false ? "Tidak" : "Wajib");
     card.appendChild(list);
+    var metadataMessages = element("div", "metadata-messages");
+    (item.validation_messages || []).forEach(function (message) {
+      var isError = /INVALID|FABRICATION|BELOW_THRESHOLD|LINK|PROVENANCE/.test(message);
+      metadataMessages.appendChild(element("span", "validation-label " + (isError ? "error" : "warning"),
+        validationLabel(message)));
+    });
+    if (metadataMessages.childNodes.length) card.appendChild(metadataMessages);
     var tags = element("div", "tag-list");
     (item.change_reasons || []).forEach(function (reason) { tags.appendChild(element("span", "tag", reason)); });
     if (tags.childNodes.length) card.appendChild(tags);
@@ -109,7 +134,7 @@
     card.dataset.timing = "";
     card.dataset.validation = status;
     card.appendChild(element("strong", "", status));
-    card.appendChild(element("p", "breakable", message));
+    card.appendChild(element("p", "breakable", validationLabel(message)));
     renderedCards.push(card);
     return card;
   }
@@ -128,7 +153,9 @@
       ["Item lama", model.summary.old_total], ["Item baru", model.summary.new_total],
       ["Added", model.summary.added_count], ["Removed", model.summary.removed_count],
       ["Changed", model.summary.changed_count], ["New triggers", model.summary.new_trigger_count],
+      ["Missing date", model.summary.missing_date_count],
       ["Missing organization", model.summary.missing_organization_count],
+      ["Date completeness", String(model.summary.date_completeness_percent || 0) + "%"],
       ["Production changes", model.summary.production_change_count],
     ];
     var container = document.getElementById("summaryCards");

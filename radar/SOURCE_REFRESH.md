@@ -51,6 +51,26 @@ tidak dihitung sebagai perubahan. Changed item mencantumkan field dan reason:
 Periksa health, HTTP 200, content type HTML, jumlah valid/invalid/duplicate, link resmi, tanggal, serta
 provenance sebelum mengambil keputusan.
 
+### Missing, invalid, dan fabricated metadata
+
+Quality gate membedakan tiga keadaan. Metadata `missing`/`unknown` berarti sumber tidak memberikan
+bukti eksplisit; nilainya tetap kosong, dihitung, diberi warning, dan wajib diverifikasi manusia.
+Kondisi ini bukan fabrication dan tidak otomatis menolak proposal. `ORGANIZATION_MISSING` menandai
+organization hint kosong/unknown; publisher tidak pernah dipakai sebagai buyer.
+`PUBLISHED_DATE_MISSING` menandai tanggal kosong dengan `date_status=missing`, tanpa membuat tanggal
+pengganti dari retrieval time atau runtime. Item tersebut diberi penanda verifikasi timing.
+
+Metadata invalid mempunyai nilai/status yang tidak memenuhi kontrak dan menjadi critical error, seperti
+`ORGANIZATION_INVALID` atau `PUBLISHED_DATE_INVALID`. Metadata fabricated adalah nilai yang berasal
+dari publisher/inference/runtime, tidak terdapat pada source, atau ditandai fabricated; proposal ditolak
+dengan `ORGANIZATION_FABRICATION_DETECTED`, `PUBLISHED_DATE_FABRICATION_DETECTED`, atau
+`EXCERPT_FABRICATION_DETECTED`.
+
+Kelengkapan tanggal dihitung dari tanggal ISO valid dibagi seluruh proposed item. Default configurable
+gate `RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT` adalah 70. Kelengkapan minimal 70% dapat masuk
+`REVIEW_REQUIRED`; nilai di bawah 70% menghasilkan `DATE_COMPLETENESS_BELOW_THRESHOLD` dan
+`REJECT_PROPOSAL`. Satu atau beberapa missing date tidak ditolak selama threshold masih terpenuhi.
+
 ## Membaca trigger diff
 
 `trigger_diff.json` membandingkan committed dan proposed trigger output tanpa memperhitungkan urutan.
@@ -62,10 +82,11 @@ outreach tetap dilarang.
 ## Arti rekomendasi
 
 - `REVIEW_REQUIRED`: proposal memiliki perubahan material dan tidak melanggar gate; reviewer manusia
-  tetap harus memeriksa seluruh perubahan.
+  tetap harus memeriksa seluruh perubahan. Status ini juga dipakai untuk missing organization/date atau
+  classification hint unknown yang masih berada di atas quality threshold.
 - `REJECT_PROPOSAL`: ada error validasi, fetch/source health tidak layak, output kosong/abnormal,
-  provenance/link tidak lengkap, source terlarang, atau production semantics berubah. Jangan mengganti
-  last-known-good.
+  provenance/link tidak lengkap, metadata invalid/fabricated, quality di bawah threshold, source
+  terlarang, atau production semantics berubah. Jangan mengganti last-known-good.
 - `NO_MATERIAL_CHANGE`: proposal valid tetapi snapshot dan trigger tidak mempunyai perubahan material.
 
 Tidak ada status automatic accept.

@@ -387,3 +387,8 @@ cron, auto-commit, push, PR, atau merge; snapshot dan trigger production committ
 Report audit memakai asset lokal, aman dibuka tanpa network, dan mobile-friendly pada lebar 360px dan
 390px. Kemenperin tetap ditolak karena `TLS_CERT_EXPIRED`. Petunjuk reviewer dan proses penerimaan
 manual tersedia di [SOURCE_REFRESH.md](SOURCE_REFRESH.md).
+
+Quality gate membedakan metadata missing/unknown dari invalid/fabricated. Organization atau tanggal
+yang tidak tersedia tetap kosong, menjadi warning, dan memerlukan review manusia; nilai invalid atau
+fabricated tetap menolak proposal. Kelengkapan tanggal minimum default adalah 70%, dapat dikonfigurasi
+melalui `RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT` pada workflow.

@@ -32,9 +32,10 @@ const dashboard = fs.readFileSync(DASHBOARD, "utf8");
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), "radar-source-refresh-"));
 let passed = 0;
 let failed = 0;
+const completedTests = new Set();
 
 function test(number, name, fn) {
-  try { fn(); passed += 1; console.log(`PASS ${number}. ${name}`); }
+  try { fn(); passed += 1; completedTests.add(name); console.log(`PASS ${number}. ${name}`); }
   catch (error) { failed += 1; console.error(`FAIL ${number}. ${name}: ${error.message}`); }
 }
 
@@ -113,6 +114,33 @@ report.writeReports(model, { outputDir: reportDir, templateDir: TEMPLATE_DIR, in
 const renderedHtml = fs.readFileSync(path.join(reportDir, "source_refresh_report.html"), "utf8");
 const sourceMd = fs.readFileSync(path.join(reportDir, "source_snapshot_summary.md"), "utf8");
 const triggerMd = fs.readFileSync(path.join(reportDir, "trigger_diff_summary.md"), "utf8");
+
+function scenarioModel(items, old = []) {
+  const diff = sourceCompare.compareSourceSnapshots(snapshot(old), snapshot(items), {
+    oldHealth: health({ valid_items: old.length }), proposedHealth: health({ valid_items: items.length }),
+    requestedMaxItems: Math.max(1, items.length),
+  });
+  const stableTrigger = { items: [production()] };
+  return report.buildReportModel(diff,
+    triggerCompare.compareTriggerOutputs(stableTrigger, stableTrigger),
+    { minimumDateCompletenessPercent: 70 });
+}
+
+function missingDateItem(id) {
+  return sourceItem(id, { published_at: "", quality: Object.assign({}, sourceItem(id).quality, { date_status: "missing" }) });
+}
+
+const scenarioAItems = Array.from({ length: 10 }, (_, index) => sourceItem(`a-${index}`));
+const scenarioA = scenarioModel(scenarioAItems);
+const scenarioBItems = Array.from({ length: 10 }, (_, index) => index < 2 ? missingDateItem(`b-${index}`) : sourceItem(`b-${index}`));
+const scenarioB = scenarioModel(scenarioBItems);
+const scenarioCItems = Array.from({ length: 10 }, (_, index) => index < 4 ? missingDateItem(`c-${index}`) : sourceItem(`c-${index}`));
+const scenarioC = scenarioModel(scenarioCItems);
+const fabricatedOrganizationItem = sourceItem("fabricated-org", {
+  organization_hint: "PT Organisasi Rekaan",
+  quality: Object.assign({}, sourceItem("fabricated-org").quality, { organization_status: "explicit" }),
+});
+const scenarioD = scenarioModel([fabricatedOrganizationItem]);
 
 test(1, "workflow hanya workflow_dispatch", () => {
   const triggerBlock = workflow.slice(workflow.indexOf("on:"), workflow.indexOf("permissions:"));
@@ -255,6 +283,119 @@ test("S4", "production semantic change produces reject report without committed 
   const rejectedDiff = triggerCompare.compareTriggerOutputs({ items: [production()] }, { items: [changedProduction] });
   assert.strictEqual(report.buildReportModel(sourceDiff, rejectedDiff).status, "REJECT_PROPOSAL");
   assert.deepStrictEqual(hashes(PROTECTED), before);
+});
+
+test("C1", "organization missing menghasilkan warning bukan rejection", () => {
+  assert(scenarioA.warnings.includes("ORGANIZATION_MISSING"));
+  assert.strictEqual(scenarioA.status, "REVIEW_REQUIRED");
+});
+test("C2", "organization unknown menghasilkan warning", () => {
+  const result = report.assessItemMetadata(sourceItem("org-unknown"));
+  assert(result.warnings.includes("ORGANIZATION_MISSING")); assert.strictEqual(result.errors.length, 0);
+});
+test("C3", "organization fabricated menyebabkan rejection", () => {
+  assert(scenarioD.errors.some((value) => value.startsWith("ORGANIZATION_FABRICATION_DETECTED")));
+  assert.strictEqual(scenarioD.status, "REJECT_PROPOSAL");
+});
+test("C4", "publisher sebagai buyer menyebabkan rejection", () => {
+  const base = sourceItem("publisher-buyer");
+  const item = sourceItem("publisher-buyer", { organization_hint: base.source_name,
+    quality: Object.assign({}, base.quality, { organization_status: "explicit" }) });
+  const result = scenarioModel([item]);
+  assert(result.errors.some((value) => value.startsWith("ORGANIZATION_FABRICATION_DETECTED")));
+  assert.strictEqual(result.status, "REJECT_PROPOSAL");
+});
+test("C5", "one missing date tidak menyebabkan rejection", () => {
+  const items = Array.from({ length: 10 }, (_, index) => index === 0 ? missingDateItem(`one-${index}`) : sourceItem(`one-${index}`));
+  const result = scenarioModel(items);
+  assert.strictEqual(result.summary.date_completeness_percent, 90); assert.strictEqual(result.status, "REVIEW_REQUIRED");
+});
+test("C6", "date completeness 80 percent dapat REVIEW_REQUIRED", () => {
+  assert.strictEqual(scenarioB.summary.date_completeness_percent, 80); assert.strictEqual(scenarioB.status, "REVIEW_REQUIRED");
+});
+test("C7", "date completeness 60 percent menyebabkan rejection", () => {
+  assert.strictEqual(scenarioC.summary.date_completeness_percent, 60);
+  assert(scenarioC.errors.includes("DATE_COMPLETENESS_BELOW_THRESHOLD"));
+  assert.strictEqual(scenarioC.status, "REJECT_PROPOSAL");
+});
+test("C8", "invalid date menyebabkan item invalid", () => {
+  const result = scenarioModel([sourceItem("invalid-date", { published_at: "2026-02-31" })]);
+  assert(result.errors.some((value) => value.startsWith("PUBLISHED_DATE_INVALID")));
+  assert.strictEqual(result.summary.invalid_item_count, 1);
+});
+test("C9", "fabricated retrieval date menyebabkan rejection", () => {
+  const base = sourceItem("retrieval-date");
+  const item = sourceItem("retrieval-date", { quality: Object.assign({}, base.quality, { date_source: "retrieval_time" }) });
+  const result = scenarioModel([item]);
+  assert(result.errors.some((value) => value.startsWith("PUBLISHED_DATE_FABRICATION_DETECTED")));
+  assert.strictEqual(result.status, "REJECT_PROPOSAL");
+});
+test("C10", "missing metadata count tampil benar", () => {
+  assert.strictEqual(scenarioB.summary.missing_organization_count, 10);
+  assert.strictEqual(scenarioB.summary.missing_date_count, 2);
+});
+test("C11", "report membedakan warning dan critical error", () => {
+  assert.match(jsTemplate, /Warning — Organisasi belum tersedia/);
+  assert.match(jsTemplate, /Critical error — Organisasi fabricated/);
+  assert.match(cssTemplate, /validation-label\.warning/); assert.match(cssTemplate, /validation-label\.error/);
+});
+test("C12", "mobile report 360px tetap aman", () => {
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*360px\)/); assert.match(cssTemplate, /overflow-x:\s*hidden/);
+});
+test("C13", "mobile report 390px tetap aman", () => {
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*390px\)/); assert.match(cssTemplate, /overflow-wrap:\s*anywhere/);
+});
+test("C14", "existing 54 source refresh tests tetap lulus", () => assert.strictEqual(failed, 0));
+test("C15", "source pilot tests tetap lulus", () => assert(completedTests.has("existing source pilot tests lulus")));
+test("C16", "trigger tests tetap lulus", () => assert(completedTests.has("trigger regression lulus")));
+test("C17", "human feedback tests tetap lulus", () => assert(completedTests.has("human feedback regression lulus")));
+test("C18", "committed production hashes tidak berubah setelah quality audit", () => assert.deepStrictEqual(hashes(PROTECTED), initialHashes));
+test("C19", "workflow tetap tanpa cron commit push atau PR", () => {
+  assert.doesNotMatch(workflow, /\bcron\s*:|\bgit\s+(?:commit|push)\b|\b(?:gh\s+pr|pull-request|create-pull-request)\b/i);
+});
+test("C20", "git diff check lulus", () => {
+  const result = childProcess.spawnSync("git", ["diff", "--check"], { cwd: ROOT, encoding: "utf8" });
+  assert.strictEqual(result.status, 0, result.stdout + result.stderr);
+});
+
+test("A", "scenario A missing organization tetap REVIEW_REQUIRED", () => {
+  assert.strictEqual(scenarioA.summary.missing_organization_count, 10);
+  assert.strictEqual(scenarioA.summary.date_completeness_percent, 100);
+  assert.strictEqual(scenarioA.status, "REVIEW_REQUIRED");
+});
+test("B", "scenario B dua missing date pada 80 percent tetap REVIEW_REQUIRED", () => {
+  assert.strictEqual(scenarioB.summary.missing_date_count, 2); assert.strictEqual(scenarioB.status, "REVIEW_REQUIRED");
+});
+test("C", "scenario C empat missing date pada 60 percent ditolak", () => assert.strictEqual(scenarioC.status, "REJECT_PROPOSAL"));
+test("D", "scenario D satu organization fabricated ditolak", () => assert.strictEqual(scenarioD.status, "REJECT_PROPOSAL"));
+test("E1", "organization non-explicit bernilai ditandai invalid", () => {
+  const base = sourceItem("invalid-org");
+  const item = sourceItem("invalid-org", { organization_hint: "PT Belum Terverifikasi",
+    quality: Object.assign({}, base.quality, { organization_status: "unknown" }) });
+  assert(report.assessItemMetadata(item).errors.includes("ORGANIZATION_INVALID"));
+});
+test("E2", "fabricated excerpt menyebabkan rejection", () => {
+  const base = sourceItem("fabricated-excerpt");
+  const item = sourceItem("fabricated-excerpt", {
+    quality: Object.assign({}, base.quality, { excerpt_status: "fabricated", excerpt_source: "inference" }) });
+  const result = scenarioModel([item]);
+  assert(result.errors.some((value) => value.startsWith("EXCERPT_FABRICATION_DETECTED")));
+  assert.strictEqual(result.status, "REJECT_PROPOSAL");
+});
+test("E3", "clean no-material snapshot menghasilkan NO_MATERIAL_CHANGE", () => {
+  const base = sourceItem("clean", { title: "PT Contoh membangun fasilitas", organization_hint: "PT Contoh",
+    quality: Object.assign({}, sourceItem("clean").quality, { organization_status: "explicit" }) });
+  const result = scenarioModel([base], [JSON.parse(JSON.stringify(base))]);
+  assert.strictEqual(result.status, "NO_MATERIAL_CHANGE");
+});
+test("E4", "missing published date menandai timing verification", () => {
+  const result = scenarioModel([missingDateItem("timing-check")]);
+  assert.strictEqual(result.added_items[0].timing_verification_required, true);
+});
+test("E5", "workflow memakai configurable 70 percent date threshold dan normalized report gate", () => {
+  assert.match(workflow, /RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT:\s*"70"/);
+  assert.match(workflow, /report\.status === "REJECT_PROPOSAL"/);
+  assert.doesNotMatch(workflow, /source\.validation\.proposal_eligible/);
 });
 
 try { fs.rmSync(temp, { recursive: true, force: true }); } catch (_) { /* test temp only */ }
