@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "source_code": "BKPM_PRESS_RELEASES",
+      "status": "DEGRADED",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "listing_links_found": 10,
+      "detail_pages_attempted": 10,
+      "valid_items": 10,
+      "invalid_items": 0,
+      "warnings": [
+        "EXTERNAL_LINKS_IGNORED:44",
+        "https://www.bkpm.go.id/id/info/siaran-pers/investor-australia-minati-peluang-rantai-pasok-baterai-ri:CANONICAL_IGNORED_NOT_ALLOWED",
+        "https://www.bkpm.go.id/id/info/siaran-pers/keminveshil-bkpm-kepercayaan-investor-global-tetap-terjaga:CANONICAL_IGNORED_NOT_ALLOWED"
+      ],
+      "errors": []
+    },
+    {
+      "source_code": "KEMENPERIN_IMC_NEWS",
+      "status": "UNAVAILABLE",
+      "http_status": 0,
+      "content_type": "",
+      "listing_links_found": 0,
+      "detail_pages_attempted": 0,
+      "valid_items": 0,
+      "invalid_items": 0,
+      "warnings": [],
+      "errors": [
+        "TLS_CERT_EXPIRED:certificate has expired"
+      ]
+    }
+  ]
+}
