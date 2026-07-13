@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "class_precedence": [
-    "historical",
     "direct",
+    "historical",
     "indirect"
   ],
   "strength_precedence": [
@@ -10,6 +10,104 @@
     "MODERATE",
     "WEAK"
   ],
+  "timing_statuses": [
+    "FUTURE_OR_OPEN",
+    "CURRENT_OR_UNCLEAR",
+    "COMPLETED_OR_PAST",
+    "HISTORICAL_REFERENCE",
+    "INFORMATIONAL_OR_EDITORIAL"
+  ],
+  "timing_rules": {
+    "future_or_open_phrases": [
+      "akan digelar",
+      "bakal digelar",
+      "siap digelar",
+      "akan gelar",
+      "akan menggelar",
+      "akan berlangsung",
+      "segera dibuka",
+      "pendaftaran dibuka",
+      "membuka pendaftaran",
+      "open registration",
+      "membuka tender",
+      "tender terbuka",
+      "pengadaan akan",
+      "rencana pengadaan",
+      "rup 2026",
+      "siap ramaikan",
+      "dijadwalkan"
+    ],
+    "completed_or_past_phrases": [
+      "telah digelar",
+      "telah menggelar",
+      "selesai digelar",
+      "sukses digelar",
+      "diikuti",
+      "meriahkan",
+      "meramaikan",
+      "ramaikan",
+      "berlangsung pada",
+      "usai",
+      "resmi berakhir",
+      "telah berlangsung",
+      "sudah digelar"
+    ]
+  },
+  "editorial_rules": {
+    "terms": [
+      "rekomendasi",
+      "daftar tempat",
+      "daftar event",
+      "tema",
+      "contoh",
+      "kata sambutan",
+      "tips",
+      "cara",
+      "ide",
+      "hidden gem",
+      "destinasi",
+      "tempat gathering",
+      "tempat family gathering",
+      "tempat outing",
+      "jadwal lengkap",
+      "cek tiket",
+      "fakta menarik",
+      "inspirasi",
+      "hoaks",
+      "cek fakta"
+    ],
+    "suppressed_trigger_codes": [
+      "CORPORATE_OR_INSTITUTIONAL_EVENT",
+      "SPORTS_OR_COMMUNITY_EVENT"
+    ]
+  },
+  "primary_trigger_rules": {
+    "active_direct_terms": [
+      "membuka tender",
+      "tender terbuka",
+      "pengadaan akan",
+      "rencana pengadaan",
+      "rup 2026",
+      "anggaran berjalan",
+      "proses pengadaan",
+      "pengadaan sedang",
+      "pengadaan sudah berjalan"
+    ],
+    "historical_dominant_terms": [
+      "audit",
+      "korupsi",
+      "penyidikan",
+      "perkara",
+      "temuan bpk",
+      "kelebihan bayar",
+      "penyimpangan",
+      "kerugian negara",
+      "kejari",
+      "tersangka",
+      "kasus",
+      "pengadaan lama"
+    ]
+  },
   "allowed_actions": [
     "VERIFY_TRIGGER",
     "VERIFY_ORGANIZATION",
@@ -42,18 +140,7 @@
         "tender pakaian"
       ],
       "negative_terms": [
-        "perkara pengadaan",
-        "kasus pengadaan",
-        "audit pengadaan",
-        "penyimpangan pengadaan",
-        "korupsi pengadaan",
-        "dugaan korupsi",
-        "temuan bpk",
-        "kerugian negara",
-        "kelebihan bayar",
-        "tahap penyidikan",
-        "kejari",
-        "tersangka"
+        "simulasi tender tanpa pengadaan"
       ],
       "product_hypotheses": [
         "Seragam kerja atau pakaian dinas",
@@ -73,36 +160,56 @@
       "description": "Data menyebut pembukaan fasilitas atau lokasi operasi baru.",
       "trigger_class": "indirect",
       "positive_terms": [
-        "pembukaan",
-        "dibuka",
-        "fasilitas baru",
-        "gerai baru"
       ],
       "phrase_terms": [
         "pembukaan pabrik",
         "pembukaan hotel",
         "pembukaan rumah sakit",
         "pembukaan cabang",
+        "mulai beroperasi",
+        "resmi beroperasi",
+        "mulai produksi",
+        "resmi dibuka",
+        "grand opening",
+        "soft opening",
         "fasilitas baru",
+        "pabrik baru",
+        "hotel baru",
+        "rumah sakit baru",
+        "cabang baru",
         "gerai baru",
-        "resmi dibuka"
+        "diresmikan",
+        "membuka cabang",
+        "membuka pabrik",
+        "membuka hotel",
+        "membuka rumah sakit"
       ],
       "negative_terms": [
         "pembukaan perdagangan",
-        "pembukaan pasar",
+        "pembukaan acara",
+        "pembukaan pendaftaran",
+        "pendaftaran dibuka",
+        "pendaftaran resmi dibuka",
+        "membuka pendaftaran",
         "pembukaan rekening",
-        "pembukaan lowongan",
-        "upacara pembukaan",
-        "pembukaan pendaftaran"
+        "pembukaan sidang",
+        "pembukaan pasar modal"
       ],
-      "required_any_terms": [
+      "context_required_terms": [
+        "resmi dibuka",
+        "diresmikan"
+      ],
+      "context_terms": [
         "pabrik",
         "hotel",
         "rumah sakit",
         "cabang",
         "fasilitas",
         "gerai",
-        "lokasi operasi"
+        "toko",
+        "kantor",
+        "gudang",
+        "restoran"
       ],
       "product_hypotheses": [
         "Seragam staf fasilitas",
@@ -122,18 +229,18 @@
       "description": "Data menyebut perluasan kapasitas, operasi, fasilitas, atau armada.",
       "trigger_class": "indirect",
       "positive_terms": [
-        "ekspansi",
-        "kapasitas",
-        "perluasan",
-        "investasi",
-        "armada"
       ],
       "phrase_terms": [
-        "penambahan kapasitas",
+        "ekspansi pabrik",
+        "ekspansi cabang",
+        "ekspansi kapasitas",
+        "ekspansi operasi",
+        "investasi fasilitas baru",
+        "investasi pembangunan pabrik",
+        "penambahan kapasitas produksi",
         "perluasan operasi",
-        "investasi fasilitas",
         "penambahan armada",
-        "ekspansi operasional"
+        "memperluas jaringan gerai"
       ],
       "negative_terms": [
         "ekspansi kredit",
@@ -141,7 +248,14 @@
         "ekspansi moneter",
         "ekspansi fiskal",
         "ekspansi pasar modal",
-        "perluasan akses kredit"
+        "perluasan akses kredit",
+        "investasi saham",
+        "investasi pasar modal",
+        "investasi keuangan",
+        "dana investasi",
+        "game changer investasi",
+        "prospek investasi",
+        "edukasi investasi"
       ],
       "product_hypotheses": [
         "Tambahan pakaian kerja untuk operasi baru",
@@ -162,14 +276,17 @@
       "trigger_class": "indirect",
       "positive_terms": [
         "rekrutmen",
-        "pegawai",
-        "tenaga kerja",
-        "onboarding"
+        "merekrut",
+        "hiring"
       ],
       "phrase_terms": [
         "rekrutmen massal",
-        "penerimaan ribuan pegawai",
-        "penambahan tenaga kerja",
+        "membuka lowongan",
+        "penerimaan pegawai",
+        "penerimaan karyawan",
+        "open recruitment",
+        "membutuhkan pekerja",
+        "penambahan karyawan",
         "onboarding pegawai"
       ],
       "negative_terms": [
@@ -177,7 +294,13 @@
         "rekrutmen partai",
         "rekrutmen calon legislatif",
         "rekrutmen peserta",
-        "rekrutmen relawan"
+        "rekrutmen relawan",
+        "serap tenaga kerja",
+        "tenaga kerja lokal",
+        "angkatan kerja",
+        "jumlah pekerja",
+        "pengangguran",
+        "produktivitas tenaga kerja"
       ],
       "product_hypotheses": [
         "Pakaian kerja untuk pegawai baru",

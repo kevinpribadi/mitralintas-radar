@@ -7,6 +7,13 @@ const path = require("path");
 
 const TRIGGER_CLASSES = ["direct", "indirect", "historical"];
 const EVIDENCE_STRENGTHS = ["STRONG", "MODERATE", "WEAK"];
+const TIMING_STATUSES = [
+  "FUTURE_OR_OPEN",
+  "CURRENT_OR_UNCLEAR",
+  "COMPLETED_OR_PAST",
+  "HISTORICAL_REFERENCE",
+  "INFORMATIONAL_OR_EDITORIAL",
+];
 const FORBIDDEN_ACTIONS = new Set([
   "CONTACT_PERSON",
   "SEND_EMAIL",
@@ -57,6 +64,20 @@ function validateTaxonomy(taxonomy) {
       !EVIDENCE_STRENGTHS.every((value) => taxonomy.strength_precedence.includes(value))) {
     errors.push("strength_precedence harus memuat STRONG, MODERATE, dan WEAK satu kali.");
   }
+  if (!Array.isArray(taxonomy.timing_statuses) ||
+      taxonomy.timing_statuses.length !== TIMING_STATUSES.length ||
+      !TIMING_STATUSES.every((value) => taxonomy.timing_statuses.includes(value))) {
+    errors.push("timing_statuses tidak lengkap atau tidak valid.");
+  }
+  validateRuleTerms(taxonomy.timing_rules, [
+    "future_or_open_phrases", "completed_or_past_phrases",
+  ], "timing_rules", errors);
+  validateRuleTerms(taxonomy.editorial_rules, [
+    "terms", "suppressed_trigger_codes",
+  ], "editorial_rules", errors);
+  validateRuleTerms(taxonomy.primary_trigger_rules, [
+    "active_direct_terms", "historical_dominant_terms",
+  ], "primary_trigger_rules", errors);
   if (!Array.isArray(taxonomy.allowed_actions) || !taxonomy.allowed_actions.length) {
     errors.push("allowed_actions wajib berupa array non-empty.");
   }
@@ -89,14 +110,31 @@ function validateTaxonomy(taxonomy) {
     if (Array.isArray(entry.required_any_terms)) {
       validateStringArray(entry.required_any_terms, `${prefix}.required_any_terms`, errors);
     }
+    if (Array.isArray(entry.context_required_terms)) {
+      validateStringArray(entry.context_required_terms, `${prefix}.context_required_terms`, errors);
+      validateStringArray(entry.context_terms, `${prefix}.context_terms`, errors);
+    }
     (entry.allowed_actions || []).forEach((action) => {
       if (!globalActions.has(action)) errors.push(`${prefix} memakai action di luar allowlist: ${action}`);
       if (FORBIDDEN_ACTIONS.has(action)) errors.push(`${prefix} memakai action dilarang: ${action}`);
     });
   });
 
+  const suppressedCodes = (taxonomy.editorial_rules || {}).suppressed_trigger_codes || [];
+  suppressedCodes.forEach((code) => {
+    if (!codes.has(code)) errors.push(`Editorial suppression memakai trigger code tidak dikenal: ${code}`);
+  });
+
   if (errors.length) failValidation(errors);
   return true;
+}
+
+function validateRuleTerms(container, keys, label, errors) {
+  if (!isObject(container)) {
+    errors.push(`${label} wajib berupa object.`);
+    return;
+  }
+  keys.forEach((key) => validateStringArray(container[key], `${label}.${key}`, errors));
 }
 
 function failValidation(errors) {
@@ -146,8 +184,10 @@ function buildOutput({ tenderData, eventData, taxonomy }) {
     ...eventData.items.map((item, index) => normalizeItem(item, "event", index)),
   ].sort(compareCandidates);
 
-  const evaluated = candidates.map((candidate) => evaluateCandidate(candidate, taxonomy));
-  const items = evaluated.filter(Boolean);
+  const evaluated = candidates.map((candidate) =>
+    evaluateCandidateWithAudit(candidate, taxonomy, generatedAt));
+  const items = evaluated.map((result) => result.item).filter(Boolean);
+  const suppressedEditorialTotal = evaluated.filter((result) => result.editorialSuppressed).length;
   const output = {
     generated_at: generatedAt,
     taxonomy_version: taxonomy.version,
@@ -157,6 +197,7 @@ function buildOutput({ tenderData, eventData, taxonomy }) {
       evaluated_total: candidates.length,
       signal_total: items.length,
       items_without_trigger: candidates.length - items.length,
+      suppressed_editorial_total: suppressedEditorialTotal,
     },
     trigger_summary: buildTriggerSummary(items, taxonomy),
     items,
@@ -180,6 +221,7 @@ function normalizeItem(item, type, index) {
   const organization = type === "tender"
     ? firstText(safe.instansi_terdeteksi)
     : firstText(safe.penyelenggara);
+  const eventDate = type === "event" ? firstText(safe.tanggal) : "";
 
   return {
     id: stableItemId({ type, title, source, link }),
@@ -189,16 +231,25 @@ function normalizeItem(item, type, index) {
     source,
     link,
     date,
+    eventDate,
     organization,
     normalizedTitle: normalizeSearchText(title),
   };
 }
 
-function evaluateCandidate(candidate, taxonomy) {
-  const triggers = detectTriggers(candidate, taxonomy);
-  if (!triggers.length) return null;
-  const primary = selectPrimaryTrigger(triggers, taxonomy);
-  return {
+function evaluateCandidate(candidate, taxonomy, referenceDate) {
+  return evaluateCandidateWithAudit(candidate, taxonomy, referenceDate).item;
+}
+
+function evaluateCandidateWithAudit(candidate, taxonomy, referenceDate) {
+  const detection = detectTriggersWithAudit(candidate, taxonomy);
+  const triggers = detection.triggers;
+  if (!triggers.length) {
+    return { item: null, editorialSuppressed: detection.editorialSuppressed };
+  }
+  const primary = selectPrimaryTrigger(triggers, taxonomy, candidate);
+  const timingStatus = determineTimingStatus(candidate, primary, taxonomy, referenceDate);
+  return { item: {
     id: candidate.id,
     type: candidate.type,
     title: candidate.title,
@@ -208,20 +259,39 @@ function evaluateCandidate(candidate, taxonomy) {
     organization: candidate.organization,
     triggers,
     primary_trigger: primary.trigger_code,
-    suggested_next_action: selectSuggestedAction(candidate, primary, taxonomy),
+    timing_status: timingStatus,
+    suggested_next_action: selectSuggestedAction(candidate, primary, taxonomy, timingStatus),
     human_review_required: true,
-  };
+  }, editorialSuppressed: detection.editorialSuppressed };
 }
 
 function detectTriggers(candidate, taxonomy) {
-  return taxonomy.triggers.map((entry) => {
+  return detectTriggersWithAudit(candidate, taxonomy).triggers;
+}
+
+function detectTriggersWithAudit(candidate, taxonomy) {
+  const editorialMatches = matchTerms(candidate.normalizedTitle, taxonomy.editorial_rules.terms);
+  const editorialSuppressedCodes = new Set(taxonomy.editorial_rules.suppressed_trigger_codes);
+  let editorialSuppressed = false;
+  const triggers = taxonomy.triggers.map((entry) => {
     const phraseMatches = matchTerms(candidate.normalizedTitle, entry.phrase_terms);
     const positiveMatches = matchTerms(candidate.normalizedTitle, entry.positive_terms);
     const negativeMatches = matchTerms(candidate.normalizedTitle, entry.negative_terms);
     const requiredMatches = matchTerms(candidate.normalizedTitle, entry.required_any_terms || []);
-    if (negativeMatches.length) return null;
+    const contextRequiredMatches = matchTerms(
+      candidate.normalizedTitle, entry.context_required_terms || []);
+    const contextMatches = matchTerms(candidate.normalizedTitle, entry.context_terms || []);
     if (!phraseMatches.length && !positiveMatches.length) return null;
     if ((entry.required_any_terms || []).length && !requiredMatches.length) return null;
+    if (contextRequiredMatches.length && !contextMatches.length &&
+        phraseMatches.every((term) => containsTerm(entry.context_required_terms || [], term))) {
+      return null;
+    }
+    if (editorialMatches.length && editorialSuppressedCodes.has(entry.code)) {
+      editorialSuppressed = true;
+      return null;
+    }
+    if (negativeMatches.length) return null;
 
     const matchedTerms = uniqueTerms(phraseMatches.concat(positiveMatches));
     return {
@@ -235,6 +305,7 @@ function detectTriggers(candidate, taxonomy) {
       human_review_required: true,
     };
   }).filter(Boolean);
+  return { triggers, editorialSuppressed, editorialMatches };
 }
 
 function determineEvidenceStrength(candidate, entry, phraseMatches, positiveMatches) {
@@ -247,10 +318,21 @@ function determineEvidenceStrength(candidate, entry, phraseMatches, positiveMatc
   return "WEAK";
 }
 
-function selectPrimaryTrigger(triggers, taxonomy) {
+function selectPrimaryTrigger(triggers, taxonomy, candidate) {
   const classOrder = new Map(taxonomy.class_precedence.map((value, index) => [value, index]));
   const strengthOrder = new Map(taxonomy.strength_precedence.map((value, index) => [value, index]));
   const triggerOrder = new Map(taxonomy.triggers.map((entry, index) => [entry.code, index]));
+  const direct = triggers.find((trigger) => trigger.trigger_code === "DIRECT_PROCUREMENT");
+  const historical = triggers.find((trigger) => trigger.trigger_code === "HISTORICAL_PROCUREMENT_PATTERN");
+  const normalizedTitle = candidate && candidate.normalizedTitle ? candidate.normalizedTitle : "";
+  if (direct && historical) {
+    const activeDirect = matchTerms(
+      normalizedTitle, taxonomy.primary_trigger_rules.active_direct_terms).length > 0;
+    const historicalDominant = matchTerms(
+      normalizedTitle, taxonomy.primary_trigger_rules.historical_dominant_terms).length > 0;
+    if (activeDirect) return direct;
+    if (historicalDominant) return historical;
+  }
   return triggers.slice().sort((a, b) => {
     return classOrder.get(a.trigger_class) - classOrder.get(b.trigger_class) ||
       strengthOrder.get(a.evidence_strength) - strengthOrder.get(b.evidence_strength) ||
@@ -259,12 +341,59 @@ function selectPrimaryTrigger(triggers, taxonomy) {
   })[0];
 }
 
-function selectSuggestedAction(candidate, primary, taxonomy) {
+function determineTimingStatus(candidate, primary, taxonomy, referenceDate) {
+  if (primary.trigger_class === "historical") return "HISTORICAL_REFERENCE";
+
+  const editorialMatches = matchTerms(candidate.normalizedTitle, taxonomy.editorial_rules.terms);
+  if (editorialMatches.length && primary.trigger_class !== "direct") {
+    return "INFORMATIONAL_OR_EDITORIAL";
+  }
+
+  if (hasValidDate(candidate.eventDate) && hasValidDate(referenceDate)) {
+    const eventDay = utcDay(candidate.eventDate);
+    const referenceDay = utcDay(referenceDate);
+    if (eventDay > referenceDay) return "FUTURE_OR_OPEN";
+    if (eventDay < referenceDay) return "COMPLETED_OR_PAST";
+    return "CURRENT_OR_UNCLEAR";
+  }
+
+  if (matchTerms(candidate.normalizedTitle,
+    taxonomy.timing_rules.future_or_open_phrases).length) return "FUTURE_OR_OPEN";
+  if (matchTerms(candidate.normalizedTitle,
+    taxonomy.timing_rules.completed_or_past_phrases).length) return "COMPLETED_OR_PAST";
+  return "CURRENT_OR_UNCLEAR";
+}
+
+function selectSuggestedAction(candidate, primary, taxonomy, timingStatus) {
   const entry = taxonomy.triggers.find((item) => item.code === primary.trigger_code);
   const allowed = new Set(entry.allowed_actions);
+  if (timingStatus === "FUTURE_OR_OPEN") {
+    if (!hasText(candidate.organization) && allowed.has("VERIFY_ORGANIZATION")) {
+      return "VERIFY_ORGANIZATION";
+    }
+    if (primary.trigger_class === "indirect" && allowed.has("VERIFY_PRODUCT_NEED")) {
+      return "VERIFY_PRODUCT_NEED";
+    }
+    if (allowed.has("PREPARE_FOR_HUMAN_QUALIFICATION")) {
+      return "PREPARE_FOR_HUMAN_QUALIFICATION";
+    }
+  }
+  if (timingStatus === "CURRENT_OR_UNCLEAR") {
+    if (allowed.has("VERIFY_TIMING")) return "VERIFY_TIMING";
+    if (allowed.has("VERIFY_TRIGGER")) return "VERIFY_TRIGGER";
+  }
+  if (timingStatus === "COMPLETED_OR_PAST") {
+    if (allowed.has("ADD_TO_WATCHLIST")) return "ADD_TO_WATCHLIST";
+    if (allowed.has("VERIFY_TIMING")) return "VERIFY_TIMING";
+  }
+  if (timingStatus === "HISTORICAL_REFERENCE") {
+    if (allowed.has("ADD_TO_WATCHLIST")) return "ADD_TO_WATCHLIST";
+    if (allowed.has("VERIFY_TRIGGER")) return "VERIFY_TRIGGER";
+  }
+  if (timingStatus === "INFORMATIONAL_OR_EDITORIAL" && allowed.has("VERIFY_TRIGGER")) {
+    return "VERIFY_TRIGGER";
+  }
   if (primary.evidence_strength === "WEAK" && allowed.has("VERIFY_TRIGGER")) return "VERIFY_TRIGGER";
-  if (!hasText(candidate.organization) && allowed.has("VERIFY_ORGANIZATION")) return "VERIFY_ORGANIZATION";
-  if (!hasValidDate(candidate.date) && allowed.has("VERIFY_TIMING")) return "VERIFY_TIMING";
   return entry.allowed_actions[0];
 }
 
@@ -272,6 +401,7 @@ function buildTriggerSummary(items, taxonomy) {
   const triggerCounts = Object.fromEntries(taxonomy.triggers.map((entry) => [entry.code, 0]));
   const classCounts = Object.fromEntries(TRIGGER_CLASSES.map((value) => [value, 0]));
   const strengthCounts = Object.fromEntries(EVIDENCE_STRENGTHS.map((value) => [value, 0]));
+  const timingCounts = Object.fromEntries(TIMING_STATUSES.map((value) => [value, 0]));
   const taxonomyByCode = new Map(taxonomy.triggers.map((entry) => [entry.code, entry]));
 
   items.forEach((item) => {
@@ -279,12 +409,14 @@ function buildTriggerSummary(items, taxonomy) {
     const primary = item.triggers.find((trigger) => trigger.trigger_code === item.primary_trigger);
     classCounts[taxonomyByCode.get(primary.trigger_code).trigger_class] += 1;
     strengthCounts[primary.evidence_strength] += 1;
+    timingCounts[item.timing_status] += 1;
   });
 
   return {
     trigger_counts: sortCountObject(triggerCounts),
     class_counts: classCounts,
     strength_counts: strengthCounts,
+    timing_counts: timingCounts,
   };
 }
 
@@ -304,6 +436,11 @@ function validateOutput(output, taxonomy) {
   if (summary.signal_total + summary.items_without_trigger !== summary.evaluated_total) {
     throw new Error("signal_total dan items_without_trigger tidak mencakup seluruh input.");
   }
+  if (!Number.isInteger(summary.suppressed_editorial_total) ||
+      summary.suppressed_editorial_total < 0 ||
+      summary.suppressed_editorial_total > summary.evaluated_total) {
+    throw new Error("suppressed_editorial_total tidak valid.");
+  }
 
   const taxonomyByCode = new Map(taxonomy.triggers.map((entry) => [entry.code, entry]));
   const allowedActions = new Set(taxonomy.allowed_actions);
@@ -312,6 +449,9 @@ function validateOutput(output, taxonomy) {
     if (ids.has(item.id)) throw new Error(`Stable item ID duplikat: ${item.id}`);
     ids.add(item.id);
     if (item.human_review_required !== true) throw new Error(`Item ${item.id} wajib human review.`);
+    if (!TIMING_STATUSES.includes(item.timing_status)) {
+      throw new Error(`Timing status ${item.id} tidak valid.`);
+    }
     if (!Array.isArray(item.triggers) || !item.triggers.length) throw new Error(`Item ${item.id} tanpa trigger.`);
     if (!item.triggers.some((trigger) => trigger.trigger_code === item.primary_trigger)) {
       throw new Error(`Primary trigger ${item.id} tidak ditemukan.`);
@@ -373,6 +513,11 @@ function uniqueTerms(terms) {
   });
 }
 
+function containsTerm(terms, candidateTerm) {
+  const normalized = normalizeSearchText(candidateTerm);
+  return (terms || []).some((term) => normalizeSearchText(term) === normalized);
+}
+
 function evidenceExcerpt(title, matchedTerms) {
   const sourceText = String(title == null ? "" : title);
   if (sourceText.length <= 220) return sourceText;
@@ -432,6 +577,11 @@ function hasValidDate(value) {
   return hasText(value) && Number.isFinite(Date.parse(value));
 }
 
+function utcDay(value) {
+  const date = new Date(value);
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+}
+
 function latestIsoDate(values) {
   let latest = null;
   values.forEach((value) => {
@@ -468,6 +618,7 @@ function writeJsonAtomic(filePath, data) {
 module.exports = {
   TRIGGER_CLASSES,
   EVIDENCE_STRENGTHS,
+  TIMING_STATUSES,
   FORBIDDEN_ACTIONS,
   main,
   readTaxonomy,
@@ -476,9 +627,12 @@ module.exports = {
   buildOutput,
   normalizeItem,
   evaluateCandidate,
+  evaluateCandidateWithAudit,
   detectTriggers,
+  detectTriggersWithAudit,
   determineEvidenceStrength,
   selectPrimaryTrigger,
+  determineTimingStatus,
   selectSuggestedAction,
   buildTriggerSummary,
   validateOutput,

@@ -37,10 +37,31 @@ langsung dari taxonomy, bukan klaim kebutuhan pada organisasi yang diberitakan.
   tetapi kebutuhan produk belum terkonfirmasi.
 - `historical`: data berfungsi sebagai perkara, audit, pola, atau referensi masa lalu.
 
-Satu item boleh memiliki beberapa trigger. Primary trigger dipilih secara deterministic dengan
-precedence `historical`, lalu `direct`, lalu `indirect`. Dalam kelas yang sama, strength yang lebih
-kuat dipilih (`STRONG`, `MODERATE`, `WEAK`), kemudian urutan entry pada taxonomy digunakan.
-Precedence kategorikal ini bukan ranking komersial dan bukan opportunity score.
+Satu item boleh memiliki beberapa trigger. Primary trigger dipilih secara deterministic dan
+berbasis konteks. Direct menjadi primary bila terdapat pengadaan aktif, tender terbuka, RUP,
+atau proses pengadaan berjalan. Historical menjadi primary bila judul terutama membahas audit,
+korupsi, penyidikan, perkara, temuan, kelebihan bayar, atau penyimpangan. Historical tetap dapat
+disimpan sebagai secondary trigger. Setelah aturan kontekstual tersebut, class precedence,
+strength, urutan taxonomy, dan trigger code menjadi tie-breaker. Aturan ini bukan ranking
+komersial dan bukan opportunity score.
+
+## Timing status
+
+Setiap signal memiliki satu `timing_status`:
+
+- `FUTURE_OR_OPEN`: kegiatan akan datang, pendaftaran/tender terbuka, atau event date setelah
+  reference date deterministic.
+- `CURRENT_OR_UNCLEAR`: waktu belum cukup jelas atau berada pada reference date yang sama.
+- `COMPLETED_OR_PAST`: kegiatan telah selesai atau event date sudah lewat.
+- `HISTORICAL_REFERENCE`: primary trigger berupa referensi historis.
+- `INFORMATIONAL_OR_EDITORIAL`: konten informasional yang masih memiliki trigger lain di luar
+  kategori event yang disuppress.
+
+Tanggal event eksplisit hanya diambil dari field event `tanggal`. Field `published` tetap dapat
+ditampilkan sebagai metadata, tetapi tidak dianggap event date. Reference date berasal dari
+`generated_at` input terbaru, bukan wall-clock saat builder berjalan. Phrase future/completed
+berada di taxonomy dan phrase spesifik seperti `akan gelar` atau `telah menggelar` tidak
+disimpulkan dari kata `gelar` saja.
 
 ## Evidence strength
 
@@ -60,10 +81,13 @@ Contohnya:
 - `ekspansi kredit` tidak menjadi `BUSINESS_EXPANSION`.
 - `pembukaan perdagangan` tidak menjadi `FACILITY_OPENING`.
 - `rekrutmen politik` tidak menjadi `MASS_RECRUITMENT`.
-- konteks perkara atau korupsi pengadaan menekan direct procurement dan dapat menjadi historical.
+- konteks perkara atau korupsi dapat menjadi historical primary tanpa menghapus direct secondary.
 - kata `run` saja tidak digunakan sebagai trigger olahraga.
 - `HUT` tanpa phrase kegiatan lain tetap berstrength `WEAK`.
-- artikel rekomendasi tempat atau tema gathering tidak dianggap event organisasi aktual.
+- artikel rekomendasi, listicle, tema, hidden gem, tips, hoaks, dan konten editorial lain tidak
+  dianggap event organisasi/olahraga aktual.
+- `investasi` dan `tenaga kerja` tanpa phrase operasional eksplisit tidak cukup untuk menjadi
+  expansion atau mass recruitment.
 
 Negative rules mengurangi false positive, tetapi tidak menggantikan verifikasi manusia.
 
@@ -73,9 +97,10 @@ Builder menulis `docs/data/trigger_signals.json`. Semua tender/event dihitung pa
 `evaluated_total`; hanya item dengan minimal satu trigger disimpan di `items`. Item lainnya
 dihitung dalam `items_without_trigger`.
 
-`trigger_counts` menghitung seluruh trigger yang cocok. `class_counts` dan `strength_counts`
-menghitung kelas serta strength primary trigger per item, sehingga masing-masing distribusi
-menjumlah ke `signal_total`.
+`trigger_counts` menghitung seluruh trigger yang cocok. `class_counts`, `strength_counts`, dan
+`timing_counts` menghitung primary trigger/item sehingga masing-masing distribusi menjumlah ke
+`signal_total`. `suppressed_editorial_total` mencatat item dengan event trigger yang dibuang oleh
+aturan editorial. Item tersebut tidak menjadi signal kecuali memiliki trigger lain yang valid.
 
 Stable item ID menggunakan identitas yang sama dengan review queue dan qualification readiness.
 Output disortir secara netral berdasarkan type, title, source, stable ID, lalu index input. Tidak
@@ -93,9 +118,10 @@ Action yang diizinkan:
 - `ADD_TO_WATCHLIST`
 - `PREPARE_FOR_HUMAN_QUALIFICATION`
 
-Weak evidence diarahkan ke verifikasi trigger. Organisasi atau tanggal yang belum tersedia
-diarahkan ke verifikasi terkait bila action tersebut diizinkan taxonomy. Tidak ada contact,
-email, WhatsApp, offer, bid, atau pricing otomatis.
+Future/open signal dapat diarahkan ke persiapan qualification atau verifikasi organisasi/produk.
+Current/unclear diarahkan ke verifikasi waktu/trigger, completed ke watchlist/verifikasi waktu,
+dan historical ke watchlist/verifikasi trigger. Tidak ada contact, email, WhatsApp, offer, bid,
+atau pricing otomatis.
 
 ## Menjalankan lokal
 

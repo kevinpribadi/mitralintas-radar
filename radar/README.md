@@ -244,9 +244,18 @@ kebutuhan atau pembelian. Dokumentasi lengkap tersedia di
 
 Trigger dibagi menjadi kelas `direct`, `indirect`, dan `historical`, dengan evidence strength
 non-numerik `STRONG`, `MODERATE`, dan `WEAK`. Satu item dapat memiliki beberapa trigger.
-Primary trigger dipilih deterministic dengan precedence historical, direct, lalu indirect;
-dalam kelas yang sama, evidence strength lebih kuat dipilih sebelum urutan taxonomy. Aturan
-kategorikal ini bukan ranking komersial atau opportunity score.
+Primary trigger dipilih deterministic dengan aturan kontekstual. Pengadaan aktif dapat menjadi
+direct primary meskipun terdapat historical secondary; artikel yang terutama membahas audit,
+korupsi, penyidikan, atau penyimpangan tetap historical primary. Tie-breaker berikutnya memakai
+class precedence, evidence strength, urutan taxonomy, dan trigger code. Aturan ini bukan ranking
+komersial atau opportunity score.
+
+Setiap signal memiliki timing status `FUTURE_OR_OPEN`, `CURRENT_OR_UNCLEAR`,
+`COMPLETED_OR_PAST`, `HISTORICAL_REFERENCE`, atau `INFORMATIONAL_OR_EDITORIAL`. Timing memakai
+field event date eksplisit dan phrase judul; published date tidak dianggap event date dan
+reference date berasal dari `generated_at` input. Artikel editorial/listicle disuppress untuk
+trigger event, sedangkan keyword generik investasi dan tenaga kerja tidak cukup untuk expansion
+atau recruitment.
 
 Jalankan setelah data sumber tersedia:
 
@@ -263,10 +272,12 @@ variables yang tersedia:
 - `RADAR_TRIGGER_TAXONOMY_FILE`: taxonomy, default `radar/config/trigger_taxonomy.json`.
 - `RADAR_TRIGGER_OUTPUT`: output, default `radar/docs/data/trigger_signals.json`.
 
-Dashboard menampilkan maksimal 20 item awal pada panel **Trigger Kebutuhan**, dengan filter
-kategori, class, evidence strength, dan type. Product hypotheses selalu diberi label perlu
-verifikasi. Tidak ada scoring numerik, ranking penjualan, sumber scraping baru, keputusan manusia
-otomatis, atau outreach pada Fase J.
+Dashboard menampilkan maksimal 20 item awal pada panel **Trigger Kebutuhan**, dengan prioritas
+future direct, future indirect, current/unclear, completed, lalu historical. Filter mencakup
+kategori, class, evidence strength, timing status, dan type. Konten informational/editorial tidak
+tampil pada initial list, tetapi suppression count tetap terlihat. Product hypotheses selalu
+diberi label perlu verifikasi. Tidak ada scoring numerik, ranking penjualan, sumber scraping baru,
+keputusan manusia otomatis, atau outreach pada Fase J.
 
 ## Setup GitHub Actions + GitHub Pages
 

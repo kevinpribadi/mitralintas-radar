@@ -117,7 +117,7 @@
     gap: 8px; margin-bottom: 10px;
   }
   .trigger-metrics {
-    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 8px; margin-bottom: 10px;
   }
   .feedback-metrics {
@@ -168,6 +168,11 @@
   .badge.strength-strong { background: #d1fae5; color: #065f46; }
   .badge.strength-moderate { background: #fef3c7; color: #92400e; }
   .badge.strength-weak { background: #f1f5f9; color: #475569; }
+  .badge.timing-future { background: #dcfce7; color: #166534; }
+  .badge.timing-current { background: #e0f2fe; color: #075985; }
+  .badge.timing-completed { background: #fef3c7; color: #92400e; }
+  .badge.timing-historical { background: #ede9fe; color: #5b21b6; }
+  .badge.timing-editorial { background: #f1f5f9; color: #475569; }
   .badge.human-reviewed { background: #d1fae5; color: #065f46; }
   .badge.human-unreviewed { background: #f1f5f9; color: #475569; }
   .badge.issue { margin-top: 4px; }
@@ -361,6 +366,17 @@
           <option value="STRONG">Strong</option>
           <option value="MODERATE">Moderate</option>
           <option value="WEAK">Weak</option>
+        </select>
+      </label>
+      <label>Status waktu
+        <select id="triggerTimingFilter">
+          <option value="ACTIVE">Semua signal aktif</option>
+          <option value="FUTURE_OR_OPEN">Akan datang / terbuka</option>
+          <option value="CURRENT_OR_UNCLEAR">Saat ini / belum jelas</option>
+          <option value="COMPLETED_OR_PAST">Selesai / lewat</option>
+          <option value="HISTORICAL_REFERENCE">Referensi historis</option>
+          <option value="INFORMATIONAL_OR_EDITORIAL">Informasional / editorial</option>
+          <option value="">Semua termasuk editorial</option>
         </select>
       </label>
       <label>Type
@@ -595,18 +611,24 @@ var state = {
     taxonomy_version: null,
     source_summary: {
       tender_total: 0, event_total: 0, evaluated_total: 0,
-      signal_total: 0, items_without_trigger: 0
+      signal_total: 0, items_without_trigger: 0, suppressed_editorial_total: 0
     },
     trigger_summary: {
       trigger_counts: {},
       class_counts: { direct: 0, indirect: 0, historical: 0 },
-      strength_counts: { STRONG: 0, MODERATE: 0, WEAK: 0 }
+      strength_counts: { STRONG: 0, MODERATE: 0, WEAK: 0 },
+      timing_counts: {
+        FUTURE_OR_OPEN: 0, CURRENT_OR_UNCLEAR: 0, COMPLETED_OR_PAST: 0,
+        HISTORICAL_REFERENCE: 0, INFORMATIONAL_OR_EDITORIAL: 0
+      }
     },
     items: []
   },
   triggerSignalsAvailable: false,
   triggerSignalsError: null,
-  triggerFilters: { category: "", triggerClass: "", strength: "", type: "" }
+  triggerFilters: {
+    category: "", triggerClass: "", strength: "", timing: "ACTIVE", type: ""
+  }
 };
 
 var JENIS_TENDER = ["pemerintah", "bumn", "sekolah", "swasta", "tidak_diketahui"];
@@ -842,12 +864,16 @@ function emptyTriggerSignals() {
     taxonomy_version: null,
     source_summary: {
       tender_total: 0, event_total: 0, evaluated_total: 0,
-      signal_total: 0, items_without_trigger: 0
+      signal_total: 0, items_without_trigger: 0, suppressed_editorial_total: 0
     },
     trigger_summary: {
       trigger_counts: {},
       class_counts: { direct: 0, indirect: 0, historical: 0 },
-      strength_counts: { STRONG: 0, MODERATE: 0, WEAK: 0 }
+      strength_counts: { STRONG: 0, MODERATE: 0, WEAK: 0 },
+      timing_counts: {
+        FUTURE_OR_OPEN: 0, CURRENT_OR_UNCLEAR: 0, COMPLETED_OR_PAST: 0,
+        HISTORICAL_REFERENCE: 0, INFORMATIONAL_OR_EDITORIAL: 0
+      }
     },
     items: []
   };
@@ -876,6 +902,13 @@ function normalizeTriggerItem(item) {
         return trigger && typeof trigger === "object" && !Array.isArray(trigger);
       }).map(normalizeTriggerEvidence)
     : [];
+  var allowedTiming = {
+    FUTURE_OR_OPEN: true,
+    CURRENT_OR_UNCLEAR: true,
+    COMPLETED_OR_PAST: true,
+    HISTORICAL_REFERENCE: true,
+    INFORMATIONAL_OR_EDITORIAL: true
+  };
   return {
     id: hasText(item.id) ? item.id : "",
     type: item.type === "event" ? "event" : "tender",
@@ -886,6 +919,8 @@ function normalizeTriggerItem(item) {
     organization: hasText(item.organization) ? item.organization : "",
     triggers: triggers,
     primary_trigger: hasText(item.primary_trigger) ? item.primary_trigger : "",
+    timing_status: allowedTiming[item.timing_status]
+      ? item.timing_status : "CURRENT_OR_UNCLEAR",
     suggested_next_action: hasText(item.suggested_next_action)
       ? item.suggested_next_action : "VERIFY_TRIGGER",
     human_review_required: item.human_review_required === true
@@ -918,6 +953,10 @@ function validateTriggerSignals(raw) {
     ["STRONG", "MODERATE", "WEAK"].forEach(function (key) {
       result.trigger_summary.strength_counts[key] =
         Number((raw.trigger_summary.strength_counts || {})[key]) || 0;
+    });
+    Object.keys(result.trigger_summary.timing_counts).forEach(function (key) {
+      result.trigger_summary.timing_counts[key] =
+        Number((raw.trigger_summary.timing_counts || {})[key]) || 0;
     });
   }
   result.items = raw.items
@@ -1666,6 +1705,28 @@ function triggerActionLabel(value) {
   return labels[value] || value || "Verifikasi trigger";
 }
 
+function triggerTimingLabel(value) {
+  var labels = {
+    FUTURE_OR_OPEN: "Akan datang / terbuka",
+    CURRENT_OR_UNCLEAR: "Saat ini / belum jelas",
+    COMPLETED_OR_PAST: "Selesai / lewat",
+    HISTORICAL_REFERENCE: "Referensi historis",
+    INFORMATIONAL_OR_EDITORIAL: "Informasional / editorial"
+  };
+  return labels[value] || value;
+}
+
+function triggerTimingClass(value) {
+  var classes = {
+    FUTURE_OR_OPEN: "future",
+    CURRENT_OR_UNCLEAR: "current",
+    COMPLETED_OR_PAST: "completed",
+    HISTORICAL_REFERENCE: "historical",
+    INFORMATIONAL_OR_EDITORIAL: "editorial"
+  };
+  return classes[value] || "current";
+}
+
 function primaryTriggerEvidence(item) {
   return item.triggers.find(function (trigger) {
     return trigger.trigger_code === item.primary_trigger;
@@ -1692,15 +1753,38 @@ function rebuildTriggerCategoryOptions() {
 
 function triggerItemsAfterFilter() {
   var filters = state.triggerFilters;
-  return state.triggerSignals.items.filter(function (item) {
+  return state.triggerSignals.items.map(function (item, index) {
+    return { item: item, index: index };
+  }).filter(function (entry) {
+    var item = entry.item;
     if (filters.type && item.type !== filters.type) return false;
+    if (filters.timing === "ACTIVE" &&
+        item.timing_status === "INFORMATIONAL_OR_EDITORIAL") return false;
+    if (filters.timing && filters.timing !== "ACTIVE" &&
+        item.timing_status !== filters.timing) return false;
     return item.triggers.some(function (trigger) {
       if (filters.category && trigger.trigger_code !== filters.category) return false;
       if (filters.triggerClass && trigger.trigger_class !== filters.triggerClass) return false;
       if (filters.strength && trigger.evidence_strength !== filters.strength) return false;
       return true;
     });
-  });
+  }).sort(function (a, b) {
+    var aPrimary = primaryTriggerEvidence(a.item);
+    var bPrimary = primaryTriggerEvidence(b.item);
+    var priorities = {
+      CURRENT_OR_UNCLEAR: 2,
+      COMPLETED_OR_PAST: 3,
+      HISTORICAL_REFERENCE: 4,
+      INFORMATIONAL_OR_EDITORIAL: 5
+    };
+    var aPriority = a.item.timing_status === "FUTURE_OR_OPEN"
+      ? (aPrimary.trigger_class === "direct" ? 0 : 1)
+      : priorities[a.item.timing_status];
+    var bPriority = b.item.timing_status === "FUTURE_OR_OPEN"
+      ? (bPrimary.trigger_class === "direct" ? 0 : 1)
+      : priorities[b.item.timing_status];
+    return aPriority - bPriority || a.index - b.index || a.item.id.localeCompare(b.item.id);
+  }).map(function (entry) { return entry.item; });
 }
 
 function renderTriggerMetrics() {
@@ -1708,6 +1792,7 @@ function renderTriggerMetrics() {
   var summary = state.triggerSignals.trigger_summary || emptyTriggerSignals().trigger_summary;
   var classes = summary.class_counts || {};
   var strengths = summary.strength_counts || {};
+  var timing = summary.timing_counts || {};
   var metrics = [
     ["Total signal", source.signal_total || 0],
     ["Direct", classes.direct || 0],
@@ -1715,7 +1800,12 @@ function renderTriggerMetrics() {
     ["Historical", classes.historical || 0],
     ["Strong", strengths.STRONG || 0],
     ["Moderate", strengths.MODERATE || 0],
-    ["Weak", strengths.WEAK || 0]
+    ["Weak", strengths.WEAK || 0],
+    ["Akan datang / terbuka", timing.FUTURE_OR_OPEN || 0],
+    ["Saat ini / belum jelas", timing.CURRENT_OR_UNCLEAR || 0],
+    ["Selesai / lewat", timing.COMPLETED_OR_PAST || 0],
+    ["Referensi historis", timing.HISTORICAL_REFERENCE || 0],
+    ["Editorial disuppress", source.suppressed_editorial_total || 0]
   ];
   document.getElementById("triggerSignalsMetrics").innerHTML = metrics.map(function (metric) {
     return '<div class="review-metric"><strong>' + esc(metric[1]) + '</strong><span>' +
@@ -1753,6 +1843,7 @@ function renderTriggerSignals() {
   var filtered = triggerItemsAfterFilter();
   var visible = filtered.slice(0, 20);
   statusEl.textContent = "Total signal: " + (data.source_summary.signal_total || 0) +
+    ". Editorial disuppress: " + (data.source_summary.suppressed_editorial_total || 0) +
     ". Ditampilkan: " + visible.length + " dari " + filtered.length + " sesuai filter.";
   if (!filtered.length) {
     itemsEl.innerHTML = '<div class="empty">0 item cocok dengan filter trigger saat ini.</div>';
@@ -1770,6 +1861,7 @@ function renderTriggerSignals() {
     var meta = [
       "Tipe: " + item.type,
       "Organisasi: " + (item.organization || "(belum jelas)"),
+      "Status waktu: " + triggerTimingLabel(item.timing_status),
       "Next action: " + triggerActionLabel(item.suggested_next_action)
     ];
     if (item.date) meta.push("Tanggal: " + (fmtTanggal(item.date) || item.date));
@@ -1793,7 +1885,9 @@ function renderTriggerSignals() {
     return '<div class="review-item">' +
       '<div><span class="badge trigger-' + esc(primary.trigger_class) + '">' +
       esc(triggerClassLabel(primary.trigger_class)) + '</span><span class="badge">' +
-      esc(item.type) + '</span></div>' +
+      esc(item.type) + '</span><span class="badge timing-' +
+      esc(triggerTimingClass(item.timing_status)) + '">' +
+      esc(triggerTimingLabel(item.timing_status)) + '</span></div>' +
       '<h3>' + esc(item.title || "(judul tidak tersedia)") + '</h3>' +
       '<div class="meta">' + meta.map(function (value) {
         return '<span>' + esc(value) + '</span>';
@@ -1866,6 +1960,9 @@ function bindEvents() {
   });
   document.getElementById("triggerStrengthFilter").addEventListener("change", function (e) {
     state.triggerFilters.strength = e.target.value; renderTriggerSignals();
+  });
+  document.getElementById("triggerTimingFilter").addEventListener("change", function (e) {
+    state.triggerFilters.timing = e.target.value; renderTriggerSignals();
   });
   document.getElementById("triggerTypeFilter").addEventListener("change", function (e) {
     state.triggerFilters.type = e.target.value; renderTriggerSignals();
