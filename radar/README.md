@@ -237,7 +237,8 @@ node radar/scripts/test_human_feedback.js
 ## Fase J: Trigger Radar V1
 
 Trigger Radar mendeteksi peristiwa yang dapat mendahului kebutuhan tekstil atau apparel pada
-data tender/event yang sudah tersedia. Trigger adalah indikasi awal berbasis aturan, bukan bukti
+data tender/event yang sudah tersedia dan snapshot sumber resmi pilot yang diterima. Trigger
+adalah indikasi awal berbasis aturan, bukan bukti
 kebutuhan atau pembelian. Dokumentasi lengkap tersedia di
 [TRIGGER_RADAR.md](TRIGGER_RADAR.md), sedangkan taxonomy machine-readable berada di
 [config/trigger_taxonomy.json](config/trigger_taxonomy.json).
@@ -268,6 +269,7 @@ Jalankan setelah data sumber tersedia:
 
 ```bash
 node radar/scripts/build_trigger_signals.js
+node radar/scripts/test_trigger_source_pilot.js
 node radar/scripts/test_trigger_signals.js
 ```
 
@@ -278,13 +280,28 @@ variables yang tersedia:
 - `RADAR_DATA_DIR`: folder input, default `radar/data`.
 - `RADAR_TRIGGER_TAXONOMY_FILE`: taxonomy, default `radar/config/trigger_taxonomy.json`.
 - `RADAR_TRIGGER_OUTPUT`: output, default `radar/docs/data/trigger_signals.json`.
+- `RADAR_SOURCE_PILOT_FILE`: snapshot sumber resmi committed, default
+  `radar/docs/data/source_pilot_items.json`.
+- `RADAR_SOURCE_REGISTRY`: config acceptance sumber, default `radar/config/source_registry.json`.
+- `RADAR_TRIGGER_INCLUDE_SOURCE_PILOT`: default `true`.
 
 Dashboard menampilkan maksimal 20 item awal pada panel **Trigger Kebutuhan**, dengan prioritas
-future direct, future indirect, current/unclear, completed, lalu historical. Filter mencakup
-kategori, class, evidence strength, timing status, dan type. Konten informational/editorial tidak
+pilot resmi future/open, production future/open direct, pilot resmi current/unclear, production
+current/unclear (dengan production future indirect tetap sebelum current), lalu completed dan
+historical. Filter mencakup kategori, class, evidence strength, timing status, type, data origin,
+dan source code. Konten informational/editorial tidak
 tampil pada initial list, tetapi suppression count tetap terlihat. Product hypotheses selalu
 diberi label perlu verifikasi. Tidak ada scoring numerik, ranking penjualan, sumber scraping baru,
 keputusan manusia otomatis, atau outreach pada Fase J.
+
+Fase J.2B menerima `BKPM_PRESS_RELEASES` untuk trigger pilot dan menolak
+`KEMENPERIN_IMC_NEWS` karena `TLS_CERT_EXPIRED`. Integrasi bersifat snapshot-only: builder
+membaca `source_pilot_items.json`, menggunakan title dan excerpt, serta tidak pernah menjalankan
+`fetch_source_pilot.js`. Missing snapshot hanya memberi warning; registry invalid fail-closed
+untuk pilot sementara build production tetap berjalan. Organization hint BKPM masih kosong pada
+seluruh 10 item, publisher tidak dianggap buyer, dan audit manual tetap wajib. Detail ada di
+[SOURCE_PILOT.md](SOURCE_PILOT.md) dan [TRIGGER_RADAR.md](TRIGGER_RADAR.md).
+Audit seluruh 10 item BKPM tersedia di [SOURCE_PILOT_AUDIT_J2B.md](SOURCE_PILOT_AUDIT_J2B.md).
 
 ## Setup GitHub Actions + GitHub Pages
 

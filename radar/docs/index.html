@@ -384,6 +384,20 @@
           <option value="">Semua</option>
           <option value="tender">Tender</option>
           <option value="event">Event</option>
+          <option value="official_source_pilot">Sumber resmi pilot</option>
+        </select>
+      </label>
+      <label>Data origin
+        <select id="triggerOriginFilter">
+          <option value="">Semua origin</option>
+          <option value="tender_corpus">Tender corpus</option>
+          <option value="event_corpus">Event corpus</option>
+          <option value="official_source_pilot">Sumber resmi pilot</option>
+        </select>
+      </label>
+      <label>Source code
+        <select id="triggerSourceCodeFilter">
+          <option value="">Semua source</option>
         </select>
       </label>
     </div>
@@ -627,7 +641,8 @@ var state = {
   triggerSignalsAvailable: false,
   triggerSignalsError: null,
   triggerFilters: {
-    category: "", triggerClass: "", strength: "", timing: "ACTIVE", type: ""
+    category: "", triggerClass: "", strength: "", timing: "ACTIVE", type: "",
+    origin: "", sourceCode: ""
   }
 };
 
@@ -863,8 +878,14 @@ function emptyTriggerSignals() {
     generated_at: null,
     taxonomy_version: null,
     source_summary: {
-      tender_total: 0, event_total: 0, evaluated_total: 0,
-      signal_total: 0, items_without_trigger: 0, suppressed_editorial_total: 0
+      tender_total: 0, event_total: 0, production_evaluated_total: 0, evaluated_total: 0,
+      production_signal_total: 0, signal_total: 0, production_items_without_trigger: 0,
+      items_without_trigger: 0, suppressed_editorial_total: 0,
+      source_pilot_input_total: 0, source_pilot_integrated_total: 0,
+      source_pilot_signal_total: 0, source_pilot_without_trigger: 0,
+      source_pilot_suppressed_editorial_total: 0, cross_corpus_duplicates: 0,
+      rejected_source_items: 0, total_evaluated: 0, total_signal_total: 0,
+      total_items_without_trigger: 0
     },
     trigger_summary: {
       trigger_counts: {},
@@ -889,6 +910,14 @@ function normalizeTriggerEvidence(trigger) {
     evidence_strength: allowedStrengths[trigger.evidence_strength]
       ? trigger.evidence_strength : "WEAK",
     matched_terms: Array.isArray(trigger.matched_terms) ? trigger.matched_terms.filter(hasText) : [],
+    matched_evidence: Array.isArray(trigger.matched_evidence)
+      ? trigger.matched_evidence.filter(function (evidence) {
+          return evidence && typeof evidence === "object" &&
+            hasText(evidence.term) && (evidence.field === "title" || evidence.field === "excerpt") &&
+            hasText(evidence.excerpt);
+        }).map(function (evidence) {
+          return { term: evidence.term, field: evidence.field, excerpt: evidence.excerpt.slice(0, 300) };
+        }) : [],
     evidence_excerpt: hasText(trigger.evidence_excerpt) ? trigger.evidence_excerpt : "",
     product_hypotheses: Array.isArray(trigger.product_hypotheses)
       ? trigger.product_hypotheses.filter(hasText) : [],
@@ -911,7 +940,17 @@ function normalizeTriggerItem(item) {
   };
   return {
     id: hasText(item.id) ? item.id : "",
-    type: item.type === "event" ? "event" : "tender",
+    type: item.type === "official_source_pilot"
+      ? "official_source_pilot" : (item.type === "event" ? "event" : "tender"),
+    data_origin: ["tender_corpus", "event_corpus", "official_source_pilot"]
+      .indexOf(item.data_origin) >= 0 ? item.data_origin
+      : (item.type === "event" ? "event_corpus" : "tender_corpus"),
+    source_code: hasText(item.source_code) ? item.source_code : "",
+    official_provenance: item.official_provenance &&
+      typeof item.official_provenance === "object" && !Array.isArray(item.official_provenance)
+      ? item.official_provenance : null,
+    related_official_provenance: Array.isArray(item.related_official_provenance)
+      ? item.related_official_provenance : [],
     title: hasText(item.title) ? item.title : "",
     source: hasText(item.source) ? item.source : "",
     link: hasText(item.link) ? item.link : "",
@@ -1751,6 +1790,20 @@ function rebuildTriggerCategoryOptions() {
   select.value = current;
 }
 
+function rebuildTriggerSourceCodeOptions() {
+  var select = document.getElementById("triggerSourceCodeFilter");
+  var current = state.triggerFilters.sourceCode;
+  var codes = {};
+  state.triggerSignals.items.forEach(function (item) {
+    if (item.source_code) codes[item.source_code] = true;
+  });
+  select.innerHTML = '<option value="">Semua source</option>' +
+    Object.keys(codes).sort().map(function (code) {
+      return '<option value="' + esc(code) + '">' + esc(code) + '</option>';
+    }).join("");
+  select.value = current;
+}
+
 function triggerItemsAfterFilter() {
   var filters = state.triggerFilters;
   return state.triggerSignals.items.map(function (item, index) {
@@ -1758,6 +1811,8 @@ function triggerItemsAfterFilter() {
   }).filter(function (entry) {
     var item = entry.item;
     if (filters.type && item.type !== filters.type) return false;
+    if (filters.origin && item.data_origin !== filters.origin) return false;
+    if (filters.sourceCode && item.source_code !== filters.sourceCode) return false;
     if (filters.timing === "ACTIVE" &&
         item.timing_status === "INFORMATIONAL_OR_EDITORIAL") return false;
     if (filters.timing && filters.timing !== "ACTIVE" &&
@@ -1771,18 +1826,19 @@ function triggerItemsAfterFilter() {
   }).sort(function (a, b) {
     var aPrimary = primaryTriggerEvidence(a.item);
     var bPrimary = primaryTriggerEvidence(b.item);
-    var priorities = {
-      CURRENT_OR_UNCLEAR: 2,
-      COMPLETED_OR_PAST: 3,
-      HISTORICAL_REFERENCE: 4,
-      INFORMATIONAL_OR_EDITORIAL: 5
+    var priority = function (item, primary) {
+      var pilot = item.data_origin === "official_source_pilot";
+      if (pilot && item.timing_status === "FUTURE_OR_OPEN") return 0;
+      if (!pilot && item.timing_status === "FUTURE_OR_OPEN" && primary.trigger_class === "direct") return 1;
+      if (pilot && item.timing_status === "CURRENT_OR_UNCLEAR") return 2;
+      if (!pilot && item.timing_status === "FUTURE_OR_OPEN") return 3;
+      if (!pilot && item.timing_status === "CURRENT_OR_UNCLEAR") return 4;
+      if (item.timing_status === "COMPLETED_OR_PAST") return 5;
+      if (item.timing_status === "HISTORICAL_REFERENCE") return 6;
+      return 7;
     };
-    var aPriority = a.item.timing_status === "FUTURE_OR_OPEN"
-      ? (aPrimary.trigger_class === "direct" ? 0 : 1)
-      : priorities[a.item.timing_status];
-    var bPriority = b.item.timing_status === "FUTURE_OR_OPEN"
-      ? (bPrimary.trigger_class === "direct" ? 0 : 1)
-      : priorities[b.item.timing_status];
+    var aPriority = priority(a.item, aPrimary);
+    var bPriority = priority(b.item, bPrimary);
     return aPriority - bPriority || a.index - b.index || a.item.id.localeCompare(b.item.id);
   }).map(function (entry) { return entry.item; });
 }
@@ -1794,7 +1850,10 @@ function renderTriggerMetrics() {
   var strengths = summary.strength_counts || {};
   var timing = summary.timing_counts || {};
   var metrics = [
-    ["Total signal", source.signal_total || 0],
+    ["Total signal", source.total_signal_total || source.signal_total || 0],
+    ["Input sumber resmi pilot", source.source_pilot_input_total || 0],
+    ["Signal sumber resmi pilot", source.source_pilot_signal_total || 0],
+    ["Pilot tanpa trigger", source.source_pilot_without_trigger || 0],
     ["Direct", classes.direct || 0],
     ["Indirect", classes.indirect || 0],
     ["Historical", classes.historical || 0],
@@ -1842,7 +1901,11 @@ function renderTriggerSignals() {
 
   var filtered = triggerItemsAfterFilter();
   var visible = filtered.slice(0, 20);
-  statusEl.textContent = "Total signal: " + (data.source_summary.signal_total || 0) +
+  statusEl.textContent = "Total signal: " +
+    (data.source_summary.total_signal_total || data.source_summary.signal_total || 0) +
+    ". Input sumber resmi pilot: " + (data.source_summary.source_pilot_input_total || 0) +
+    ". Signal pilot: " + (data.source_summary.source_pilot_signal_total || 0) +
+    ". Pilot tanpa trigger: " + (data.source_summary.source_pilot_without_trigger || 0) +
     ". Editorial disuppress: " + (data.source_summary.suppressed_editorial_total || 0) +
     ". Ditampilkan: " + visible.length + " dari " + filtered.length + " sesuai filter.";
   if (!filtered.length) {
@@ -1852,6 +1915,7 @@ function renderTriggerSignals() {
 
   itemsEl.innerHTML = '<div class="review-list">' + visible.map(function (item) {
     var primary = primaryTriggerEvidence(item);
+    var isOfficialPilot = item.data_origin === "official_source_pilot";
     var hypotheses = [];
     item.triggers.forEach(function (trigger) {
       trigger.product_hypotheses.forEach(function (hypothesis) {
@@ -1860,10 +1924,12 @@ function renderTriggerSignals() {
     });
     var meta = [
       "Tipe: " + item.type,
-      "Organisasi: " + (item.organization || "(belum jelas)"),
+      "Organisasi: " + (item.organization ||
+        (isOfficialPilot ? "(belum tersedia; publisher bukan buyer)" : "(belum jelas)")),
       "Status waktu: " + triggerTimingLabel(item.timing_status),
       "Next action: " + triggerActionLabel(item.suggested_next_action)
     ];
+    if (isOfficialPilot) meta.push("Sumber: BKPM");
     if (item.date) meta.push("Tanggal: " + (fmtTanggal(item.date) || item.date));
 
     var triggerHtml = item.triggers.map(function (trigger) {
@@ -1875,17 +1941,26 @@ function renderTriggerSignals() {
         '<span class="badge strength-' + esc(trigger.evidence_strength.toLowerCase()) + '">' +
         esc(trigger.evidence_strength) + '</span></div>' +
         '<div><strong>Matched evidence:</strong> ' + esc(trigger.matched_terms.join(", ")) + '</div>' +
+        (trigger.matched_evidence.length ? '<div><strong>Evidence field:</strong> ' +
+          trigger.matched_evidence.map(function (evidence) {
+            return esc(evidence.term) + ' [' + esc(evidence.field) + ']: ' + esc(evidence.excerpt);
+          }).join('<br>') + '</div>' : '') +
         '<div><strong>Evidence excerpt:</strong> ' + esc(trigger.evidence_excerpt) + '</div>' +
         '</div>';
     }).join("");
-    var sourceLink = item.link
-      ? '<div class="review-actions"><a href="' + esc(item.link) +
-        '" target="_blank" rel="noopener">Buka Sumber</a></div>'
+    var officialDetailUrl = isOfficialPilot && item.official_provenance
+      ? item.official_provenance.detail_url : item.link;
+    var sourceLink = officialDetailUrl
+      ? '<div class="review-actions"><a href="' + esc(officialDetailUrl) +
+        '" target="_blank" rel="noopener">' +
+        (isOfficialPilot ? 'Buka sumber resmi' : 'Buka Sumber') + '</a></div>'
       : "";
     return '<div class="review-item">' +
       '<div><span class="badge trigger-' + esc(primary.trigger_class) + '">' +
       esc(triggerClassLabel(primary.trigger_class)) + '</span><span class="badge">' +
-      esc(item.type) + '</span><span class="badge timing-' +
+      esc(item.type) + '</span>' +
+      (isOfficialPilot ? '<span class="badge">Sumber resmi pilot</span>' : '') +
+      '<span class="badge timing-' +
       esc(triggerTimingClass(item.timing_status)) + '">' +
       esc(triggerTimingLabel(item.timing_status)) + '</span></div>' +
       '<h3>' + esc(item.title || "(judul tidak tersedia)") + '</h3>' +
@@ -1893,7 +1968,9 @@ function renderTriggerSignals() {
         return '<span>' + esc(value) + '</span>';
       }).join("") + '</div>' + triggerHtml +
       '<div class="trigger-hypotheses"><strong>Hipotesis produk &mdash; perlu verifikasi:</strong> ' +
-      esc(hypotheses.join(", ") || "-") + '</div>' + sourceLink + '</div>';
+      esc(hypotheses.join(", ") || "-") + '</div>' +
+      (isOfficialPilot ? '<div class="qualification-note">Sumber resmi pilot &mdash; tetap memerlukan verifikasi manusia</div>' : '') +
+      sourceLink + '</div>';
   }).join("") + '</div>';
 }
 
@@ -1967,6 +2044,12 @@ function bindEvents() {
   document.getElementById("triggerTypeFilter").addEventListener("change", function (e) {
     state.triggerFilters.type = e.target.value; renderTriggerSignals();
   });
+  document.getElementById("triggerOriginFilter").addEventListener("change", function (e) {
+    state.triggerFilters.origin = e.target.value; renderTriggerSignals();
+  });
+  document.getElementById("triggerSourceCodeFilter").addEventListener("change", function (e) {
+    state.triggerFilters.sourceCode = e.target.value; renderTriggerSignals();
+  });
   document.getElementById("copySummaryBtn").addEventListener("click", function (e) {
     copyText(buildSummary(), e.target);
   });
@@ -1989,6 +2072,7 @@ loadData().then(function () {
   renderReviewQueue();
   renderQualificationReadiness();
   rebuildTriggerCategoryOptions();
+  rebuildTriggerSourceCodeOptions();
   renderTriggerSignals();
   renderSummary();
   bindEvents();

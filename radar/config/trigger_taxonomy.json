@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.2.0",
   "future_signal_max_published_age_days": 60,
   "class_precedence": [
     "direct",
@@ -339,6 +339,52 @@
       "product_hypotheses": [
         "Tambahan pakaian kerja untuk operasi baru",
         "Apparel operasional untuk kapasitas tambahan"
+      ],
+      "allowed_actions": [
+        "VERIFY_TRIGGER",
+        "VERIFY_PRODUCT_NEED",
+        "VERIFY_ORGANIZATION",
+        "VERIFY_TIMING",
+        "ADD_TO_WATCHLIST"
+      ]
+    },
+    {
+      "code": "FACILITY_DEVELOPMENT",
+      "label": "Pengembangan Fasilitas",
+      "description": "Data sumber resmi pilot menyebut pembangunan, konstruksi, groundbreaking, atau pengembangan fasilitas fisik yang belum mulai beroperasi.",
+      "trigger_class": "indirect",
+      "origin_scope": [
+        "official_source_pilot"
+      ],
+      "positive_terms": [],
+      "phrase_terms": [
+        "pembangunan fasilitas",
+        "pembangunan pabrik",
+        "konstruksi pabrik",
+        "konstruksi fasilitas",
+        "groundbreaking",
+        "peletakan batu pertama",
+        "mulai konstruksi",
+        "proyek fasilitas",
+        "fasilitas material baterai",
+        "pembangunan kawasan industri",
+        "konstruksi proyek"
+      ],
+      "negative_terms": [
+        "pembangunan ekonomi",
+        "pembangunan manusia",
+        "pembangunan hukum",
+        "pembangunan nasional",
+        "konstruksi kebijakan",
+        "fasilitas pembiayaan",
+        "fasilitas kredit",
+        "fasilitas fiskal"
+      ],
+      "product_hypotheses": [
+        "Pakaian kerja proyek",
+        "Wearpack",
+        "Safety apparel",
+        "Seragam operasional masa depan"
       ],
       "allowed_actions": [
         "VERIFY_TRIGGER",

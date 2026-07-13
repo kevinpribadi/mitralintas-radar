@@ -2,7 +2,7 @@
 
 ## Tujuan
 
-Source Pilot menguji apakah berita dan siaran pers dari domain resmi dapat diambil sebagai HTML statis, divalidasi, dan dinormalisasi secara aman. Hasil pilot disimpan pada lapisan karantina dan tidak digabungkan ke corpus tender, event, qualification readiness, atau trigger signal.
+Source Pilot menguji apakah berita dan siaran pers dari domain resmi dapat diambil sebagai HTML statis, divalidasi, dan dinormalisasi secara aman. Fase J.2B tetap mempertahankan snapshot pada lapisan karantina, lalu membacanya sebagai corpus tambahan opsional untuk Trigger Radar. File tender, event, review queue, qualification readiness, dan human feedback tidak digabung atau diubah.
 
 Item pilot bukan peluang dan bukan bukti bahwa organisasi akan membeli produk Mitra Lintas. Semua classification hint memerlukan review manusia.
 
@@ -14,6 +14,12 @@ Registry berada di `radar/config/source_registry.json` dan dibatasi maksimal dua
 - `KEMENPERIN_IMC_NEWS`: berita resmi Industrial Manufacturing Center Kemenperin pada `imc.kemenperin.go.id`.
 
 Setiap sumber dapat dimatikan secara independen dengan `enabled_for_pilot`. Host, listing URL, path yang diizinkan, jenis sumber, sasaran classification hint, dan strategi parser dicatat dalam registry. Redirect dan canonical URL di luar exact official domain tidak diikuti.
+
+Keputusan integrasi trigger tidak diturunkan dari health runtime. Registry mempunyai status config
+yang dapat diaudit: `ACCEPTED_FOR_TRIGGER_PILOT`, `PILOT_ONLY`, `DISABLED`, dan `REJECTED`.
+J.2B menetapkan `BKPM_PRESS_RELEASES` sebagai `ACCEPTED_FOR_TRIGGER_PILOT` setelah acceptance
+gate J.2A. `KEMENPERIN_IMC_NEWS` berstatus `REJECTED` dengan alasan
+`TLS_CERT_EXPIRED`; itemnya tidak boleh masuk Trigger Radar.
 
 ## Preflight dan Fail-Closed
 
@@ -100,8 +106,28 @@ Pada preflight J.2A, listing BKPM dapat diakses sebagai HTML statis dan menyedia
 
 IMC Kemenperin berstatus `UNAVAILABLE` karena sertifikat HTTPS situs kedaluwarsa saat preflight. Fetcher tidak menonaktifkan validasi TLS dan tidak mencoba bypass.
 
+## Integrasi Snapshot J.2B
+
+Trigger builder membaca snapshot committed `source_pilot_items.json`, bukan menjalankan fetcher.
+Hanya source dengan status config `ACCEPTED_FOR_TRIGGER_PILOT` yang dievaluasi. BKPM mempunyai
+10 item valid; title, link, date, excerpt, dan provenance tersedia, sedangkan seluruh
+`organization_hint` kosong. Publisher BKPM tidak digunakan sebagai buyer.
+
+Detection pilot menggunakan `title` dan `excerpt`, menyimpan field asal evidence, provenance
+resmi, dan kewajiban review manusia. Snapshot yang hilang tidak membuat item palsu dan tidak
+menggagalkan build production. Registry invalid membuat integrasi pilot fail-closed. Workflow
+boleh menjalankan builder dan test terhadap snapshot committed, tetapi tidak menjalankan
+`fetch_source_pilot.js`, tidak membuat request BKPM, dan tidak mengubah schedule.
+
 ## Keterbatasan dan Tahap Berikutnya
 
 Parser static HTML dapat gagal ketika markup sumber berubah atau halaman berpindah ke rendering dinamis. Classification hint sengaja sempit dan dapat menghasilkan false negative. Organization hint sering kosong karena publisher bukan organisasi target.
 
-Fase ini tidak dijalankan terjadwal, tidak mengubah dashboard atau workflow, dan tidak mengintegrasikan item ke Trigger Radar produksi. Tahap berikutnya adalah audit kualitas berulang dan integrasi terbatas hanya untuk sumber yang memenuhi acceptance gate tanpa mengurangi guardrail.
+Live acquisition tetap tidak dijalankan terjadwal. J.2B hanya mengintegrasikan snapshot BKPM yang
+diterima ke output trigger gabungan dengan count production terpisah. Organization extraction
+masih terbatas (0/10 pada snapshot), sehingga seluruh signal memerlukan audit manual dan verifikasi
+organisasi, timing, trigger, serta kebutuhan produk.
+
+Audit per item, termasuk keputusan `TRUE_TRIGGER`, `PLAUSIBLE_BUT_UNCONFIRMED`, dan
+`NOT_A_TRIGGER`, tersedia di `SOURCE_PILOT_AUDIT_J2B.md`. Audit tersebut bersifat pelaporan dan
+tidak digunakan untuk mengubah hasil deterministic builder.
