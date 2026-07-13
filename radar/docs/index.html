@@ -112,6 +112,10 @@
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px; margin-bottom: 10px;
   }
+  .qualification-metrics {
+    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px; margin-bottom: 10px;
+  }
   .review-metric {
     border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
     background: #f8fafc;
@@ -119,6 +123,7 @@
   .review-metric strong { display: block; font-size: 1.05rem; }
   .review-metric span { display: block; font-size: .72rem; color: var(--muted); }
   .review-top-issues { font-size: .82rem; color: var(--muted); margin-bottom: 10px; }
+  .qualification-note { font-size: .82rem; color: var(--muted); margin-bottom: 10px; }
   .review-filters {
     border-radius: 8px; margin: 0 0 10px; padding: 10px; background: #fbfdff;
   }
@@ -144,6 +149,11 @@
   .badge.sev-high { background: #fee2e2; color: #991b1b; }
   .badge.sev-medium { background: #fef3c7; color: #92400e; }
   .badge.sev-low { background: #e0f2fe; color: #075985; }
+  .badge.state-ready { background: #dcfce7; color: #166534; }
+  .badge.state-info { background: #e0f2fe; color: #075985; }
+  .badge.state-review { background: #fef3c7; color: #92400e; }
+  .badge.state-historical { background: #ede9fe; color: #5b21b6; }
+  .badge.state-low { background: #f1f5f9; color: #475569; }
   .badge.issue { margin-top: 4px; }
   .empty { text-align: center; color: var(--muted); padding: 30px 10px; }
 
@@ -170,6 +180,7 @@
     .filters label, .filters select, .filters input[type=text] { width: 100%; min-width: 0; }
     .filters { flex-direction: column; align-items: stretch; }
     .review-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .qualification-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .review-list-actions button { width: 100%; }
   }
 </style>
@@ -213,6 +224,38 @@
       </label>
     </div>
     <div id="reviewQueueItems"></div>
+  </section>
+
+  <section class="summary-panel" id="qualificationReadinessPanel">
+    <div class="review-head">
+      <h2>Kesiapan Kualifikasi Peluang</h2>
+      <div class="review-status" id="qualificationStatus">Memuat kesiapan...</div>
+    </div>
+    <div class="qualification-note">
+      Status ini merupakan rekomendasi berbasis aturan dan masih memerlukan keputusan manusia.
+    </div>
+    <div class="qualification-metrics" id="qualificationMetrics"></div>
+    <div class="review-top-issues" id="qualificationReasons"></div>
+    <div class="filters review-filters" id="qualificationFilters">
+      <label>Status
+        <select id="qualificationStateFilter">
+          <option value="">Semua</option>
+          <option value="READY_FOR_HUMAN_QUALIFICATION">Siap Ditinjau untuk Kualifikasi</option>
+          <option value="NEEDS_MORE_INFORMATION">Perlu Informasi Tambahan</option>
+          <option value="NEEDS_DATA_REVIEW">Perlu Review Kualitas Data</option>
+          <option value="EXPIRED_OR_HISTORICAL">Referensi Historis</option>
+          <option value="LOW_PRODUCT_RELEVANCE">Relevansi Produk Rendah</option>
+        </select>
+      </label>
+      <label>Type
+        <select id="qualificationTypeFilter">
+          <option value="">Semua</option>
+          <option value="tender">Tender</option>
+          <option value="event">Event</option>
+        </select>
+      </label>
+    </div>
+    <div id="qualificationItems"></div>
   </section>
 
   <section class="summary-panel">
@@ -301,7 +344,24 @@ var state = {
   reviewQueueAvailable: false,
   reviewQueueError: null,
   reviewFilters: { severity: "", type: "" },
-  reviewOldReferencesExpanded: false
+  reviewOldReferencesExpanded: false,
+  qualificationReadiness: {
+    generated_at: null,
+    rules_version: null,
+    source_summary: { tender_total: 0, event_total: 0, evaluated_total: 0 },
+    readiness_summary: {
+      ready_for_human_qualification: 0,
+      needs_more_information: 0,
+      needs_data_review: 0,
+      expired_or_historical: 0,
+      low_product_relevance: 0,
+      reason_counts: {}
+    },
+    items: []
+  },
+  qualificationAvailable: false,
+  qualificationError: null,
+  qualificationFilters: { state: "", type: "" }
 };
 
 var JENIS_TENDER = ["pemerintah", "bumn", "sekolah", "swasta", "tidak_diketahui"];
@@ -454,6 +514,83 @@ function validateReviewQueue(raw) {
   return q;
 }
 
+function emptyQualificationReadiness() {
+  return {
+    generated_at: null,
+    rules_version: null,
+    source_summary: { tender_total: 0, event_total: 0, evaluated_total: 0 },
+    readiness_summary: {
+      ready_for_human_qualification: 0,
+      needs_more_information: 0,
+      needs_data_review: 0,
+      expired_or_historical: 0,
+      low_product_relevance: 0,
+      reason_counts: {}
+    },
+    items: []
+  };
+}
+
+function normalizeQualificationItem(item) {
+  var allowedStates = {
+    READY_FOR_HUMAN_QUALIFICATION: true,
+    NEEDS_MORE_INFORMATION: true,
+    NEEDS_DATA_REVIEW: true,
+    EXPIRED_OR_HISTORICAL: true,
+    LOW_PRODUCT_RELEVANCE: true
+  };
+  return {
+    id: hasText(item.id) ? item.id : "",
+    type: item.type === "event" ? "event" : "tender",
+    title: hasText(item.title) ? item.title : "",
+    source: hasText(item.source) ? item.source : "",
+    link: hasText(item.link) ? item.link : "",
+    date: hasText(item.date) ? item.date : "",
+    organization: hasText(item.organization) ? item.organization : "",
+    readiness_state: allowedStates[item.readiness_state] ? item.readiness_state : "NEEDS_MORE_INFORMATION",
+    reason_codes: Array.isArray(item.reason_codes) ? item.reason_codes.filter(hasText) : [],
+    suggested_next_action: hasText(item.suggested_next_action) ? item.suggested_next_action : "VERIFY_SOURCE",
+    human_decision_required: item.human_decision_required === true
+  };
+}
+
+function validateQualificationReadiness(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("qualification_readiness.json bukan object");
+  }
+  if (!Array.isArray(raw.items)) {
+    throw new Error("qualification_readiness.json tidak memiliki items array");
+  }
+
+  var q = emptyQualificationReadiness();
+  q.generated_at = hasText(raw.generated_at) ? raw.generated_at : null;
+  q.rules_version = hasText(raw.rules_version) ? raw.rules_version : null;
+  if (raw.source_summary && typeof raw.source_summary === "object") {
+    q.source_summary.tender_total = Number(raw.source_summary.tender_total) || 0;
+    q.source_summary.event_total = Number(raw.source_summary.event_total) || 0;
+    q.source_summary.evaluated_total = Number(raw.source_summary.evaluated_total) || 0;
+  }
+  if (raw.readiness_summary && typeof raw.readiness_summary === "object") {
+    q.readiness_summary.ready_for_human_qualification =
+      Number(raw.readiness_summary.ready_for_human_qualification) || 0;
+    q.readiness_summary.needs_more_information =
+      Number(raw.readiness_summary.needs_more_information) || 0;
+    q.readiness_summary.needs_data_review = Number(raw.readiness_summary.needs_data_review) || 0;
+    q.readiness_summary.expired_or_historical =
+      Number(raw.readiness_summary.expired_or_historical) || 0;
+    q.readiness_summary.low_product_relevance =
+      Number(raw.readiness_summary.low_product_relevance) || 0;
+    q.readiness_summary.reason_counts = raw.readiness_summary.reason_counts &&
+      typeof raw.readiness_summary.reason_counts === "object"
+      ? raw.readiness_summary.reason_counts
+      : {};
+  }
+  q.items = raw.items
+    .filter(function (item) { return item && typeof item === "object" && !Array.isArray(item); })
+    .map(normalizeQualificationItem);
+  return q;
+}
+
 function loadData() {
   var pTender = fetchFirst(["data/tenders.json", "../data/tenders.json"])
     .catch(function (e) {
@@ -476,7 +613,18 @@ function loadData() {
       state.reviewQueueAvailable = false;
       state.reviewQueueError = e.message;
     });
-  return Promise.all([pTender, pEvent, pReview]).then(function (res) {
+  var pQualification = fetchFirst(["data/qualification_readiness.json", "../docs/data/qualification_readiness.json"])
+    .then(function (raw) {
+      state.qualificationReadiness = validateQualificationReadiness(raw);
+      state.qualificationAvailable = true;
+      state.qualificationError = null;
+    })
+    .catch(function (e) {
+      state.qualificationReadiness = emptyQualificationReadiness();
+      state.qualificationAvailable = false;
+      state.qualificationError = e.message;
+    });
+  return Promise.all([pTender, pEvent, pReview, pQualification]).then(function (res) {
     var tenderResult = validateDataset(res[0], "tender");
     var eventResult = validateDataset(res[1], "event");
     state.tenders = tenderResult.data;
@@ -920,6 +1068,60 @@ function reviewIssueLabel(code) {
   return code;
 }
 
+function qualificationStateLabel(code) {
+  var map = {
+    READY_FOR_HUMAN_QUALIFICATION: "Siap Ditinjau untuk Kualifikasi",
+    NEEDS_MORE_INFORMATION: "Perlu Informasi Tambahan",
+    NEEDS_DATA_REVIEW: "Perlu Review Kualitas Data",
+    EXPIRED_OR_HISTORICAL: "Referensi Historis",
+    LOW_PRODUCT_RELEVANCE: "Relevansi Produk Rendah"
+  };
+  return map[code] || code || "Perlu Informasi Tambahan";
+}
+
+function qualificationStateClass(code) {
+  var map = {
+    READY_FOR_HUMAN_QUALIFICATION: "state-ready",
+    NEEDS_MORE_INFORMATION: "state-info",
+    NEEDS_DATA_REVIEW: "state-review",
+    EXPIRED_OR_HISTORICAL: "state-historical",
+    LOW_PRODUCT_RELEVANCE: "state-low"
+  };
+  return map[code] || "state-info";
+}
+
+function qualificationReasonLabel(code) {
+  var map = {
+    SOURCE_MISSING: "Sumber kosong",
+    SOURCE_INVALID: "Link sumber tidak valid",
+    TITLE_UNINFORMATIVE: "Judul belum informatif",
+    ORGANIZATION_UNCLEAR: "Organisasi belum jelas",
+    NEED_EVIDENCE_WEAK: "Bukti kebutuhan atau trigger lemah",
+    PRODUCT_FIT_WEAK: "Relevansi produk rendah berdasarkan aturan saat ini",
+    DATE_EXPIRED: "Tanggal melewati ambang historical",
+    DATE_UNKNOWN: "Tanggal belum tersedia",
+    QUALITY_REVIEW_REQUIRED: "Perlu review kualitas data",
+    NEXT_ACTION_UNCLEAR: "Next action belum jelas",
+    READY_FOR_HUMAN_REVIEW: "Siap diperiksa manusia",
+    HISTORICAL_REFERENCE: "Referensi historis"
+  };
+  return map[code] || code;
+}
+
+function qualificationActionLabel(action) {
+  var map = {
+    VERIFY_SOURCE: "Verifikasi sumber",
+    VERIFY_ORGANIZATION: "Verifikasi organisasi",
+    VERIFY_TIMING: "Verifikasi timing",
+    VERIFY_PRODUCT_NEED: "Verifikasi kebutuhan produk",
+    REVIEW_DATA_QUALITY: "Review kualitas data",
+    OPEN_OFFICIAL_SOURCE: "Buka sumber resmi",
+    ADD_TO_WATCHLIST: "Tambahkan ke watchlist",
+    PREPARE_FOR_HUMAN_QUALIFICATION: "Siapkan untuk review manusia"
+  };
+  return map[action] || action || "Verifikasi sumber";
+}
+
 function sortedIssueCounts(issueCounts) {
   return Object.keys(issueCounts || {}).map(function (code) {
     return { code: code, count: Number(issueCounts[code]) || 0 };
@@ -1014,6 +1216,90 @@ function renderReviewQueue() {
   itemsEl.innerHTML = listHtml;
 }
 
+function qualificationItemsAfterFilter() {
+  var filters = state.qualificationFilters;
+  return state.qualificationReadiness.items.filter(function (item) {
+    if (filters.state && item.readiness_state !== filters.state) return false;
+    if (filters.type && item.type !== filters.type) return false;
+    return true;
+  });
+}
+
+function renderQualificationMetrics(summary) {
+  var source = state.qualificationReadiness.source_summary || {};
+  var metrics = [
+    ["Dievaluasi", source.evaluated_total || 0],
+    ["Siap ditinjau", summary.ready_for_human_qualification || 0],
+    ["Perlu info", summary.needs_more_information || 0],
+    ["Review data", summary.needs_data_review || 0],
+    ["Historis", summary.expired_or_historical || 0],
+    ["Produk rendah", summary.low_product_relevance || 0]
+  ];
+  document.getElementById("qualificationMetrics").innerHTML = metrics.map(function (metric) {
+    return '<div class="review-metric"><strong>' + esc(metric[1]) + '</strong><span>' +
+      esc(metric[0]) + '</span></div>';
+  }).join("");
+}
+
+function renderQualificationReadiness() {
+  var statusEl = document.getElementById("qualificationStatus");
+  var reasonsEl = document.getElementById("qualificationReasons");
+  var itemsEl = document.getElementById("qualificationItems");
+  var q = state.qualificationReadiness || emptyQualificationReadiness();
+  var summary = q.readiness_summary || emptyQualificationReadiness().readiness_summary;
+
+  renderQualificationMetrics(summary);
+
+  if (!state.qualificationAvailable) {
+    statusEl.textContent = "Data kesiapan belum tersedia. Dashboard utama tetap dapat digunakan.";
+    reasonsEl.textContent = "";
+    itemsEl.innerHTML = '<div class="empty">Belum ada data kesiapan kualifikasi yang dapat ditampilkan.</div>';
+    return;
+  }
+
+  var topReasons = sortedIssueCounts(summary.reason_counts).slice(0, 5);
+  reasonsEl.textContent = topReasons.length
+    ? "Reason code terbanyak: " + topReasons.map(function (entry) {
+        return qualificationReasonLabel(entry.code) + " (" + entry.count + ")";
+      }).join(", ")
+    : "Reason code terbanyak: -";
+
+  var filtered = qualificationItemsAfterFilter();
+  var visible = filtered.slice(0, 20);
+  statusEl.textContent = "Total dievaluasi: " + (q.source_summary.evaluated_total || 0) +
+    ". Ditampilkan: " + visible.length + " dari " + filtered.length + " sesuai filter.";
+
+  if (filtered.length === 0) {
+    itemsEl.innerHTML = '<div class="empty">0 item cocok dengan filter kesiapan saat ini.</div>';
+    return;
+  }
+
+  itemsEl.innerHTML = '<div class="review-list">' + visible.map(function (item) {
+    var meta = [];
+    if (item.date) meta.push("Tanggal: " + (fmtTanggal(item.date) || item.date));
+    if (item.source) meta.push("Sumber: " + item.source);
+    meta.push("Organisasi: " + (item.organization || "(belum jelas)"));
+    meta.push("Next action: " + qualificationActionLabel(item.suggested_next_action));
+
+    var sourceLink = item.link
+      ? '<div class="review-actions"><a href="' + esc(item.link) + '" target="_blank" rel="noopener">Buka Sumber</a></div>'
+      : "";
+    var reasons = item.reason_codes.length ? item.reason_codes : ["NEXT_ACTION_UNCLEAR"];
+
+    return '<div class="review-item">' +
+      '<div><span class="badge ' + esc(qualificationStateClass(item.readiness_state)) + '">' +
+      esc(qualificationStateLabel(item.readiness_state)) +
+      '</span><span class="badge">' + esc(item.type) + '</span></div>' +
+      '<h3>' + esc(item.title || "(judul tidak tersedia)") + '</h3>' +
+      '<div class="meta">' + meta.map(function (m) { return "<span>" + esc(m) + "</span>"; }).join("") + '</div>' +
+      '<div>' + reasons.map(function (code) {
+        return '<span class="badge issue">' + esc(qualificationReasonLabel(code)) + '</span>';
+      }).join("") + '</div>' +
+      sourceLink +
+      '</div>';
+  }).join("") + '</div>';
+}
+
 /* ============ Init ============ */
 function setTab(tab) {
   state.tab = tab;
@@ -1063,6 +1349,12 @@ function bindEvents() {
       renderReviewQueue();
     }
   });
+  document.getElementById("qualificationStateFilter").addEventListener("change", function (e) {
+    state.qualificationFilters.state = e.target.value; renderQualificationReadiness();
+  });
+  document.getElementById("qualificationTypeFilter").addEventListener("change", function (e) {
+    state.qualificationFilters.type = e.target.value; renderQualificationReadiness();
+  });
   document.getElementById("copySummaryBtn").addEventListener("click", function (e) {
     copyText(buildSummary(), e.target);
   });
@@ -1083,6 +1375,7 @@ loadData().then(function () {
   renderHeader();
   renderDataQualityWarning();
   renderReviewQueue();
+  renderQualificationReadiness();
   renderSummary();
   bindEvents();
   setTab("tender");

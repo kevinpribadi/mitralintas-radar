@@ -66,6 +66,15 @@ jobs:
           RADAR_OLD_ITEM_DAYS: "1095"
         run: node radar/scripts/build_review_queue.js
 
+      - name: Buat qualification readiness
+        env:
+          RADAR_DATA_DIR: radar/data
+          RADAR_REVIEW_QUEUE_FILE: radar/docs/data/review_queue.json
+          RADAR_QUALIFICATION_RULES_FILE: radar/config/qualification_rules.json
+          RADAR_QUALIFICATION_OUTPUT: radar/docs/data/qualification_readiness.json
+          RADAR_QUALIFICATION_EXPIRED_DAYS: "1095"
+        run: node radar/scripts/build_qualification_readiness.js
+
       # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
       - name: Salin JSON ke docs/data
         run: |
