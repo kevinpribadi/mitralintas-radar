@@ -86,7 +86,15 @@ jobs:
           RADAR_DATA_DIR: radar/data
           RADAR_TRIGGER_TAXONOMY_FILE: radar/config/trigger_taxonomy.json
           RADAR_TRIGGER_OUTPUT: radar/docs/data/trigger_signals.json
+          RADAR_SOURCE_PILOT_FILE: radar/docs/data/source_pilot_items.json
+          RADAR_SOURCE_REGISTRY: radar/config/source_registry.json
+          RADAR_TRIGGER_INCLUDE_SOURCE_PILOT: "true"
         run: node radar/scripts/build_trigger_signals.js
+
+      - name: Uji source pilot snapshot dan integrasi
+        run: |
+          node radar/scripts/test_source_pilot.js
+          node radar/scripts/test_trigger_source_pilot.js
 
       - name: Uji trigger signals
         run: node radar/scripts/test_trigger_signals.js

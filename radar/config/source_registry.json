@@ -5,6 +5,12 @@
   "request_interval_ms": 1000,
   "max_items_per_source": 50,
   "max_detail_requests_per_source": 25,
+  "acceptance_statuses": [
+    "ACCEPTED_FOR_TRIGGER_PILOT",
+    "PILOT_ONLY",
+    "DISABLED",
+    "REJECTED"
+  ],
   "sources": [
     {
       "code": "BKPM_PRESS_RELEASES",
@@ -12,6 +18,8 @@
       "official_domain": "www.bkpm.go.id",
       "listing_url": "https://www.bkpm.go.id/id/info/siaran-pers",
       "source_type": "official_press_release",
+      "acceptance_status": "ACCEPTED_FOR_TRIGGER_PILOT",
+      "acceptance_reason": "J2A_ACCEPTANCE_GATE_PASSED_DEGRADED",
       "enabled_for_pilot": true,
       "allowed_path_prefixes": [
         "/id/info/siaran-pers"
@@ -40,6 +48,8 @@
       "official_domain": "imc.kemenperin.go.id",
       "listing_url": "https://imc.kemenperin.go.id/berita",
       "source_type": "official_news",
+      "acceptance_status": "REJECTED",
+      "acceptance_reason": "TLS_CERT_EXPIRED",
       "enabled_for_pilot": true,
       "allowed_path_prefixes": [
         "/berita"

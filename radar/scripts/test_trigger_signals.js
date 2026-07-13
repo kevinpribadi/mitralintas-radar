@@ -18,12 +18,16 @@ const FILES = {
   qualification: path.join(ROOT, "radar", "docs", "data", "qualification_readiness.json"),
   output: path.join(ROOT, "radar", "docs", "data", "trigger_signals.json"),
   dashboard: path.join(ROOT, "radar", "docs", "index.html"),
+  sourcePilot: path.join(ROOT, "radar", "docs", "data", "source_pilot_items.json"),
+  sourceRegistry: path.join(ROOT, "radar", "config", "source_registry.json"),
 };
 
 const initialHashes = hashFiles(FILES);
 const taxonomy = builder.readTaxonomy(FILES.taxonomy);
 const tenderData = builder.readDataset(FILES.tenders, "tender");
 const eventData = builder.readDataset(FILES.events, "event");
+const sourcePilotData = builder.readSourcePilotDataset(FILES.sourcePilot);
+const sourceRegistry = readJson(FILES.sourceRegistry);
 const output = readJson(FILES.output);
 let passed = 0;
 const tests = [];
@@ -268,8 +272,11 @@ test("20. output counts konsisten", () => {
 });
 
 test("21. output idempotent", () => {
-  const first = builder.buildOutput({ tenderData, eventData, taxonomy });
-  const second = builder.buildOutput({ tenderData, eventData, taxonomy });
+  const args = {
+    tenderData, eventData, taxonomy, sourcePilotData, sourceRegistry, sourceRegistryValid: true,
+  };
+  const first = builder.buildOutput(args);
+  const second = builder.buildOutput(args);
   assert.strictEqual(JSON.stringify(first), JSON.stringify(second));
   assert.strictEqual(JSON.stringify(first), JSON.stringify(output));
 });
@@ -309,9 +316,11 @@ test("26. stable item ID kompatibel qualification readiness", () => {
 });
 
 test("27. seluruh trigger memiliki matched evidence dari judul", () => {
-  output.items.forEach((item) => item.triggers.forEach((trigger) => {
+  output.items.filter((item) => item.data_origin !== "official_source_pilot")
+    .forEach((item) => item.triggers.forEach((trigger) => {
     assert.ok(trigger.matched_terms.length > 0);
     assert.ok(item.title.includes(trigger.evidence_excerpt));
+    assert.ok(trigger.matched_evidence.every((evidence) => evidence.field === "title"));
   }));
 });
 
@@ -324,7 +333,7 @@ test("28. seluruh input dievaluasi atau dihitung tanpa trigger", () => {
 test("29. field audit sama dengan qualification readiness", () => {
   const qualification = readJson(FILES.qualification);
   const byId = new Map(qualification.items.map((item) => [item.id, item]));
-  output.items.forEach((item) => {
+  output.items.filter((item) => item.data_origin !== "official_source_pilot").forEach((item) => {
     const sourceItem = byId.get(item.id);
     assert.ok(sourceItem);
     ["type", "title", "source", "link", "date", "organization"].forEach((field) => {
@@ -434,7 +443,7 @@ test("46. artikel korupsi dan audit tetap historical primary", () => {
 test("47. timing counts konsisten", () => {
   const total = Object.values(output.trigger_summary.timing_counts)
     .reduce((sum, value) => sum + value, 0);
-  assert.strictEqual(total, output.source_summary.signal_total);
+  assert.strictEqual(total, output.source_summary.total_signal_total);
   output.items.forEach((item) => assert.ok(builder.TIMING_STATUSES.includes(item.timing_status)));
 });
 

@@ -1,20 +1,23 @@
 # Trigger Radar V1
 
-Trigger Radar mendeteksi peristiwa pada data tender dan event yang sudah tersedia. Trigger
+Trigger Radar mendeteksi peristiwa pada data tender dan event yang sudah tersedia serta, mulai
+Fase J.2B, snapshot sumber resmi yang secara eksplisit diterima untuk pilot trigger. Trigger
 merupakan indikasi awal yang dapat mendahului kebutuhan tekstil atau apparel. Trigger bukan
 bukti bahwa organisasi memiliki kebutuhan, akan membeli, atau layak menjadi peluang.
 
-Sistem bersifat deterministic, tidak memakai AI/API eksternal, tidak menambah sumber scraping,
+Sistem bersifat deterministic, tidak memakai AI/API eksternal, tidak menjalankan live fetch,
 tidak membuat opportunity score, dan tidak melakukan outreach. Seluruh hasil memerlukan review
 manusia.
 
 ## Trigger taxonomy
 
-Taxonomy machine-readable berada di `config/trigger_taxonomy.json`. Sepuluh kategori V1:
+Taxonomy machine-readable berada di `config/trigger_taxonomy.json`. Sebelas kategori:
 
 - `DIRECT_PROCUREMENT`: pengadaan atau tender disebut langsung.
 - `FACILITY_OPENING`: fasilitas atau lokasi operasi baru dibuka.
 - `BUSINESS_EXPANSION`: kapasitas, operasi, fasilitas, atau armada diperluas.
+- `FACILITY_DEVELOPMENT`: pembangunan/konstruksi fasilitas fisik sebelum mulai beroperasi;
+  kategori ini dibatasi ke `official_source_pilot` agar subset production tidak berubah.
 - `MASS_RECRUITMENT`: penambahan tenaga kerja atau onboarding skala besar.
 - `REBRANDING_OR_IDENTITY_CHANGE`: brand, logo, atau identitas berubah.
 - `CORPORATE_OR_INSTITUTIONAL_EVENT`: kegiatan atau perayaan organisasi.
@@ -87,8 +90,10 @@ atau asumsi bahwa published date adalah event date.
   kombinasi beberapa keyword yang didukung sumber traceable.
 - `WEAK`: hanya keyword generik atau konteks bukti terbatas.
 
-Strength bersifat kategorikal dan tidak dikonversi menjadi angka. Evidence excerpt selalu berupa
-substring dari judul input. Sistem tidak menyusun kalimat yang seolah-olah berasal dari sumber.
+Strength bersifat kategorikal dan tidak dikonversi menjadi angka. Untuk corpus tender/event,
+detection tetap hanya membaca judul seperti sebelumnya. Untuk sumber resmi pilot, detection
+membaca `title` dan `excerpt`. `matched_evidence` mencatat `term`, field `title|excerpt`, dan
+excerpt sumber maksimal 300 karakter. Sistem tidak menyusun kalimat evidence sintetis.
 
 ## Negative rules
 
@@ -110,16 +115,28 @@ Negative rules mengurangi false positive, tetapi tidak menggantikan verifikasi m
 
 ## Output dan count
 
-Builder menulis `docs/data/trigger_signals.json`. Semua tender/event dihitung pada
-`evaluated_total`; hanya item dengan minimal satu trigger disimpan di `items`. Item lainnya
-dihitung dalam `items_without_trigger`.
+Builder menulis `docs/data/trigger_signals.json`. Count legacy `evaluated_total`, `signal_total`,
+dan `items_without_trigger` tetap berarti subset production tender/event. Field
+`production_evaluated_total` menegaskan baseline tersebut. Count pilot dicatat terpisah melalui
+`source_pilot_input_total`, `source_pilot_integrated_total`, `source_pilot_signal_total`,
+`source_pilot_without_trigger`, `cross_corpus_duplicates`, dan `rejected_source_items`.
+`total_evaluated` dan `total_signal_total` adalah gabungan setelah acceptance dan deduplikasi.
 
 `trigger_counts` menghitung seluruh trigger yang cocok. `class_counts`, `strength_counts`, dan
 `timing_counts` menghitung primary trigger/item sehingga masing-masing distribusi menjumlah ke
 `signal_total`. `suppressed_editorial_total` mencatat item dengan event trigger yang dibuang oleh
 aturan editorial. Item tersebut tidak menjadi signal kecuali memiliki trigger lain yang valid.
 
-Stable item ID menggunakan identitas yang sama dengan review queue dan qualification readiness.
+Setiap signal mempunyai `data_origin`: `tender_corpus`, `event_corpus`, atau
+`official_source_pilot`. Stable item ID production menggunakan identitas yang sama dengan review
+queue dan qualification readiness; pilot mempertahankan stable ID dari snapshot. Pilot menyimpan
+`source_code` dan `official_provenance`. Publisher resmi tidak menjadi buyer/organization.
+
+Deduplikasi lintas corpus dilakukan konservatif: exact canonical/detail URL, normalized official
+URL, lalu normalized title + published date yang identik. Jika cocok, signal production dan ID-nya
+dipertahankan; provenance resmi dicatat sebagai related provenance tanpa signal utama kedua.
+Kesamaan organisasi, proyek, keyword, atau tema saja tidak cukup untuk deduplikasi.
+
 Output disortir secara netral berdasarkan type, title, source, stable ID, lalu index input. Tidak
 ada ranking komersial.
 
@@ -144,6 +161,7 @@ atau pricing otomatis.
 
 ```bash
 node radar/scripts/build_trigger_signals.js
+node radar/scripts/test_trigger_source_pilot.js
 node radar/scripts/test_trigger_signals.js
 ```
 
@@ -152,6 +170,14 @@ Environment variables:
 - `RADAR_DATA_DIR`: folder input tender/event, default `radar/data`.
 - `RADAR_TRIGGER_TAXONOMY_FILE`: taxonomy, default `radar/config/trigger_taxonomy.json`.
 - `RADAR_TRIGGER_OUTPUT`: output, default `radar/docs/data/trigger_signals.json`.
+- `RADAR_SOURCE_PILOT_FILE`: snapshot committed, default
+  `radar/docs/data/source_pilot_items.json`.
+- `RADAR_SOURCE_REGISTRY`: keputusan acceptance, default `radar/config/source_registry.json`.
+- `RADAR_TRIGGER_INCLUDE_SOURCE_PILOT`: default `true`; nilai `false/0/no/off` menonaktifkan
+  corpus tambahan.
 
 `generated_at` diambil dari timestamp input terbaru dan tidak memakai waktu eksekusi. Penulisan
 JSON dilakukan secara atomik, sehingga input identik menghasilkan output dan hash identik.
+Builder tidak pernah memanggil `fetch_source_pilot.js`. File pilot yang hilang menghasilkan warning
+dan build production tetap berjalan. Registry invalid membuat pilot fail-closed tanpa menggagalkan
+build production. Semua hasil pilot tetap `human_review_required: true`.

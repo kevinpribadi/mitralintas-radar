@@ -22,6 +22,13 @@ const FORBIDDEN_ACTIONS = new Set([
   "SUBMIT_BID",
   "SET_PRICE",
 ]);
+const SOURCE_ACCEPTANCE_STATUSES = new Set([
+  "ACCEPTED_FOR_TRIGGER_PILOT",
+  "PILOT_ONLY",
+  "DISABLED",
+  "REJECTED",
+]);
+const ACCEPTED_SOURCE_STATUS = "ACCEPTED_FOR_TRIGGER_PILOT";
 
 function main() {
   const dataDir = process.env.RADAR_DATA_DIR || path.join("radar", "data");
@@ -29,19 +36,100 @@ function main() {
     path.join("radar", "config", "trigger_taxonomy.json");
   const outputFile = process.env.RADAR_TRIGGER_OUTPUT ||
     path.join("radar", "docs", "data", "trigger_signals.json");
+  const sourcePilotFile = process.env.RADAR_SOURCE_PILOT_FILE ||
+    path.join("radar", "docs", "data", "source_pilot_items.json");
+  const sourceRegistryFile = process.env.RADAR_SOURCE_REGISTRY ||
+    path.join("radar", "config", "source_registry.json");
+  const includeSourcePilot = parseBooleanEnv(
+    process.env.RADAR_TRIGGER_INCLUDE_SOURCE_PILOT, true);
 
   const taxonomy = readTaxonomy(taxonomyFile);
   const tenderData = readDataset(path.join(dataDir, "tenders.json"), "tender");
   const eventData = readDataset(path.join(dataDir, "events.json"), "event");
-  const output = buildOutput({ tenderData, eventData, taxonomy });
+  const pilotInputs = includeSourcePilot
+    ? readSourcePilotInputs(sourcePilotFile, sourceRegistryFile)
+    : { sourcePilotData: null, sourceRegistry: null, registryValid: false, warnings: [] };
+  pilotInputs.warnings.forEach((warning) => console.warn(`WARNING: ${warning}`));
+  const output = buildOutput({
+    tenderData,
+    eventData,
+    taxonomy,
+    sourcePilotData: pilotInputs.sourcePilotData,
+    sourceRegistry: pilotInputs.sourceRegistry,
+    sourceRegistryValid: pilotInputs.registryValid,
+  });
 
   validateOutput(output, taxonomy);
   writeJsonAtomic(outputFile, output);
   console.log(
-    `Tulis ${outputFile} (${output.source_summary.signal_total} signal dari ` +
-    `${output.source_summary.evaluated_total} item dievaluasi)`
+    `Tulis ${outputFile} (${output.source_summary.total_signal_total} signal dari ` +
+    `${output.source_summary.total_evaluated} item dievaluasi; ` +
+    `${output.source_summary.source_pilot_signal_total} signal sumber resmi pilot)`
   );
   return output;
+}
+
+function parseBooleanEnv(value, defaultValue) {
+  if (value == null || String(value).trim() === "") return defaultValue;
+  return !["0", "false", "no", "off"].includes(String(value).trim().toLowerCase());
+}
+
+function readSourcePilotInputs(sourcePilotFile, sourceRegistryFile) {
+  const warnings = [];
+  let sourcePilotData = null;
+  let sourceRegistry = null;
+  let registryValid = false;
+  try {
+    sourcePilotData = readSourcePilotDataset(sourcePilotFile);
+  } catch (error) {
+    warnings.push(`source pilot tidak tersedia; production tetap dibangun (${error.message})`);
+  }
+  try {
+    sourceRegistry = readJsonFile(sourceRegistryFile, "source registry");
+    validateSourceRegistry(sourceRegistry);
+    registryValid = true;
+  } catch (error) {
+    warnings.push(`source registry invalid; source pilot fail-closed (${error.message})`);
+  }
+  return { sourcePilotData, sourceRegistry, registryValid, warnings };
+}
+
+function readSourcePilotDataset(filePath) {
+  const parsed = readJsonFile(filePath, "source pilot");
+  if (!isObject(parsed) || !Array.isArray(parsed.items)) {
+    throw new Error(`${filePath} harus object dengan items array`);
+  }
+  return { generatedAt: parsed.generated_at || null, items: parsed.items };
+}
+
+function validateSourceRegistry(registry) {
+  const errors = [];
+  if (!isObject(registry) || !Array.isArray(registry.sources)) {
+    throw new Error("source registry harus object dengan sources array");
+  }
+  const configuredStatuses = registry.acceptance_statuses;
+  if (!Array.isArray(configuredStatuses) ||
+      SOURCE_ACCEPTANCE_STATUSES.size !== configuredStatuses.length ||
+      !Array.from(SOURCE_ACCEPTANCE_STATUSES).every((status) => configuredStatuses.includes(status))) {
+    errors.push("acceptance_statuses harus memuat empat status J.2B satu kali");
+  }
+  const codes = new Set();
+  registry.sources.forEach((source, index) => {
+    if (!isObject(source) || !hasText(source.code)) {
+      errors.push(`sources[${index}].code wajib diisi`);
+      return;
+    }
+    if (codes.has(source.code)) errors.push(`source code duplikat: ${source.code}`);
+    codes.add(source.code);
+    if (!SOURCE_ACCEPTANCE_STATUSES.has(source.acceptance_status)) {
+      errors.push(`${source.code} memiliki acceptance_status invalid`);
+    }
+    if (source.acceptance_status === "REJECTED" && !hasText(source.acceptance_reason)) {
+      errors.push(`${source.code} wajib memiliki acceptance_reason`);
+    }
+  });
+  if (errors.length) throw new Error(errors.join("; "));
+  return true;
 }
 
 function readTaxonomy(filePath) {
@@ -120,6 +208,14 @@ function validateTaxonomy(taxonomy) {
       validateStringArray(entry.context_required_terms, `${prefix}.context_required_terms`, errors);
       validateStringArray(entry.context_terms, `${prefix}.context_terms`, errors);
     }
+    if (Array.isArray(entry.origin_scope)) {
+      validateStringArray(entry.origin_scope, `${prefix}.origin_scope`, errors);
+      entry.origin_scope.forEach((origin) => {
+        if (!["tender_corpus", "event_corpus", "official_source_pilot"].includes(origin)) {
+          errors.push(`${prefix}.origin_scope tidak valid: ${origin}`);
+        }
+      });
+    }
     (entry.allowed_actions || []).forEach((action) => {
       if (!globalActions.has(action)) errors.push(`${prefix} memakai action di luar allowlist: ${action}`);
       if (FORBIDDEN_ACTIONS.has(action)) errors.push(`${prefix} memakai action dilarang: ${action}`);
@@ -181,31 +277,109 @@ function readJsonFile(filePath, label) {
   }
 }
 
-function buildOutput({ tenderData, eventData, taxonomy }) {
+function buildOutput({
+  tenderData,
+  eventData,
+  taxonomy,
+  sourcePilotData = null,
+  sourceRegistry = null,
+  sourceRegistryValid = sourceRegistry != null,
+}) {
   validateTaxonomy(taxonomy);
+  if (sourceRegistryValid) {
+    try {
+      validateSourceRegistry(sourceRegistry);
+    } catch (_error) {
+      sourceRegistryValid = false;
+    }
+  }
   const generatedAt = latestIsoDate([tenderData.generatedAt, eventData.generatedAt]) ||
     new Date(0).toISOString();
-  const candidates = [
+  const productionCandidates = [
     ...tenderData.items.map((item, index) => normalizeItem(item, "tender", index)),
     ...eventData.items.map((item, index) => normalizeItem(item, "event", index)),
   ].sort(compareCandidates);
-
-  const evaluated = candidates.map((candidate) =>
+  const productionEvaluated = productionCandidates.map((candidate) =>
     evaluateCandidateWithAudit(candidate, taxonomy, generatedAt));
-  const items = evaluated.map((result) => result.item).filter(Boolean);
-  const suppressedEditorialTotal = evaluated.filter((result) => result.editorialSuppressed).length;
+  const productionItems = productionEvaluated.map((result) => result.item).filter(Boolean);
+  const productionItemById = new Map(productionItems.map((item) => [item.id, item]));
+  const pilotInputItems = sourcePilotData && Array.isArray(sourcePilotData.items)
+    ? sourcePilotData.items : [];
+  const registryByCode = new Map(
+    sourceRegistryValid && sourceRegistry && Array.isArray(sourceRegistry.sources)
+      ? sourceRegistry.sources.map((source) => [source.code, source]) : []);
+  const acceptedPilotItems = pilotInputItems.filter((item) => {
+    const registrySource = registryByCode.get(isObject(item) ? item.source_code : "");
+    return registrySource && registrySource.acceptance_status === ACCEPTED_SOURCE_STATUS;
+  });
+  let rejectedSourceItems = pilotInputItems.length - acceptedPilotItems.length;
+  const productionIds = new Set(productionCandidates.map((candidate) => candidate.id));
+  const pilotIds = new Set();
+  const integratedPilotCandidates = [];
+  let crossCorpusDuplicates = 0;
+
+  acceptedPilotItems.forEach((item, index) => {
+    const candidate = normalizeSourcePilotItem(item, index);
+    if (!candidate) {
+      rejectedSourceItems += 1;
+      return;
+    }
+    if (productionIds.has(candidate.id) || pilotIds.has(candidate.id)) {
+      throw new Error(`ID collision source pilot: ${candidate.id}`);
+    }
+    pilotIds.add(candidate.id);
+    const duplicate = findCrossCorpusDuplicate(candidate, productionCandidates);
+    if (duplicate) {
+      crossCorpusDuplicates += 1;
+      const productionSignal = productionItemById.get(duplicate.id);
+      if (productionSignal) {
+        productionSignal.related_official_provenance.push({
+          source_code: candidate.source_code,
+          ...candidate.official_provenance,
+        });
+      }
+      return;
+    }
+    integratedPilotCandidates.push(candidate);
+  });
+
+  const pilotEvaluated = integratedPilotCandidates.map((candidate) =>
+    evaluateCandidateWithAudit(candidate, taxonomy, generatedAt));
+  const pilotItems = pilotEvaluated.map((result) => result.item).filter(Boolean);
+  const items = productionItems.concat(pilotItems);
+  const suppressedEditorialTotal = productionEvaluated
+    .filter((result) => result.editorialSuppressed).length;
+  const pilotSuppressedEditorialTotal = pilotEvaluated
+    .filter((result) => result.editorialSuppressed).length;
   const output = {
     generated_at: generatedAt,
     taxonomy_version: taxonomy.version,
     source_summary: {
       tender_total: tenderData.items.length,
       event_total: eventData.items.length,
-      evaluated_total: candidates.length,
-      signal_total: items.length,
-      items_without_trigger: candidates.length - items.length,
+      production_evaluated_total: productionCandidates.length,
+      evaluated_total: productionCandidates.length,
+      production_signal_total: productionItems.length,
+      signal_total: productionItems.length,
+      production_items_without_trigger: productionCandidates.length - productionItems.length,
+      items_without_trigger: productionCandidates.length - productionItems.length,
       suppressed_editorial_total: suppressedEditorialTotal,
+      source_pilot_input_total: pilotInputItems.length,
+      source_pilot_integrated_total: integratedPilotCandidates.length,
+      source_pilot_signal_total: pilotItems.length,
+      source_pilot_without_trigger: integratedPilotCandidates.length - pilotItems.length,
+      source_pilot_suppressed_editorial_total: pilotSuppressedEditorialTotal,
+      cross_corpus_duplicates: crossCorpusDuplicates,
+      rejected_source_items: rejectedSourceItems,
+      total_evaluated: productionCandidates.length + integratedPilotCandidates.length,
+      total_signal_total: items.length,
+      total_items_without_trigger:
+        productionCandidates.length - productionItems.length +
+        integratedPilotCandidates.length - pilotItems.length,
     },
     trigger_summary: buildTriggerSummary(items, taxonomy),
+    production_trigger_summary: buildTriggerSummary(productionItems, taxonomy),
+    source_pilot_trigger_summary: buildTriggerSummary(pilotItems, taxonomy),
     items,
   };
   validateOutput(output, taxonomy);
@@ -233,6 +407,10 @@ function normalizeItem(item, type, index) {
   return {
     id: stableItemId({ type, title, source, link }),
     type,
+    data_origin: type === "tender" ? "tender_corpus" : "event_corpus",
+    source_code: null,
+    official_provenance: null,
+    related_official_provenance: [],
     index,
     title,
     source,
@@ -242,6 +420,53 @@ function normalizeItem(item, type, index) {
     publishedDate,
     organization,
     normalizedTitle: normalizeSearchText(title),
+    normalizedExcerpt: "",
+    detectionFields: [{ field: "title", text: title, normalized: normalizeSearchText(title) }],
+    exactUrls: exactCandidateUrls(safe, link),
+    normalizedUrls: normalizedCandidateUrls(safe, link),
+  };
+}
+
+function normalizeSourcePilotItem(item, index) {
+  if (!isObject(item) || !hasText(item.id) || !hasText(item.source_code) ||
+      !hasText(item.title) || !hasText(item.link) || !isObject(item.provenance)) return null;
+  const title = String(item.title).trim();
+  const excerpt = hasText(item.excerpt) ? String(item.excerpt).trim() : "";
+  const publishedAt = hasText(item.published_at) ? String(item.published_at).trim() : "";
+  const sourceName = hasText(item.source_name) ? String(item.source_name).trim() : "";
+  const detailUrl = firstText(item.provenance.detail_url, item.link);
+  const officialProvenance = {
+    source_name: sourceName,
+    official_domain: firstText(item.provenance.official_domain),
+    detail_url: detailUrl,
+    published_at: publishedAt,
+    retrieval_method: firstText(item.provenance.retrieval_method),
+  };
+  if (Object.values(officialProvenance).some((value) => !hasText(value))) return null;
+  return {
+    id: String(item.id).trim(),
+    type: "official_source_pilot",
+    data_origin: "official_source_pilot",
+    source_code: String(item.source_code).trim(),
+    official_provenance: officialProvenance,
+    related_official_provenance: [],
+    index,
+    title,
+    excerpt,
+    source: sourceName,
+    link: detailUrl,
+    date: publishedAt,
+    eventDate: "",
+    publishedDate: publishedAt,
+    organization: firstText(item.organization_hint),
+    normalizedTitle: normalizeSearchText(title),
+    normalizedExcerpt: normalizeSearchText(excerpt),
+    detectionFields: [
+      { field: "title", text: title, normalized: normalizeSearchText(title) },
+      { field: "excerpt", text: excerpt, normalized: normalizeSearchText(excerpt) },
+    ].filter((entry) => hasText(entry.text)),
+    exactUrls: exactCandidateUrls(item.provenance, detailUrl),
+    normalizedUrls: normalizedCandidateUrls(item.provenance, detailUrl),
   };
 }
 
@@ -260,6 +485,10 @@ function evaluateCandidateWithAudit(candidate, taxonomy, referenceDate) {
   return { item: {
     id: candidate.id,
     type: candidate.type,
+    data_origin: candidate.data_origin,
+    source_code: candidate.source_code,
+    official_provenance: candidate.official_provenance,
+    related_official_provenance: candidate.related_official_provenance.slice(),
     title: candidate.title,
     source: candidate.source,
     link: candidate.link,
@@ -278,17 +507,20 @@ function detectTriggers(candidate, taxonomy) {
 }
 
 function detectTriggersWithAudit(candidate, taxonomy) {
-  const editorialMatches = matchTerms(candidate.normalizedTitle, taxonomy.editorial_rules.terms);
+  const editorialMatches = matchCandidateTerms(candidate, taxonomy.editorial_rules.terms);
   const editorialSuppressedCodes = new Set(taxonomy.editorial_rules.suppressed_trigger_codes);
   let editorialSuppressed = false;
   const triggers = taxonomy.triggers.map((entry) => {
-    const phraseMatches = matchTerms(candidate.normalizedTitle, entry.phrase_terms);
-    const positiveMatches = matchTerms(candidate.normalizedTitle, entry.positive_terms);
-    const negativeMatches = matchTerms(candidate.normalizedTitle, entry.negative_terms);
-    const requiredMatches = matchTerms(candidate.normalizedTitle, entry.required_any_terms || []);
-    const contextRequiredMatches = matchTerms(
-      candidate.normalizedTitle, entry.context_required_terms || []);
-    const contextMatches = matchTerms(candidate.normalizedTitle, entry.context_terms || []);
+    if (Array.isArray(entry.origin_scope) && !entry.origin_scope.includes(candidate.data_origin)) {
+      return null;
+    }
+    const phraseMatches = matchCandidateTerms(candidate, entry.phrase_terms);
+    const positiveMatches = matchCandidateTerms(candidate, entry.positive_terms);
+    const negativeMatches = matchCandidateTerms(candidate, entry.negative_terms);
+    const requiredMatches = matchCandidateTerms(candidate, entry.required_any_terms || []);
+    const contextRequiredMatches = matchCandidateTerms(
+      candidate, entry.context_required_terms || []);
+    const contextMatches = matchCandidateTerms(candidate, entry.context_terms || []);
     if (!phraseMatches.length && !positiveMatches.length) return null;
     if ((entry.required_any_terms || []).length && !requiredMatches.length) return null;
     if (contextRequiredMatches.length && !contextMatches.length &&
@@ -302,13 +534,18 @@ function detectTriggersWithAudit(candidate, taxonomy) {
     if (negativeMatches.length) return null;
 
     const matchedTerms = uniqueTerms(phraseMatches.concat(positiveMatches));
+    const matchedEvidence = buildMatchedEvidence(
+      candidate, entry.phrase_terms.concat(entry.positive_terms), matchedTerms);
     return {
       trigger_code: entry.code,
       trigger_label: entry.label,
       trigger_class: entry.trigger_class,
       evidence_strength: determineEvidenceStrength(candidate, entry, phraseMatches, positiveMatches),
       matched_terms: matchedTerms,
-      evidence_excerpt: evidenceExcerpt(candidate.title, matchedTerms),
+      matched_evidence: matchedEvidence,
+      evidence_excerpt: candidate.data_origin === "official_source_pilot"
+        ? (matchedEvidence[0] || {}).excerpt || ""
+        : evidenceExcerpt(candidate.title, matchedTerms),
       product_hypotheses: entry.product_hypotheses.slice(),
       human_review_required: true,
     };
@@ -352,7 +589,7 @@ function selectPrimaryTrigger(triggers, taxonomy, candidate) {
 function determineTimingStatus(candidate, primary, taxonomy, referenceDate) {
   if (primary.trigger_class === "historical") return "HISTORICAL_REFERENCE";
 
-  const editorialMatches = matchTerms(candidate.normalizedTitle, taxonomy.editorial_rules.terms);
+  const editorialMatches = matchCandidateTerms(candidate, taxonomy.editorial_rules.terms);
   if (editorialMatches.length && primary.trigger_class !== "direct") {
     return "INFORMATIONAL_OR_EDITORIAL";
   }
@@ -366,40 +603,43 @@ function determineTimingStatus(candidate, primary, taxonomy, referenceDate) {
   }
 
   const timingRules = taxonomy.timing_rules;
-  const hasFuturePhrase = matchTerms(
-    candidate.normalizedTitle, timingRules.future_or_open_phrases).length > 0;
-  const hasInvitationContext = hasOrderedTermContext(
-    candidate.normalizedTitle,
-    timingRules.invitation_lead_terms,
-    timingRules.invitation_action_terms
-  );
+  const hasFuturePhrase = matchCandidateTerms(
+    candidate, timingRules.future_or_open_phrases).length > 0;
+  const hasInvitationContext = candidateFields(candidate).some((field) =>
+    hasOrderedTermContext(
+      field.normalized,
+      timingRules.invitation_lead_terms,
+      timingRules.invitation_action_terms
+    ));
   if (hasFuturePhrase || hasInvitationContext) {
     const isStale = isPublishedDateStale(
       candidate.publishedDate,
       referenceDate,
       taxonomy.future_signal_max_published_age_days
     );
-    if (isStale && !hasExplicitFutureDate(candidate.title, referenceDate)) {
+    if (isStale && !candidateFields(candidate).some((field) =>
+      hasExplicitFutureDate(field.text, referenceDate))) {
       return "CURRENT_OR_UNCLEAR";
     }
     return "FUTURE_OR_OPEN";
   }
 
-  const hasCompletedPhrase = matchTerms(
-    candidate.normalizedTitle, timingRules.completed_or_past_phrases).length > 0;
-  const hasCompletedActorContext = hasOrderedTermContext(
-    candidate.normalizedTitle,
-    timingRules.completed_actor_terms,
-    timingRules.completed_action_terms
-  );
-  const hasCompletedPassiveContext = matchTerms(
-    candidate.normalizedTitle, timingRules.completed_passive_terms).length > 0 &&
-    matchTerms(candidate.normalizedTitle, timingRules.completed_quantity_terms).length > 0 &&
-    matchTerms(candidate.normalizedTitle, timingRules.completed_actor_terms).length > 0;
+  const hasCompletedPhrase = matchCandidateTerms(
+    candidate, timingRules.completed_or_past_phrases).length > 0;
+  const hasCompletedActorContext = candidateFields(candidate).some((field) =>
+    hasOrderedTermContext(
+      field.normalized,
+      timingRules.completed_actor_terms,
+      timingRules.completed_action_terms
+    ));
+  const hasCompletedPassiveContext = candidateFields(candidate).some((field) =>
+    matchTerms(field.normalized, timingRules.completed_passive_terms).length > 0 &&
+    matchTerms(field.normalized, timingRules.completed_quantity_terms).length > 0 &&
+    matchTerms(field.normalized, timingRules.completed_actor_terms).length > 0);
   if (hasCompletedPhrase || hasCompletedActorContext || hasCompletedPassiveContext) {
     return "COMPLETED_OR_PAST";
   }
-  if (matchTerms(candidate.normalizedTitle, timingRules.ambiguous_verbs).length) {
+  if (matchCandidateTerms(candidate, timingRules.ambiguous_verbs).length) {
     return "CURRENT_OR_UNCLEAR";
   }
   return "CURRENT_OR_UNCLEAR";
@@ -470,12 +710,36 @@ function sortCountObject(counts) {
 function validateOutput(output, taxonomy) {
   if (!isObject(output) || !Array.isArray(output.items)) throw new Error("Output trigger tidak valid.");
   const summary = output.source_summary;
-  if (summary.tender_total + summary.event_total !== summary.evaluated_total) {
-    throw new Error("evaluated_total tidak konsisten dengan total sumber.");
+  if (summary.tender_total + summary.event_total !== summary.production_evaluated_total ||
+      summary.evaluated_total !== summary.production_evaluated_total) {
+    throw new Error("production_evaluated_total tidak konsisten dengan total corpus produksi.");
   }
-  if (summary.signal_total !== output.items.length) throw new Error("signal_total tidak konsisten.");
-  if (summary.signal_total + summary.items_without_trigger !== summary.evaluated_total) {
-    throw new Error("signal_total dan items_without_trigger tidak mencakup seluruh input.");
+  if (summary.production_signal_total !== summary.signal_total ||
+      summary.production_items_without_trigger !== summary.items_without_trigger ||
+      summary.production_signal_total + summary.production_items_without_trigger !==
+        summary.production_evaluated_total) {
+    throw new Error("Count signal production tidak konsisten.");
+  }
+  if (summary.source_pilot_signal_total + summary.source_pilot_without_trigger !==
+      summary.source_pilot_integrated_total) {
+    throw new Error("Count source pilot tidak konsisten.");
+  }
+  if (summary.source_pilot_integrated_total + summary.cross_corpus_duplicates +
+      summary.rejected_source_items !== summary.source_pilot_input_total) {
+    throw new Error("Seluruh input source pilot harus terhitung.");
+  }
+  if (summary.total_evaluated !==
+      summary.production_evaluated_total + summary.source_pilot_integrated_total) {
+    throw new Error("total_evaluated tidak konsisten.");
+  }
+  if (summary.total_signal_total !== output.items.length ||
+      summary.total_signal_total !==
+        summary.production_signal_total + summary.source_pilot_signal_total) {
+    throw new Error("total_signal_total tidak konsisten.");
+  }
+  if (summary.total_items_without_trigger !==
+      summary.production_items_without_trigger + summary.source_pilot_without_trigger) {
+    throw new Error("total_items_without_trigger tidak konsisten.");
   }
   if (!Number.isInteger(summary.suppressed_editorial_total) ||
       summary.suppressed_editorial_total < 0 ||
@@ -489,6 +753,22 @@ function validateOutput(output, taxonomy) {
   output.items.forEach((item) => {
     if (ids.has(item.id)) throw new Error(`Stable item ID duplikat: ${item.id}`);
     ids.add(item.id);
+    if (!["tender_corpus", "event_corpus", "official_source_pilot"].includes(item.data_origin)) {
+      throw new Error(`Data origin ${item.id} tidak valid.`);
+    }
+    if (item.data_origin === "official_source_pilot") {
+      if (!hasText(item.source_code) || !isCompleteOfficialProvenance(item.official_provenance)) {
+        throw new Error(`Official provenance ${item.id} tidak lengkap.`);
+      }
+      if (hasText(item.organization) && item.organization === item.source) {
+        throw new Error(`Publisher tidak boleh menjadi organization ${item.id}.`);
+      }
+    } else if (item.official_provenance !== null) {
+      throw new Error(`Corpus production ${item.id} tidak boleh memiliki official_provenance utama.`);
+    }
+    if (!Array.isArray(item.related_official_provenance)) {
+      throw new Error(`related_official_provenance ${item.id} harus array.`);
+    }
     if (item.human_review_required !== true) throw new Error(`Item ${item.id} wajib human review.`);
     if (!TIMING_STATUSES.includes(item.timing_status)) {
       throw new Error(`Timing status ${item.id} tidak valid.`);
@@ -508,8 +788,29 @@ function validateOutput(output, taxonomy) {
       if (!Array.isArray(trigger.matched_terms) || !trigger.matched_terms.length) {
         throw new Error(`Trigger ${trigger.trigger_code} tidak memiliki matched evidence.`);
       }
-      if (!hasText(trigger.evidence_excerpt) || !item.title.includes(trigger.evidence_excerpt)) {
-        throw new Error(`Evidence excerpt ${trigger.trigger_code} bukan substring judul input.`);
+      if (!Array.isArray(trigger.matched_evidence) || !trigger.matched_evidence.length) {
+        throw new Error(`Trigger ${trigger.trigger_code} tidak memiliki matched_evidence.`);
+      }
+      trigger.matched_terms.forEach((term) => {
+        if (!trigger.matched_evidence.some((evidence) =>
+          normalizeSearchText(evidence.term) === normalizeSearchText(term))) {
+          throw new Error(`Matched term ${term} tidak memiliki asal evidence.`);
+        }
+      });
+      trigger.matched_evidence.forEach((evidence) => {
+        if (!hasText(evidence.term) || !["title", "excerpt"].includes(evidence.field) ||
+            !hasText(evidence.excerpt) || evidence.excerpt.length > 300) {
+          throw new Error(`Matched evidence ${trigger.trigger_code} invalid.`);
+        }
+        if (evidence.field === "title" && !item.title.includes(evidence.excerpt)) {
+          throw new Error(`Title evidence ${trigger.trigger_code} bukan substring input.`);
+        }
+        if (item.data_origin !== "official_source_pilot" && evidence.field !== "title") {
+          throw new Error(`Production evidence ${trigger.trigger_code} harus berasal dari title.`);
+        }
+      });
+      if (!hasText(trigger.evidence_excerpt) || trigger.evidence_excerpt.length > 300) {
+        throw new Error(`Evidence excerpt ${trigger.trigger_code} invalid.`);
       }
       if (trigger.human_review_required !== true) throw new Error(`Trigger wajib human review.`);
       if (JSON.stringify(trigger.product_hypotheses) !== JSON.stringify(entry.product_hypotheses)) {
@@ -523,7 +824,23 @@ function validateOutput(output, taxonomy) {
   if (JSON.stringify(expectedSummary) !== JSON.stringify(output.trigger_summary)) {
     throw new Error("trigger_summary tidak konsisten dengan items.");
   }
+  const productionItems = output.items.filter((item) => item.data_origin !== "official_source_pilot");
+  const sourcePilotItems = output.items.filter((item) => item.data_origin === "official_source_pilot");
+  if (JSON.stringify(buildTriggerSummary(productionItems, taxonomy)) !==
+      JSON.stringify(output.production_trigger_summary)) {
+    throw new Error("production_trigger_summary tidak konsisten.");
+  }
+  if (JSON.stringify(buildTriggerSummary(sourcePilotItems, taxonomy)) !==
+      JSON.stringify(output.source_pilot_trigger_summary)) {
+    throw new Error("source_pilot_trigger_summary tidak konsisten.");
+  }
   return true;
+}
+
+function isCompleteOfficialProvenance(value) {
+  return isObject(value) && [
+    "source_name", "official_domain", "detail_url", "published_at", "retrieval_method",
+  ].every((key) => hasText(value[key]));
 }
 
 function containsScoreField(value) {
@@ -536,6 +853,37 @@ function containsScoreField(value) {
 
 function matchTerms(normalizedText, terms) {
   return (terms || []).filter((term) => containsNormalizedTerm(normalizedText, term));
+}
+
+function candidateFields(candidate) {
+  if (candidate && Array.isArray(candidate.detectionFields) && candidate.detectionFields.length) {
+    return candidate.detectionFields;
+  }
+  const title = candidate && hasText(candidate.title) ? candidate.title : "";
+  return [{ field: "title", text: title, normalized: normalizeSearchText(title) }];
+}
+
+function matchCandidateTerms(candidate, terms) {
+  return (terms || []).filter((term) => candidateFields(candidate).some((field) =>
+    containsNormalizedTerm(field.normalized, term)));
+}
+
+function buildMatchedEvidence(candidate, configuredTerms, matchedTerms) {
+  const matched = new Set(matchedTerms.map(normalizeSearchText));
+  const orderedTerms = uniqueTerms((configuredTerms || []).filter((term) =>
+    matched.has(normalizeSearchText(term))));
+  const evidence = [];
+  orderedTerms.forEach((term) => {
+    candidateFields(candidate).forEach((field) => {
+      if (!containsNormalizedTerm(field.normalized, term)) return;
+      evidence.push({
+        term,
+        field: field.field,
+        excerpt: evidenceExcerptFromField(field.text, term, 300),
+      });
+    });
+  });
+  return evidence;
 }
 
 function containsNormalizedTerm(normalizedText, term) {
@@ -589,6 +937,76 @@ function evidenceExcerpt(title, matchedTerms) {
   }
   const start = Math.max(0, (index >= 0 ? index : 0) - 60);
   return sourceText.slice(start, start + 220);
+}
+
+function evidenceExcerptFromField(value, term, maxLength) {
+  const sourceText = String(value == null ? "" : value);
+  if (sourceText.length <= maxLength) return sourceText;
+  const index = sourceText.toLowerCase().indexOf(String(term).toLowerCase());
+  const start = Math.max(0, (index >= 0 ? index : 0) - 100);
+  return sourceText.slice(start, start + maxLength);
+}
+
+function exactCandidateUrls(container, primaryUrl) {
+  return uniqueTextValues(collectUrlValues(container).concat([primaryUrl]));
+}
+
+function normalizedCandidateUrls(container, primaryUrl) {
+  return uniqueTextValues(exactCandidateUrls(container, primaryUrl)
+    .map(normalizeOfficialUrl).filter(Boolean));
+}
+
+function collectUrlValues(container) {
+  if (!isObject(container)) return [];
+  return ["canonical_url", "canonical", "detail_url", "link", "link_resmi", "url"]
+    .map((key) => container[key]).filter(hasText);
+}
+
+function uniqueTextValues(values) {
+  return Array.from(new Set((values || []).filter(hasText).map((value) => String(value).trim())));
+}
+
+function normalizeOfficialUrl(value) {
+  if (!hasText(value)) return "";
+  try {
+    const parsed = new URL(String(value).trim());
+    if (!["http:", "https:"].includes(parsed.protocol)) return "";
+    parsed.hash = "";
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid"]
+      .forEach((key) => parsed.searchParams.delete(key));
+    parsed.hostname = parsed.hostname.toLowerCase();
+    parsed.pathname = parsed.pathname.replace(/\/{2,}/g, "/").replace(/\/$/, "") || "/";
+    const sorted = Array.from(parsed.searchParams.entries()).sort((a, b) =>
+      a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
+    parsed.search = "";
+    sorted.forEach(([key, item]) => parsed.searchParams.append(key, item));
+    return parsed.toString();
+  } catch (_error) {
+    return "";
+  }
+}
+
+function findCrossCorpusDuplicate(pilotCandidate, productionCandidates) {
+  const exact = new Set(pilotCandidate.exactUrls || []);
+  let duplicate = productionCandidates.find((candidate) =>
+    (candidate.exactUrls || []).some((url) => exact.has(url)));
+  if (duplicate) return duplicate;
+
+  const normalized = new Set(pilotCandidate.normalizedUrls || []);
+  duplicate = productionCandidates.find((candidate) =>
+    (candidate.normalizedUrls || []).some((url) => normalized.has(url)));
+  if (duplicate) return duplicate;
+
+  const pilotDate = normalizedPublishedDate(pilotCandidate.publishedDate);
+  if (!pilotCandidate.normalizedTitle || !pilotDate) return null;
+  return productionCandidates.find((candidate) =>
+    candidate.normalizedTitle === pilotCandidate.normalizedTitle &&
+    normalizedPublishedDate(candidate.publishedDate) === pilotDate) || null;
+}
+
+function normalizedPublishedDate(value) {
+  if (!hasValidDate(value)) return "";
+  return new Date(value).toISOString().slice(0, 10);
 }
 
 function compareCandidates(a, b) {
@@ -728,8 +1146,12 @@ module.exports = {
   readTaxonomy,
   validateTaxonomy,
   readDataset,
+  readSourcePilotDataset,
+  readSourcePilotInputs,
+  validateSourceRegistry,
   buildOutput,
   normalizeItem,
+  normalizeSourcePilotItem,
   evaluateCandidate,
   evaluateCandidateWithAudit,
   detectTriggers,
@@ -742,6 +1164,8 @@ module.exports = {
   selectSuggestedAction,
   buildTriggerSummary,
   validateOutput,
+  findCrossCorpusDuplicate,
+  normalizeOfficialUrl,
   stableItemId,
   normalizeSearchText,
   writeJsonAtomic,
