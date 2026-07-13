@@ -59,6 +59,13 @@ jobs:
           RADAR_LKG_FILE: radar/archive/last-known-good.json
         run: node radar/scripts/archive_summary.js
 
+      - name: Buat review queue manual
+        env:
+          RADAR_DATA_DIR: radar/data
+          RADAR_REVIEW_OUTPUT: radar/docs/data/review_queue.json
+          RADAR_OLD_ITEM_DAYS: "1095"
+        run: node radar/scripts/build_review_queue.js
+
       # Dashboard di GitHub Pages membaca data/ relatif terhadap docs/.
       - name: Salin JSON ke docs/data
         run: |
