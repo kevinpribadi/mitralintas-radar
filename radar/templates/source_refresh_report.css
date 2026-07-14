@@ -44,6 +44,14 @@ section { min-width: 0; margin-bottom: 24px; }
   min-width: 0; background: var(--card); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px; box-shadow: 0 1px 2px rgba(15, 40, 50, .04);
 }
+.failure-card {
+  min-width: 0; max-width: 100%; padding: 16px; border: 2px solid var(--error-ink);
+  border-radius: 12px; background: var(--error-bg); color: var(--error-ink);
+  overflow-wrap: anywhere;
+}
+.failure-card h2 { margin-bottom: 10px; }
+.failure-card p { margin: 10px 0 0; }
+.fetch-failure[hidden] { display: none; }
 .summary-card strong { display: block; font-size: 1.35rem; line-height: 1.2; }
 .summary-card span { color: var(--muted); font-size: .82rem; }
 .quality-legend { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }

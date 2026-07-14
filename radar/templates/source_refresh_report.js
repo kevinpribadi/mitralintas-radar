@@ -20,7 +20,8 @@
 
   function appendDefinition(list, label, value) {
     list.appendChild(element("dt", "", label));
-    list.appendChild(element("dd", "breakable", value || "—"));
+    list.appendChild(element("dd", "breakable",
+      value === undefined || value === null || value === "" ? "—" : value));
   }
 
   function safeOfficialUrl(value) {
@@ -150,7 +151,7 @@
 
   function renderSummary() {
     var values = [
-      ["Item lama", model.summary.old_total], ["Item baru", model.summary.new_total],
+      ["Baseline", model.summary.baseline_total], ["Proposal live", model.summary.proposed_total],
       ["Added", model.summary.added_count], ["Removed", model.summary.removed_count],
       ["Changed", model.summary.changed_count], ["New triggers", model.summary.new_trigger_count],
       ["Missing date", model.summary.missing_date_count],
@@ -165,6 +166,19 @@
       card.appendChild(element("span", "", value[0]));
       container.appendChild(card);
     });
+  }
+
+  function renderFetchFailure() {
+    if (!model.source_fetch_failed) return;
+    var section = document.getElementById("fetchFailure");
+    var health = model.source_health || {};
+    var list = document.getElementById("fetchFailureDetails");
+    appendDefinition(list, "Source", health.source_code || model.source_code);
+    appendDefinition(list, "Failure stage", health.failure_stage);
+    appendDefinition(list, "Safe error code", health.error_code || model.fetch_error_code);
+    appendDefinition(list, "HTTP status", health.http_status);
+    appendDefinition(list, "Baseline item count", model.summary.baseline_total);
+    section.hidden = false;
   }
 
   function renderHealth() {
@@ -224,6 +238,7 @@
   document.getElementById("referenceDate").textContent = model.reference_date
     ? "Reference date: " + model.reference_date : "Reference date belum tersedia";
   document.getElementById("proposalStatus").textContent = "Status proposal: " + (model.status || "REJECT_PROPOSAL");
+  renderFetchFailure();
   renderSummary();
   renderHealth();
   renderList("addedItems", model.added_items, function (item) { return itemCard(item, "ADDED"); });

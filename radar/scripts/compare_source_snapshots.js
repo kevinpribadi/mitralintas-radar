@@ -19,6 +19,44 @@ function compareSourceSnapshots(oldSnapshot, proposedSnapshot, options = {}) {
   const sourceCode = options.sourceCode || ALLOWED_SOURCE;
   const oldItems = validItems(oldSnapshot);
   const newItems = validItems(proposedSnapshot);
+  const oldHealth = healthSummary(options.oldHealth, sourceCode);
+  const proposedHealth = healthSummary(options.proposedHealth, sourceCode);
+  const sourceFetchFailed = options.fetchFailed === true || fetchFailed(options.proposedHealth, proposedHealth);
+  if (sourceFetchFailed) {
+    const unchanged = oldItems.map(snapshotItem).sort(compareItems);
+    const validation = validateProposal(oldSnapshot, null, options);
+    validation.proposal_eligible = false;
+    validation.errors = unique(validation.errors.concat([
+      "LIVE_FETCH_FAILED",
+      proposedHealth && proposedHealth.error_code
+        ? `SOURCE_FETCH_ERROR:${proposedHealth.error_code}` : "SOURCE_FETCH_ERROR:UNKNOWN",
+    ])).sort();
+    return {
+      schema_version: "1.0.0",
+      source_code: sourceCode,
+      reference_date: "",
+      comparison_status: "FETCH_FAILED",
+      comparison_skipped_reason: "LIVE_FETCH_FAILED",
+      source_fetch_failed: true,
+      error: proposedHealth && proposedHealth.error_code || "UNKNOWN",
+      baseline_total: oldItems.length,
+      proposed_total: null,
+      old_total: oldItems.length,
+      new_total: null,
+      added_count: 0,
+      removed_count: 0,
+      changed_count: 0,
+      unchanged_count: unchanged.length,
+      added: [],
+      removed: [],
+      changed: [],
+      unchanged,
+      source_health_changed: stableStringify(oldHealth) !== stableStringify(proposedHealth),
+      old_health: oldHealth,
+      proposed_health: proposedHealth,
+      validation,
+    };
+  }
   const oldById = new Map(oldItems.map((item) => [item.id, item]));
   const newById = new Map(newItems.map((item) => [item.id, item]));
   const added = [];
@@ -56,6 +94,12 @@ function compareSourceSnapshots(oldSnapshot, proposedSnapshot, options = {}) {
     schema_version: "1.0.0",
     source_code: sourceCode,
     reference_date: text(proposedSnapshot && proposedSnapshot.content_reference_date),
+    comparison_status: "COMPARED",
+    comparison_skipped_reason: "",
+    source_fetch_failed: false,
+    error: "",
+    baseline_total: oldItems.length,
+    proposed_total: newItems.length,
     old_total: oldItems.length,
     new_total: newItems.length,
     added_count: added.length,
@@ -66,10 +110,9 @@ function compareSourceSnapshots(oldSnapshot, proposedSnapshot, options = {}) {
     removed,
     changed,
     unchanged,
-    source_health_changed: stableStringify(healthSummary(options.oldHealth, sourceCode)) !==
-      stableStringify(healthSummary(options.proposedHealth, sourceCode)),
-    old_health: healthSummary(options.oldHealth, options.sourceCode || ALLOWED_SOURCE),
-    proposed_health: healthSummary(options.proposedHealth, options.sourceCode || ALLOWED_SOURCE),
+    source_health_changed: stableStringify(oldHealth) !== stableStringify(proposedHealth),
+    old_health: oldHealth,
+    proposed_health: proposedHealth,
     validation,
   };
 }
@@ -207,12 +250,26 @@ function healthSummary(health, sourceCode) {
   if (!source) return null;
   return {
     source_code: text(source.source_code), status: text(source.status),
+    fetch_status: text(source.fetch_status || health.fetch_status),
+    failure_stage: text(source.failure_stage), error_code: text(source.error_code),
+    error_message: text(source.error_message), attempted_url: text(source.attempted_url),
     http_status: Number(source.http_status) || 0, content_type: text(source.content_type),
+    redirect_host: text(source.redirect_host), network_error_code: text(source.network_error_code),
+    retry_count: Number(source.retry_count) || 0,
     listing_links_found: Number(source.listing_links_found) || 0,
     detail_pages_attempted: Number(source.detail_pages_attempted) || 0,
     valid_items: Number(source.valid_items) || 0, invalid_items: Number(source.invalid_items) || 0,
     warnings: stringArray(source.warnings), errors: stringArray(source.errors),
   };
+}
+
+function fetchFailed(healthOutput, sourceHealth) {
+  const fetchStatus = text(sourceHealth && sourceHealth.fetch_status ||
+    healthOutput && healthOutput.fetch_status);
+  if (fetchStatus.startsWith("LIVE_FETCH_FAILED")) return true;
+  if (!sourceHealth) return false;
+  if (["UNAVAILABLE", "BLOCKED"].includes(sourceHealth.status)) return true;
+  return sourceHealth.valid_items === 0 && !!sourceHealth.error_code;
 }
 
 function completeProvenance(value) {
@@ -286,21 +343,24 @@ function main() {
   if (!args.old || !args.new || !args.output) {
     throw new Error("Gunakan --old, --new, dan --output.");
   }
-  const result = compareSourceSnapshots(readJson(args.old), readJson(args.new), {
+  const result = compareSourceSnapshots(readJson(args.old), readJson(args.new, true), {
     oldHealth: readJson(args["old-health"], true),
     proposedHealth: readJson(args["new-health"], true),
     sourceCode: args["source-code"] || ALLOWED_SOURCE,
     requestedMaxItems: args["requested-max-items"],
+    fetchFailed: /^(1|true|failure)$/i.test(String(args["fetch-failed"] || "")),
   });
   writeJson(args.output, result);
-  console.log(`Snapshot diff: +${result.added_count} -${result.removed_count} ~${result.changed_count}`);
+  console.log(result.source_fetch_failed
+    ? `Snapshot diff skipped: ${result.comparison_skipped_reason} (${result.proposed_health && result.proposed_health.error_code || "UNKNOWN"})`
+    : `Snapshot diff: +${result.added_count} -${result.removed_count} ~${result.changed_count}`);
   if (args.strict && !result.validation.proposal_eligible) process.exitCode = 2;
   return result;
 }
 
 module.exports = {
   ALLOWED_SOURCE, CHANGE_RULES, compareSourceSnapshots, validateProposal, changedDetails,
-  stableStringify, snapshotItem, healthSummary, containsNumericScore, main,
+  stableStringify, snapshotItem, healthSummary, fetchFailed, containsNumericScore, main,
 };
 
 if (require.main === module) {

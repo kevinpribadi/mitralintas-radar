@@ -8,11 +8,12 @@ const STATUS = Object.freeze({ REVIEW: "REVIEW_REQUIRED", REJECT: "REJECT_PROPOS
 const DEFAULT_MINIMUM_DATE_COMPLETENESS_PERCENT = 70;
 
 function buildReportModel(sourceDiff, triggerDiff, options = {}) {
+  const sourceFetchFailed = !!(sourceDiff && sourceDiff.source_fetch_failed);
   const sourceValidation = sourceDiff && sourceDiff.validation || {};
   const triggerValidation = triggerDiff && triggerDiff.validation || {};
   const minimumDateCompletenessPercent = boundedPercent(
     options.minimumDateCompletenessPercent, DEFAULT_MINIMUM_DATE_COMPLETENESS_PERCENT);
-  const metadataQuality = assessMetadataQuality(proposedSourceItems(sourceDiff),
+  const metadataQuality = assessMetadataQuality(sourceFetchFailed ? [] : proposedSourceItems(sourceDiff),
     minimumDateCompletenessPercent);
   const sourceErrors = normalizeSourceErrors(sourceValidation.errors, metadataQuality);
   const triggerErrors = strings(triggerValidation.errors);
@@ -34,11 +35,15 @@ function buildReportModel(sourceDiff, triggerDiff, options = {}) {
   const oldTriggerById = triggerIndex(options.committedTrigger);
   const newTriggerById = triggerIndex(options.proposedTrigger);
   const sourceName = firstSourceName(sourceDiff);
-  const proposedTotal = number(sourceDiff && sourceDiff.new_total);
+  const proposedTotal = sourceFetchFailed ? 0 : number(sourceDiff && sourceDiff.new_total);
   const invalidItemCount = Math.max(number(sourceValidation.invalid_item_count), metadataQuality.invalid_item_count);
   const summary = {
+    baseline_total: number(sourceDiff && (sourceDiff.baseline_total ?? sourceDiff.old_total)),
+    proposed_total: sourceFetchFailed ? null : number(sourceDiff &&
+      (sourceDiff.proposed_total ?? sourceDiff.new_total)),
+    source_fetch_failed: sourceFetchFailed,
     old_total: number(sourceDiff && sourceDiff.old_total),
-    new_total: number(sourceDiff && sourceDiff.new_total),
+    new_total: sourceFetchFailed ? null : number(sourceDiff && sourceDiff.new_total),
     added_count: number(sourceDiff && sourceDiff.added_count),
     removed_count: number(sourceDiff && sourceDiff.removed_count),
     changed_count: number(sourceDiff && sourceDiff.changed_count),
@@ -68,6 +73,11 @@ function buildReportModel(sourceDiff, triggerDiff, options = {}) {
     source_name: sourceName,
     reference_date: sourceDiff && sourceDiff.reference_date || "",
     status,
+    comparison_status: sourceDiff && sourceDiff.comparison_status || "COMPARED",
+    comparison_skipped_reason: sourceDiff && sourceDiff.comparison_skipped_reason || "",
+    source_fetch_failed: sourceFetchFailed,
+    fetch_error_code: sourceDiff && sourceDiff.proposed_health && sourceDiff.proposed_health.error_code || "",
+    error: sourceDiff && sourceDiff.error || "",
     summary,
     source_health: sourceDiff && sourceDiff.proposed_health || {},
     added_items: (sourceDiff && sourceDiff.added || []).map((item) => reportItem(item, newTriggerById.get(item.id), "ADDED")),
@@ -275,8 +285,9 @@ function sourceMarkdown(model) {
   return `# Ringkasan Proposal Refresh Sumber\n\n` +
     `> Proposal snapshot; belum menjadi data produksi. Tidak ada penerimaan otomatis.\n\n` +
     `- Source: ${model.source_code}\n- Source status: ${model.source_health.status || "UNKNOWN"}\n` +
-    `- Acceptance recommendation: **${model.status}**\n- Old item count: ${s.old_total}\n` +
-    `- Proposed item count: ${s.new_total}\n- Added: ${s.added_count}\n- Removed: ${s.removed_count}\n` +
+    `- Acceptance recommendation: **${model.status}**\n- Comparison status: ${model.comparison_status}\n` +
+    `- Baseline item count: ${s.baseline_total}\n- Proposed item count: ${s.proposed_total}\n` +
+    `- Source fetch failed: ${s.source_fetch_failed}\n- Added: ${s.added_count}\n- Removed: ${s.removed_count}\n` +
     `- Changed: ${s.changed_count}\n- Unchanged: ${s.unchanged_count}\n- Valid item count: ${s.valid_item_count}\n` +
     `- Invalid item count: ${s.invalid_item_count}\n- Duplicate count: ${s.duplicate_count}\n` +
     `- Missing date count: ${s.missing_date_count}\n- Missing organization count: ${s.missing_organization_count}\n` +

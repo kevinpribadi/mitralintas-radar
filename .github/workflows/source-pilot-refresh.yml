@@ -103,32 +103,21 @@ jobs:
           RADAR_SOURCE_REGISTRY: .source-refresh-work/temporary_source_registry.json
           RADAR_SOURCE_PILOT_OUTPUT: .source-refresh-work/proposed_source_pilot_items.json
           RADAR_SOURCE_HEALTH_OUTPUT: .source-refresh-work/proposed_source_pilot_health.json
+          RADAR_SOURCE_LAST_KNOWN_GOOD_FILE: .source-refresh-work/baseline_source_pilot_items.json
           RADAR_SOURCE_CODES: BKPM_PRESS_RELEASES
           RADAR_SOURCE_MAX_ITEMS: ${{ inputs.max_items }}
         run: node radar/scripts/fetch_source_pilot.js
 
-      - name: Create safe rejected audit payload after fetch failure
-        if: steps.fetch.outcome != 'success'
+      - name: Record live fetch outcome for audit
+        if: always()
+        env:
+          FETCH_OUTCOME: ${{ steps.fetch.outcome }}
         run: |
           node - <<'NODE'
           const fs = require("fs");
-          const dir = process.env.WORK_DIR;
-          if (!fs.existsSync(dir + "/proposed_source_pilot_items.json")) {
-            fs.writeFileSync(dir + "/proposed_source_pilot_items.json", JSON.stringify({
-              schema_version: "1.0.0", content_reference_date: "", source_summary: {
-                configured_sources: 1, healthy_sources: 0, degraded_sources: 0, unavailable_sources: 1,
-                raw_items: 0, normalized_items: 0, duplicate_items: 0, invalid_items: 0
-              }, items: []
-            }, null, 2) + "\n");
-          }
-          if (!fs.existsSync(dir + "/proposed_source_pilot_health.json")) {
-            fs.writeFileSync(dir + "/proposed_source_pilot_health.json", JSON.stringify({
-              schema_version: "1.0.0", sources: [{ source_code: "BKPM_PRESS_RELEASES",
-                status: "UNAVAILABLE", http_status: 0, content_type: "", listing_links_found: 0,
-                detail_pages_attempted: 0, valid_items: 0, invalid_items: 0,
-                warnings: [], errors: ["LIVE_FETCH_FAILED"] }]
-            }, null, 2) + "\n");
-          }
+          const payload = { fetch_outcome: process.env.FETCH_OUTCOME || "unknown" };
+          fs.writeFileSync(process.env.WORK_DIR + "/fetch_status.json",
+            JSON.stringify(payload, null, 2) + "\n");
           NODE
 
       - name: Validate and compare source proposal
@@ -140,12 +129,13 @@ jobs:
             --old-health "$WORK_DIR/baseline_source_pilot_health.json" \
             --new-health "$WORK_DIR/proposed_source_pilot_health.json" \
             --source-code "$SOURCE_CODE" --requested-max-items "$MAX_ITEMS" \
+            --fetch-failed "${{ steps.fetch.outcome != 'success' }}" \
             --output "$WORK_DIR/source_snapshot_diff.json"
           node -e 'const d=require("./.source-refresh-work/source_snapshot_diff.json"); console.log("eligible="+String(d.validation.proposal_eligible))' >> "$GITHUB_OUTPUT"
 
       - name: Build proposed trigger output to temporary path
         id: trigger_build
-        if: inputs.run_trigger_build && steps.source_diff.outputs.eligible == 'true'
+        if: inputs.run_trigger_build && steps.fetch.outcome == 'success' && steps.source_diff.outputs.eligible == 'true'
         env:
           RADAR_DATA_DIR: radar/data
           RADAR_TRIGGER_TAXONOMY_FILE: radar/config/trigger_taxonomy.json
@@ -197,6 +187,9 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
           path: |
+            .source-refresh-work/baseline_source_pilot_items.json
+            .source-refresh-work/baseline_source_pilot_health.json
+            .source-refresh-work/fetch_status.json
             .source-refresh-work/proposed_source_pilot_items.json
             .source-refresh-work/proposed_source_pilot_health.json
             .source-refresh-work/source_snapshot_diff.json
@@ -215,8 +208,16 @@ jobs:
           node - <<'NODE'
           const fs = require("fs");
           const dir = process.env.WORK_DIR;
+          if ("${{ steps.fetch.outcome }}" !== "success") {
+            let code = "LIVE_FETCH_FAILED";
+            try {
+              const health = JSON.parse(fs.readFileSync(dir + "/proposed_source_pilot_health.json", "utf8"));
+              const failed = (health.sources || []).find((source) => source && source.error_code);
+              if (failed && /^[A-Z][A-Z0-9_]{1,80}$/.test(failed.error_code)) code = failed.error_code;
+            } catch (_) { /* fail closed with generic fallback only when diagnostic is unavailable */ }
+            throw new Error("SOURCE_FETCH_FAILED: " + code);
+          }
           if ("${{ steps.integrity.outcome }}" !== "success") throw new Error("COMMITTED_OUTPUT_CHANGED");
-          if ("${{ steps.fetch.outcome }}" !== "success") throw new Error("LIVE_FETCH_FAILED");
           if ("${{ inputs.run_trigger_build }}" === "true" && "${{ steps.trigger_build.outcome }}" !== "success") {
             throw new Error("TRIGGER_BUILD_FAILED_OR_SKIPPED");
           }

@@ -297,6 +297,98 @@ test("34. human feedback regression tetap lulus", () => {
   assert.strictEqual(run.status, 0, `${run.stdout}\n${run.stderr}`);
 });
 
+async function listingFailure(resultOrError) {
+  const bkpm = source("BKPM_PRESS_RELEASES");
+  return pilot.processSource(bkpm, options([bkpm]), fixtureTransport({
+    request: async (config, url, kind, base) => {
+      if (kind !== "listing") return base.request(config, url, kind);
+      if (resultOrError instanceof Error) throw resultOrError;
+      return Object.assign({}, resultOrError, { url });
+    },
+  }));
+}
+
+test("35. HTTP 502 tersimpan sebagai LISTING_REQUEST / HTTP_502", async () => {
+  const result = await listingFailure(response(502, "text/html", "upstream unavailable"));
+  assert.strictEqual(result.health.failure_stage, "LISTING_REQUEST");
+  assert.strictEqual(result.health.error_code, "HTTP_502");
+  assert.strictEqual(result.health.http_status, 502);
+});
+test("36. HTTP 403 tersimpan spesifik", async () => {
+  const result = await listingFailure(response(403, "text/html", "forbidden"));
+  assert.strictEqual(result.health.error_code, "HTTP_403");
+  assert.strictEqual(result.health.status, "BLOCKED");
+});
+test("37. HTTP 429 tersimpan spesifik", async () => {
+  const result = await listingFailure(response(429, "text/html", "limited"));
+  assert.strictEqual(result.health.error_code, "HTTP_429");
+  assert.strictEqual(result.health.status, "BLOCKED");
+});
+test("38. TLS error code tersimpan", async () => {
+  const result = await listingFailure(new utils.SourceError("CERT_HAS_EXPIRED", "certificate has expired", {
+    failureStage: "TLS", networkErrorCode: "CERT_HAS_EXPIRED",
+    attemptedUrl: source("BKPM_PRESS_RELEASES").listing_url,
+  }));
+  assert.strictEqual(result.health.failure_stage, "TLS");
+  assert.strictEqual(result.health.network_error_code, "CERT_HAS_EXPIRED");
+  assert.strictEqual(result.health.error_code, "CERT_HAS_EXPIRED");
+});
+test("39. DNS error code tersimpan", async () => {
+  const result = await listingFailure(new utils.SourceError("ENOTFOUND", "getaddrinfo ENOTFOUND", {
+    failureStage: "DNS", networkErrorCode: "ENOTFOUND",
+    attemptedUrl: source("BKPM_PRESS_RELEASES").listing_url,
+  }));
+  assert.strictEqual(result.health.failure_stage, "DNS");
+  assert.strictEqual(result.health.network_error_code, "ENOTFOUND");
+});
+test("40. redirect keluar domain tersimpan tanpa URL eksternal", async () => {
+  const result = await listingFailure(new utils.SourceError("REDIRECT_OUTSIDE_DOMAIN",
+    "Redirect keluar domain resmi ditolak.", { failureStage: "REDIRECT", redirectHost: "evil.example",
+      httpStatus: 302, attemptedUrl: source("BKPM_PRESS_RELEASES").listing_url }));
+  assert.strictEqual(result.health.failure_stage, "REDIRECT");
+  assert.strictEqual(result.health.redirect_host, "evil.example");
+  assert.strictEqual(result.health.attempted_url, source("BKPM_PRESS_RELEASES").listing_url);
+  assert.doesNotMatch(JSON.stringify(result.health), /https:\/\/evil\.example/);
+});
+test("41. content type invalid tersimpan", async () => {
+  const result = await listingFailure(response(200, "application/json", "{}"));
+  assert.strictEqual(result.health.failure_stage, "CONTENT_TYPE");
+  assert.strictEqual(result.health.error_code, "CONTENT_TYPE_INVALID");
+  assert.strictEqual(result.health.content_type, "application/json");
+});
+test("42. listing parser kosong tersimpan", async () => {
+  const result = await listingFailure(response(200, "text/html", "<html><body>Tidak ada link</body></html>"));
+  assert.strictEqual(result.health.failure_stage, "LISTING_PARSE");
+  assert.strictEqual(result.health.error_code, "LISTING_PARSE_EMPTY");
+  assert.strictEqual(result.health.listing_links_found, 0);
+});
+test("43. health ditulis dan LKG eksplisit dibaca sebelum fetch exit", () => {
+  const lkgFile = path.join(tempDir, "explicit-lkg.json");
+  const proposedFile = path.join(tempDir, "must-not-exist.json");
+  const healthFile = path.join(tempDir, "diagnostic-before-exit.json");
+  utils.writeJsonAtomic(lkgFile, { schema_version: "1.0.0", items: [{ id: "lkg-1" }, { id: "lkg-2" }] });
+  const result = failedResult();
+  result.healthOutput.sources[0].error_code = "HTTP_502";
+  const write = pilot.preserveOrWriteOutputs({ result, itemsFile: proposedFile, healthFile,
+    lastKnownGoodFile: lkgFile, offline: false });
+  const saved = JSON.parse(fs.readFileSync(healthFile, "utf8"));
+  assert.strictEqual(write.fetchFailed, true);
+  assert.strictEqual(write.errorCode, "HTTP_502");
+  assert.strictEqual(saved.fetch_status, "LIVE_FETCH_FAILED_USING_LAST_KNOWN_GOOD");
+  assert.strictEqual(saved.last_known_good.item_count, 2);
+  assert.strictEqual(saved.sources[0].fetch_status, "LIVE_FETCH_FAILED_USING_LAST_KNOWN_GOOD");
+  assert.strictEqual(fs.existsSync(proposedFile), false, "LKG tidak boleh dianggap proposal live");
+});
+test("44. secret header dan response body disanitasi", async () => {
+  const message = "Authorization: Bearer topsecret Cookie: session=abc response body: <html>private-body</html>";
+  const result = await listingFailure(new utils.SourceError("NETWORK_ERROR", message, {
+    failureStage: "LISTING_REQUEST", attemptedUrl: source("BKPM_PRESS_RELEASES").listing_url,
+  }));
+  const diagnostic = JSON.stringify(result.health);
+  assert.doesNotMatch(diagnostic, /topsecret|session=abc|private-body|<html>/i);
+  assert.match(result.health.error_message, /REDACTED/);
+});
+
 async function main() {
   fs.mkdirSync(tempDir, { recursive: true });
   let passed = 0;

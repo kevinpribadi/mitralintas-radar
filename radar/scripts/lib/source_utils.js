@@ -365,7 +365,9 @@ function requestUrl(url, source, options = {}, redirectCount = 0) {
   const timeoutMs = options.timeoutMs || 15000;
   const maxBytes = options.maxBytes || 6 * 1024 * 1024;
   if (!isAllowedRequestUrl(url, source)) {
-    return Promise.reject(new SourceError("URL_NOT_ALLOWED", `URL di luar allowlist: ${url}`));
+    return Promise.reject(new SourceError("URL_NOT_ALLOWED", "URL di luar allowlist.", {
+      failureStage: "REDIRECT",
+    }));
   }
   const ca = [...tls.getCACertificates("bundled"), ...tls.getCACertificates("system")];
   return new Promise((resolve, reject) => {
@@ -381,13 +383,24 @@ function requestUrl(url, source, options = {}, redirectCount = 0) {
       const status = response.statusCode || 0;
       if (status >= 300 && status < 400 && response.headers.location) {
         response.resume();
-        if (redirectCount >= 3) return reject(new SourceError("REDIRECT_LIMIT", "Terlalu banyak redirect."));
+        if (redirectCount >= 3) return reject(new SourceError("REDIRECT_LIMIT", "Terlalu banyak redirect.", {
+          failureStage: "REDIRECT", attemptedUrl: url, httpStatus: status,
+          contentType: response.headers["content-type"] || "", retryCount: redirectCount,
+        }));
         let target;
         try { target = normalizeUrl(response.headers.location, url); } catch (_) {
-          return reject(new SourceError("REDIRECT_INVALID", "Redirect URL tidak valid."));
+          return reject(new SourceError("REDIRECT_INVALID", "Redirect URL tidak valid.", {
+            failureStage: "REDIRECT", attemptedUrl: url, httpStatus: status,
+            contentType: response.headers["content-type"] || "",
+          }));
         }
         if (!isAllowedRequestUrl(target, source)) {
-          return reject(new SourceError("REDIRECT_OUTSIDE_DOMAIN", `Redirect ditolak: ${target}`));
+          let redirectHost = "";
+          try { redirectHost = new URL(target).hostname; } catch (_) { /* already invalid above */ }
+          return reject(new SourceError("REDIRECT_OUTSIDE_DOMAIN", "Redirect keluar domain resmi ditolak.", {
+            failureStage: "REDIRECT", attemptedUrl: url, httpStatus: status,
+            contentType: response.headers["content-type"] || "", redirectHost,
+          }));
         }
         return resolve(requestUrl(target, source, options, redirectCount + 1));
       }
@@ -396,7 +409,9 @@ function requestUrl(url, source, options = {}, redirectCount = 0) {
       response.setEncoding("utf8");
       response.on("data", (chunk) => {
         bytes += Buffer.byteLength(chunk);
-        if (bytes > maxBytes) request.destroy(new SourceError("RESPONSE_TOO_LARGE", "Response terlalu besar."));
+        if (bytes > maxBytes) request.destroy(new SourceError("RESPONSE_TOO_LARGE", "Response terlalu besar.", {
+          failureStage: "LISTING_REQUEST", attemptedUrl: url,
+        }));
         else body += chunk;
       });
       response.on("end", () => resolve({
@@ -404,21 +419,50 @@ function requestUrl(url, source, options = {}, redirectCount = 0) {
         contentType: response.headers["content-type"] || "",
         url,
         body,
+        redirectCount,
       }));
     });
-    request.setTimeout(timeoutMs, () => request.destroy(new SourceError("TIMEOUT", `Timeout ${timeoutMs} ms.`)));
+    request.setTimeout(timeoutMs, () => request.destroy(new SourceError("TIMEOUT", `Timeout ${timeoutMs} ms.`, {
+      failureStage: "LISTING_REQUEST", attemptedUrl: url, networkErrorCode: "TIMEOUT",
+    })));
     request.on("error", (error) => {
       if (error instanceof SourceError) reject(error);
-      else reject(new SourceError(tlsErrorCode(error), error.message));
+      else {
+        const code = networkErrorCode(error);
+        reject(new SourceError(code, sanitizeDiagnosticMessage(error.message), {
+          failureStage: networkFailureStage(code, error.message), attemptedUrl: url,
+          networkErrorCode: code,
+        }));
+      }
     });
   });
 }
 
-function tlsErrorCode(error) {
-  if (/certificate has expired/i.test(error.message)) return "TLS_CERT_EXPIRED";
-  if (/certificate|unable to verify/i.test(error.message)) return "TLS_INVALID";
-  if (/timed? ?out/i.test(error.message)) return "TIMEOUT";
+function networkErrorCode(error) {
+  const nativeCode = String(error && error.code || "").toUpperCase();
+  if (/^[A-Z][A-Z0-9_]{1,80}$/.test(nativeCode)) return nativeCode;
+  if (/certificate has expired/i.test(error && error.message || "")) return "CERT_HAS_EXPIRED";
+  if (/certificate|unable to verify/i.test(error && error.message || "")) return "TLS_INVALID";
+  if (/timed? ?out/i.test(error && error.message || "")) return "TIMEOUT";
   return "NETWORK_ERROR";
+}
+
+function networkFailureStage(code, message) {
+  if (["ENOTFOUND", "EAI_AGAIN", "EAI_FAIL", "ENODATA"].includes(code)) return "DNS";
+  if (/CERT|TLS|SSL|VERIFY|SELF_SIGNED|ISSUER|SIGNATURE/i.test(`${code} ${message || ""}`)) return "TLS";
+  return "LISTING_REQUEST";
+}
+
+function sanitizeDiagnosticMessage(value) {
+  return String(value || "")
+    .replace(/[\r\n\t]+/g, " ")
+    .replace(/https?:\/\/[^\s"'<>]+/gi, "[URL_REDACTED]")
+    .replace(/\b(authorization|proxy-authorization|cookie|set-cookie|token|api[_-]?key|secret|password)\b\s*[:=]\s*(?:Bearer\s+)?[^\s,;]+/gi, "$1=[REDACTED]")
+    .replace(/\bBearer\s+[A-Za-z0-9._~+\/-]+=*/gi, "Bearer [REDACTED]")
+    .replace(/\b(response\s+body|raw\s+html|body)\b\s*[:=].*$/i, "$1=[REDACTED]")
+    .replace(/<[^>]*>/g, "[REDACTED]")
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .trim().slice(0, 240);
 }
 
 function writeJsonAtomic(filePath, data) {
@@ -492,5 +536,6 @@ module.exports = {
   readJson, validateRegistry, isAllowedUrl, isAllowedRequestUrl, normalizeUrl, parseRobots, detectLoginPage,
   parseListing, parseDetail, parsePublicDate, normalizeItem, classifyHint, deduplicateItems,
   validateNormalizedItem, stableItemId, requestUrl, writeJsonAtomic, cleanText, normalizeText,
-  containsTerm, compareItems, sha256, sleep,
+  containsTerm, compareItems, sha256, sleep, networkErrorCode, networkFailureStage,
+  sanitizeDiagnosticMessage,
 };

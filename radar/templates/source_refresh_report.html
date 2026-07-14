@@ -21,6 +21,16 @@
   </header>
 
   <main class="page-shell">
+    <section id="fetchFailure" class="fetch-failure" aria-labelledby="fetchFailureTitle" hidden>
+      <article class="failure-card">
+        <p class="eyebrow">Live fetch diagnostic</p>
+        <h2 id="fetchFailureTitle">Refresh sumber gagal</h2>
+        <dl id="fetchFailureDetails"></dl>
+        <p>Snapshot produksi tidak berubah.</p>
+        <p>Daftar removed tidak dihitung karena proposal live tidak tersedia.</p>
+      </article>
+    </section>
+
     <section aria-labelledby="summaryTitle">
       <h2 id="summaryTitle">Ringkasan</h2>
       <div id="summaryCards" class="summary-grid"></div>
