@@ -65,7 +65,10 @@ function buildReportModel(sourceDiff, triggerDiff, options = {}) {
     timing_change_count: number(triggerSummary.timing_change_count),
     evidence_change_count: number(triggerSummary.evidence_change_count),
     production_change_count: number(triggerSummary.production_semantic_change_count),
+    production_unchanged: number(triggerSummary.production_semantic_change_count) === 0,
   };
+
+  const proposedHealth = sourceDiff && sourceDiff.proposed_health || {};
 
   return {
     schema_version: "1.0.0",
@@ -76,10 +79,13 @@ function buildReportModel(sourceDiff, triggerDiff, options = {}) {
     comparison_status: sourceDiff && sourceDiff.comparison_status || "COMPARED",
     comparison_skipped_reason: sourceDiff && sourceDiff.comparison_skipped_reason || "",
     source_fetch_failed: sourceFetchFailed,
-    fetch_error_code: sourceDiff && sourceDiff.proposed_health && sourceDiff.proposed_health.error_code || "",
+    fetch_error_code: proposedHealth.error_code || "",
+    fetch_status: proposedHealth.fetch_status || (sourceFetchFailed ? "LIVE_FETCH_FAILED" : "LIVE_FETCH_SUCCEEDED"),
+    fetched_sources: proposedHealth.source_code ? [proposedHealth.source_code] : [],
+    rejected_sources_excluded: ["KEMENPERIN_IMC_NEWS"],
     error: sourceDiff && sourceDiff.error || "",
     summary,
-    source_health: sourceDiff && sourceDiff.proposed_health || {},
+    source_health: proposedHealth,
     added_items: (sourceDiff && sourceDiff.added || []).map((item) => reportItem(item, newTriggerById.get(item.id), "ADDED")),
     removed_items: (sourceDiff && sourceDiff.removed || []).map((item) => reportItem(item, oldTriggerById.get(item.id), "REMOVED")),
     changed_items: (sourceDiff && sourceDiff.changed || []).map((change) => {
@@ -282,9 +288,17 @@ function isStrictIsoDate(value) {
 
 function sourceMarkdown(model) {
   const s = model.summary;
+  const tlsVerification = model.source_health.tls_trust_mode === "SYSTEM_CA"
+    ? "TLS verification remained enabled using the operating system CA store."
+    : "TLS verification remained enabled using the Node bundled CA store.";
   return `# Ringkasan Proposal Refresh Sumber\n\n` +
     `> Proposal snapshot; belum menjadi data produksi. Tidak ada penerimaan otomatis.\n\n` +
     `- Source: ${model.source_code}\n- Source status: ${model.source_health.status || "UNKNOWN"}\n` +
+    `- Source fetched: ${model.fetched_sources.join(", ") || "NONE"}\n` +
+    `- Rejected source excluded: ${model.rejected_sources_excluded.join(", ")}\n` +
+    `- Live fetch status: ${model.fetch_status}\n` +
+    `- TLS trust mode: ${model.source_health.tls_trust_mode || "NODE_BUNDLED_CA"}\n` +
+    `- ${tlsVerification}\n` +
     `- Acceptance recommendation: **${model.status}**\n- Comparison status: ${model.comparison_status}\n` +
     `- Baseline item count: ${s.baseline_total}\n- Proposed item count: ${s.proposed_total}\n` +
     `- Source fetch failed: ${s.source_fetch_failed}\n- Added: ${s.added_count}\n- Removed: ${s.removed_count}\n` +
@@ -295,7 +309,8 @@ function sourceMarkdown(model) {
     `- Date completeness: ${s.date_completeness_percent}%\n` +
     `- Minimum date completeness: ${s.minimum_date_completeness_percent}%\n` +
     `- Official provenance completeness: ${s.provenance_completeness_percent}%\n` +
-    `- Valid official link: ${s.valid_link_percent}%\n\n## Warnings\n\n${markdownMessages(model.warnings)}\n\n` +
+    `- Valid official link: ${s.valid_link_percent}%\n` +
+    `- Production unchanged: ${s.production_unchanged}\n\n## Warnings\n\n${markdownMessages(model.warnings)}\n\n` +
     `## Errors\n\n${markdownMessages(model.errors)}\n`;
 }
 

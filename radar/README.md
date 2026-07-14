@@ -392,3 +392,19 @@ Quality gate membedakan metadata missing/unknown dari invalid/fabricated. Organi
 yang tidak tersedia tetap kosong, menjadi warning, dan memerlukan review manusia; nilai invalid atau
 fabricated tetap menolak proposal. Kelengkapan tanggal minimum default adalah 70%, dapat dikonfigurasi
 melalui `RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT` pada workflow.
+
+### Refresh aman dengan system CA (J.2C.3)
+
+Node memerlukan system CA untuk koneksi HTTPS BKPM, tetapi TLS verification tetap aktif. GitHub
+workflow menerapkan `NODE_OPTIONS: --use-system-ca` hanya pada live official-source fetch dan hanya
+mengambil `BKPM_PRESS_RELEASES`. Kemenperin tetap ditolak dengan `TLS_CERT_EXPIRED` dan tidak ikut
+fetch, proposed snapshot, health BKPM, atau trigger build.
+
+Untuk menjalankan refresh lokal secara aman:
+
+```bash
+node radar/scripts/run_source_refresh_safe.js
+```
+
+Proposal lokal ditulis ke `.source-refresh-work/manual`; production tidak otomatis berubah. Jangan
+menjalankan fetcher langsung untuk production dan jangan menggunakan TLS bypass dalam bentuk apa pun.

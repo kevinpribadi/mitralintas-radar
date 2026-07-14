@@ -250,6 +250,7 @@ function healthSummary(health, sourceCode) {
   if (!source) return null;
   return {
     source_code: text(source.source_code), status: text(source.status),
+    tls_trust_mode: text(source.tls_trust_mode),
     fetch_status: text(source.fetch_status || health.fetch_status),
     failure_stage: text(source.failure_stage), error_code: text(source.error_code),
     error_message: text(source.error_message), attempted_url: text(source.attempted_url),

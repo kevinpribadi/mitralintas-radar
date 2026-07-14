@@ -1,5 +1,16 @@
 # Official Source Acquisition Pilot
 
+## TLS dan refresh aman J.2C.3
+
+Live HTTPS BKPM pada Node memerlukan operating-system CA store. Verifikasi TLS tetap aktif; system CA
+bukan TLS bypass. Workflow manual hanya menerapkan `--use-system-ca` pada step fetch BKPM dan tidak
+memengaruhi test. `KEMENPERIN_IMC_NEWS` tetap `REJECTED` dengan `TLS_CERT_EXPIRED`, tidak selectable,
+tidak di-fetch, dan tidak masuk snapshot, health refresh BKPM, atau trigger build.
+
+Untuk refresh lokal gunakan `node radar/scripts/run_source_refresh_safe.js`. Output selalu berada di
+`.source-refresh-work/manual`, sedangkan snapshot production hanya menjadi last-known-good read-only.
+Jangan memakai fetcher langsung untuk production dan jangan pernah menonaktifkan verifikasi TLS.
+
 ## Tujuan
 
 Source Pilot menguji apakah berita dan siaran pers dari domain resmi dapat diambil sebagai HTML statis, divalidasi, dan dinormalisasi secara aman. Fase J.2B tetap mempertahankan snapshot pada lapisan karantina, lalu membacanya sebagai corpus tambahan opsional untuk Trigger Radar. File tender, event, review queue, qualification readiness, dan human feedback tidak digabung atau diubah.

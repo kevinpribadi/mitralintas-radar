@@ -9,17 +9,24 @@ const {
   requestUrl, writeJsonAtomic, sleep, isAllowedRequestUrl, sanitizeDiagnosticMessage,
 } = require("./lib/source_utils.js");
 
+const REPOSITORY_ROOT = path.resolve(__dirname, "..", "..");
+const MANUAL_OUTPUT_DIR = path.join(".source-refresh-work", "manual");
+const COMMITTED_ITEMS_FILE = path.join("radar", "docs", "data", "source_pilot_items.json");
+const COMMITTED_HEALTH_FILE = path.join("radar", "docs", "data", "source_pilot_health.json");
+const ACCEPTED_STATUS = "ACCEPTED_FOR_TRIGGER_PILOT";
+
 async function main() {
   const registryFile = process.env.RADAR_SOURCE_REGISTRY ||
     path.join("radar", "config", "source_registry.json");
   const itemsFile = process.env.RADAR_SOURCE_PILOT_OUTPUT ||
-    path.join("radar", "docs", "data", "source_pilot_items.json");
+    path.join(MANUAL_OUTPUT_DIR, "proposed_source_pilot_items.json");
   const healthFile = process.env.RADAR_SOURCE_HEALTH_OUTPUT ||
-    path.join("radar", "docs", "data", "source_pilot_health.json");
-  const lastKnownGoodFile = process.env.RADAR_SOURCE_LAST_KNOWN_GOOD_FILE || "";
+    path.join(MANUAL_OUTPUT_DIR, "proposed_source_pilot_health.json");
+  const lastKnownGoodFile = process.env.RADAR_SOURCE_LAST_KNOWN_GOOD_FILE || COMMITTED_ITEMS_FILE;
   const fixtureDir = process.env.RADAR_SOURCE_FIXTURE_DIR ||
     path.join("radar", "tests", "fixtures", "sources");
   const offline = /^(1|true)$/i.test(process.env.RADAR_SOURCE_OFFLINE || "");
+  assertOutputWriteAllowed(itemsFile, healthFile, process.env);
   const registry = readJson(registryFile, "source registry");
   validateRegistry(registry);
   const options = resolveOptions(registry, process.env);
@@ -50,10 +57,15 @@ function resolveOptions(registry, env) {
     .map((value) => value.trim()).filter(Boolean);
   const maxItems = positiveInteger(env.RADAR_SOURCE_MAX_ITEMS, registry.max_items_per_source);
   const timeoutMs = positiveInteger(env.RADAR_SOURCE_TIMEOUT_MS, registry.request_timeout_ms);
-  const selectedSources = registry.sources.filter((source) => source.enabled_for_pilot &&
-    (!requestedCodes.length || requestedCodes.includes(source.code)));
+  const acceptedSources = registry.sources.filter((source) =>
+    source.enabled_for_pilot && source.acceptance_status === ACCEPTED_STATUS);
+  const selectedSources = acceptedSources.filter((source) =>
+    !requestedCodes.length || requestedCodes.includes(source.code));
   if (requestedCodes.some((code) => !registry.sources.some((source) => source.code === code))) {
     throw new Error("RADAR_SOURCE_CODES memuat source code yang tidak dikenal.");
+  }
+  if (requestedCodes.some((code) => !acceptedSources.some((source) => source.code === code))) {
+    throw new Error("SOURCE_NOT_SELECTABLE: source harus berstatus ACCEPTED_FOR_TRIGGER_PILOT.");
   }
   return {
     selectedSources,
@@ -309,12 +321,17 @@ function validatePilotOutputs(itemsOutput, healthOutput, registry) {
       "UNSUPPORTED_DYNAMIC_PAGE", "INVALID_CONFIGURATION"].includes(source.status))) {
     throw new Error("Health output tidak valid.");
   }
+  if (healthOutput.sources.some((source) =>
+    !["SYSTEM_CA", "NODE_BUNDLED_CA"].includes(source.tls_trust_mode))) {
+    throw new Error("TLS trust mode health output tidak valid.");
+  }
   return true;
 }
 
 function createHealth(sourceCode) {
   return {
     source_code: sourceCode,
+    tls_trust_mode: resolveTlsTrustMode(process.env, process.execArgv),
     status: "UNAVAILABLE",
     failure_stage: "",
     error_code: "",
@@ -332,6 +349,26 @@ function createHealth(sourceCode) {
     warnings: [],
     errors: [],
   };
+}
+
+function resolveTlsTrustMode(env = process.env, execArgv = process.execArgv) {
+  const nodeOptions = String(env.NODE_OPTIONS || "").split(/\s+/).filter(Boolean);
+  const argv = Array.isArray(execArgv) ? execArgv : [];
+  return argv.includes("--use-system-ca") || nodeOptions.includes("--use-system-ca")
+    ? "SYSTEM_CA" : "NODE_BUNDLED_CA";
+}
+
+function assertOutputWriteAllowed(itemsFile, healthFile, env = process.env) {
+  if (/^true$/i.test(String(env.RADAR_ALLOW_COMMITTED_SOURCE_WRITE || ""))) return true;
+  const committed = [COMMITTED_ITEMS_FILE, COMMITTED_HEALTH_FILE]
+    .map((file) => path.resolve(REPOSITORY_ROOT, file));
+  const outputs = [itemsFile, healthFile].map((file) => path.resolve(REPOSITORY_ROOT, file));
+  if (outputs.some((file) => committed.includes(file))) {
+    const error = new Error("COMMITTED_SOURCE_OUTPUT_WRITE_BLOCKED");
+    error.code = "COMMITTED_SOURCE_OUTPUT_WRITE_BLOCKED";
+    throw error;
+  }
+  return true;
 }
 
 function assertUsableHtml(response, label) {
@@ -419,6 +456,7 @@ module.exports = {
   preserveOrWriteOutputs, hasLastKnownGood, validatePilotOutputs, createHealth,
   assertUsableHtml, statusForError, responseError, recordHealthFailure, safeFailureStage,
   safeErrorCode, safeAttemptedUrl, sanitizeContentType, primaryFailureCode,
+  resolveTlsTrustMode, assertOutputWriteAllowed,
 };
 
 if (require.main === module) {

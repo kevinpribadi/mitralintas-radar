@@ -158,6 +158,7 @@
       ["Missing organization", model.summary.missing_organization_count],
       ["Date completeness", String(model.summary.date_completeness_percent || 0) + "%"],
       ["Production changes", model.summary.production_change_count],
+      ["Production unchanged", model.summary.production_unchanged ? "Ya" : "Tidak"],
     ];
     var container = document.getElementById("summaryCards");
     values.forEach(function (value) {
@@ -187,6 +188,11 @@
     card.appendChild(element("h3", "", health.source_code || model.source_code || "Source"));
     var list = element("dl");
     appendDefinition(list, "Status", health.status);
+    appendDefinition(list, "Live fetch status", model.fetch_status);
+    appendDefinition(list, "TLS trust mode", health.tls_trust_mode);
+    appendDefinition(list, "Source fetched", (model.fetched_sources || []).join(", "));
+    appendDefinition(list, "Rejected source tidak di-fetch",
+      (model.rejected_sources_excluded || []).join(", "));
     appendDefinition(list, "HTTP", health.http_status);
     appendDefinition(list, "Content type", health.content_type);
     appendDefinition(list, "Valid items", health.valid_items);
@@ -238,6 +244,9 @@
   document.getElementById("referenceDate").textContent = model.reference_date
     ? "Reference date: " + model.reference_date : "Reference date belum tersedia";
   document.getElementById("proposalStatus").textContent = "Status proposal: " + (model.status || "REJECT_PROPOSAL");
+  var systemCaActive = model.source_health && model.source_health.tls_trust_mode === "SYSTEM_CA";
+  document.getElementById("tlsSystemCaNote").hidden = !systemCaActive;
+  document.getElementById("tlsVerificationNote").hidden = !systemCaActive;
   renderFetchFailure();
   renderSummary();
   renderHealth();

@@ -1,4 +1,4 @@
-# Controlled Manual Source Refresh (J.2C)
+# Controlled Manual Source Refresh (J.2C.3)
 
 ## Tujuan dan batas keamanan
 
@@ -10,6 +10,31 @@ auto-merge, dan tidak pernah menulis ke snapshot atau trigger output committed.
 BKPM (`BKPM_PRESS_RELEASES`) adalah satu-satunya source yang dapat dipilih karena status registry-nya
 `ACCEPTED_FOR_TRIGGER_PILOT`. Kemenperin tetap `REJECTED` dengan alasan `TLS_CERT_EXPIRED`; workflow
 tidak menawarkan atau mengambil source tersebut dan tidak menonaktifkan pemeriksaan TLS.
+
+Node memerlukan CA sistem operasi untuk memverifikasi rantai sertifikat HTTPS BKPM. Hanya step live
+fetch resmi yang memakai `NODE_OPTIONS: --use-system-ca`; test dan step lain tidak menerima opsi itu.
+System CA memperluas trust store Node, bukan melewati TLS. Verifikasi hostname, certificate chain,
+HTTP status, content type, redirect, dan exact-domain allowlist tetap aktif dan fail-closed.
+
+## Refresh lokal yang aman
+
+Jalankan hanya wrapper berikut dari root repository:
+
+```bash
+node radar/scripts/run_source_refresh_safe.js
+```
+
+Wrapper bersifat cross-platform, hanya memilih `BKPM_PRESS_RELEASES`, menjalankan child Node dengan
+`--use-system-ca`, dan menulis proposal serta health ke `.source-refresh-work/manual`. Snapshot
+`radar/docs/data/source_pilot_items.json` hanya dibaca sebagai last-known-good dan tidak ditimpa.
+Kemenperin tidak dicoba dan refresh tidak otomatis mengubah production.
+
+Jangan menjalankan `fetch_source_pilot.js` langsung untuk menulis production. Fetcher tersebut memakai
+output temporary yang sama bila output environment tidak diberikan dan memblokir committed source
+output dengan `COMMITTED_SOURCE_OUTPUT_WRITE_BLOCKED`. `RADAR_ALLOW_COMMITTED_SOURCE_WRITE=true`
+hanya merupakan mekanisme maintenance internal eksplisit; workflow dan wrapper tidak mengaktifkannya.
+Jangan pernah menggunakan TLS bypass seperti menonaktifkan certificate verification, `curl -k`, atau
+`curl --insecure`.
 
 ## Menjalankan refresh manual
 
