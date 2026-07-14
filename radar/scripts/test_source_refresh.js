@@ -141,6 +141,22 @@ const fabricatedOrganizationItem = sourceItem("fabricated-org", {
   quality: Object.assign({}, sourceItem("fabricated-org").quality, { organization_status: "explicit" }),
 });
 const scenarioD = scenarioModel([fabricatedOrganizationItem]);
+const failedBaselineItems = Array.from({ length: 10 }, (_, index) => sourceItem(`baseline-${index}`));
+const failedHealth = health({
+  status: "UNAVAILABLE", fetch_status: "LIVE_FETCH_FAILED_USING_LAST_KNOWN_GOOD",
+  failure_stage: "LISTING_REQUEST", error_code: "HTTP_502", error_message: "listing HTTP 502.",
+  attempted_url: "https://www.bkpm.go.id/id/info/siaran-pers", http_status: 502,
+  content_type: "text/html", redirect_host: "", network_error_code: "", retry_count: 1,
+  listing_links_found: 0, detail_pages_attempted: 0, valid_items: 0,
+  errors: ["HTTP_502:listing HTTP 502."],
+});
+failedHealth.fetch_status = "LIVE_FETCH_FAILED_USING_LAST_KNOWN_GOOD";
+const failedDiff = sourceCompare.compareSourceSnapshots(snapshot(failedBaselineItems), null, {
+  oldHealth: health({ valid_items: 10 }), proposedHealth: failedHealth, requestedMaxItems: 25,
+});
+const skippedTriggerDiff = { summary: { production_semantic_change_count: 0 },
+  validation: { proposal_eligible: false, warnings: [], errors: ["TRIGGER_COMPARISON_REJECTED_SKIPPED"] } };
+const failedModel = report.buildReportModel(failedDiff, skippedTriggerDiff);
 
 test(1, "workflow hanya workflow_dispatch", () => {
   const triggerBlock = workflow.slice(workflow.indexOf("on:"), workflow.indexOf("permissions:"));
@@ -396,6 +412,69 @@ test("E5", "workflow memakai configurable 70 percent date threshold dan normaliz
   assert.match(workflow, /RADAR_SOURCE_MINIMUM_DATE_COMPLETENESS_PERCENT:\s*"70"/);
   assert.match(workflow, /report\.status === "REJECT_PROPOSAL"/);
   assert.doesNotMatch(workflow, /source\.validation\.proposal_eligible/);
+});
+test("F1", "fetch failure tidak menghitung baseline sebagai removed", () => {
+  assert.strictEqual(failedDiff.baseline_total, 10);
+  assert.strictEqual(failedDiff.proposed_total, null);
+  assert.deepStrictEqual([failedDiff.added_count, failedDiff.removed_count, failedDiff.changed_count], [0, 0, 0]);
+  assert.strictEqual(failedDiff.unchanged_count, 10);
+});
+test("F2", "fetch failure menghasilkan comparison_status FETCH_FAILED", () => {
+  assert.strictEqual(failedDiff.comparison_status, "FETCH_FAILED");
+  assert.strictEqual(failedDiff.comparison_skipped_reason, "LIVE_FETCH_FAILED");
+  assert.strictEqual(failedDiff.source_fetch_failed, true);
+  assert.strictEqual(failedDiff.error, "HTTP_502");
+  assert.strictEqual(failedDiff.validation.proposal_eligible, false);
+  assert(failedDiff.validation.errors.includes("SOURCE_FETCH_ERROR:HTTP_502"));
+});
+test("F3", "synthetic HTTP 502 menghasilkan REJECT_PROPOSAL dan summary aman", () => {
+  assert.strictEqual(failedModel.status, "REJECT_PROPOSAL");
+  assert.strictEqual(failedModel.fetch_error_code, "HTTP_502");
+  assert.strictEqual(failedModel.error, "HTTP_502");
+  assert.strictEqual(failedModel.summary.baseline_total, 10);
+  assert.strictEqual(failedModel.summary.proposed_total, null);
+  assert.strictEqual(failedModel.summary.removed_count, 0);
+  assert.strictEqual(failedModel.summary.source_fetch_failed, true);
+});
+test("F4", "artifact audit tetap dibuat pada fetch failure", () => {
+  const dir = path.join(temp, "fetch-failed-report");
+  report.writeReports(failedModel, { outputDir: dir, templateDir: TEMPLATE_DIR, includeHtml: true });
+  ["source_snapshot_summary.md", "source_refresh_summary.json", "source_refresh_report.html",
+    "source_refresh_report.css", "source_refresh_report.js"].forEach((name) =>
+    assert.strictEqual(fs.existsSync(path.join(dir, name)), true, name));
+  const html = fs.readFileSync(path.join(dir, "source_refresh_report.html"), "utf8");
+  assert.match(html, /"source_fetch_failed":true/);
+});
+test("F5", "mobile failure card memakai safe textContent dan copy wajib", () => {
+  assert.match(htmlTemplate, /Refresh sumber gagal/);
+  assert.match(htmlTemplate, /Snapshot produksi tidak berubah\./);
+  assert.match(htmlTemplate, /Daftar removed tidak dihitung karena proposal live tidak tersedia\./);
+  assert.match(jsTemplate, /renderFetchFailure/);
+  assert.doesNotMatch(jsTemplate, /\.innerHTML\b/);
+  assert.match(cssTemplate, /\.failure-card[\s\S]*max-width:\s*100%/);
+});
+test("F6", "workflow memberi explicit LKG dan tidak membuat proposal kosong sintetis", () => {
+  assert.match(workflow, /RADAR_SOURCE_LAST_KNOWN_GOOD_FILE:\s*\.source-refresh-work\/baseline_source_pilot_items\.json/);
+  assert.doesNotMatch(workflow, /Create safe rejected audit payload|normalized_items:\s*0[\s\S]{0,200}items:\s*\[\]/);
+});
+test("F7", "trigger build skipped pada fetch failure", () => {
+  assert.match(workflow, /steps\.fetch\.outcome == 'success' && steps\.source_diff\.outputs\.eligible == 'true'/);
+});
+test("F8", "workflow tetap upload artifact dan baseline audit", () => {
+  assert.match(workflow, /if:\s*always\(\)[\s\S]*uses:\s*actions\/upload-artifact@v4/);
+  assert.match(workflow, /baseline_source_pilot_items\.json/);
+  assert.match(workflow, /fetch_status\.json/);
+});
+test("F9", "final gate tetap gagal memakai error spesifik", () => {
+  assert.match(workflow, /SOURCE_FETCH_FAILED: " \+ code/);
+  assert.match(workflow, /failed\.error_code/);
+  assert.doesNotMatch(workflow, /throw new Error\("LIVE_FETCH_FAILED"\)/);
+});
+test("F10", "failure report 360px dan 390px tetap aman", () => {
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*360px\)/);
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*390px\)/);
+  assert.match(cssTemplate, /html, body[\s\S]{0,120}overflow-x:\s*hidden/);
+  assert.match(cssTemplate, /button, \.source-link[\s\S]{0,160}min-height:\s*44px/);
 });
 
 try { fs.rmSync(temp, { recursive: true, force: true }); } catch (_) { /* test temp only */ }

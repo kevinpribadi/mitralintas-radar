@@ -6,7 +6,7 @@ const path = require("path");
 const {
   SourceError, readJson, validateRegistry, isAllowedUrl, parseRobots, detectLoginPage,
   parseListing, parseDetail, normalizeItem, deduplicateItems, validateNormalizedItem,
-  requestUrl, writeJsonAtomic, sleep,
+  requestUrl, writeJsonAtomic, sleep, isAllowedRequestUrl, sanitizeDiagnosticMessage,
 } = require("./lib/source_utils.js");
 
 async function main() {
@@ -16,6 +16,7 @@ async function main() {
     path.join("radar", "docs", "data", "source_pilot_items.json");
   const healthFile = process.env.RADAR_SOURCE_HEALTH_OUTPUT ||
     path.join("radar", "docs", "data", "source_pilot_health.json");
+  const lastKnownGoodFile = process.env.RADAR_SOURCE_LAST_KNOWN_GOOD_FILE || "";
   const fixtureDir = process.env.RADAR_SOURCE_FIXTURE_DIR ||
     path.join("radar", "tests", "fixtures", "sources");
   const offline = /^(1|true)$/i.test(process.env.RADAR_SOURCE_OFFLINE || "");
@@ -26,15 +27,20 @@ async function main() {
     ? createFixtureTransport(fixtureDir)
     : createLiveTransport(registry, options);
   const result = await runPilot({ registry, options, transport });
-  const writeResult = preserveOrWriteOutputs({ result, itemsFile, healthFile, offline });
+  const writeResult = preserveOrWriteOutputs({
+    result, itemsFile, healthFile, lastKnownGoodFile, offline,
+  });
+  result.healthOutput.sources.filter((health) => health.error_code).forEach((health) => {
+    console.error(`${health.source_code} failed at ${health.failure_stage}: ${health.error_code}`);
+  });
   console.log(
     `${offline ? "Offline" : "Live"} source pilot: ` +
     `${result.itemsOutput.source_summary.normalized_items} item, ` +
     `${result.itemsOutput.source_summary.healthy_sources} healthy, ` +
     `${result.itemsOutput.source_summary.degraded_sources} degraded.`
   );
-  if (writeResult.preserved) {
-    throw new Error("Seluruh sumber live gagal; last-known-good dipertahankan dan output item tidak ditimpa.");
+  if (writeResult.fetchFailed) {
+    throw new Error(`SOURCE_FETCH_FAILED: ${writeResult.errorCode}`);
   }
   return result;
 }
@@ -99,42 +105,57 @@ async function runPilot({ registry, options, transport }) {
 async function processSource(source, options, transport) {
   const health = createHealth(source.code);
   const result = { health, items: [], rawItems: 0, invalidItems: 0 };
+  let currentStage = "LISTING_REQUEST";
+  let attemptedUrl = source.listing_url;
   try {
     const robotsUrl = `https://${source.official_domain}/robots.txt`;
+    attemptedUrl = robotsUrl;
     const robots = await transport.request(source, robotsUrl, "robots");
     if (robots.status === 401 || robots.status === 403 || robots.status === 429) {
-      throw new SourceError("ROBOTS_BLOCKED", `robots.txt HTTP ${robots.status}`, { status: robots.status });
+      throw responseError(`HTTP_${robots.status}`, `robots.txt HTTP ${robots.status}.`,
+        robots, "LISTING_REQUEST");
     }
     if (robots.status === 200 && !parseRobots(
       robots.body, new URL(source.listing_url).pathname, options.userAgent)) {
-      throw new SourceError("ROBOTS_DISALLOWED", "Listing dilarang robots.txt.", { status: robots.status });
+      throw responseError("ROBOTS_DISALLOWED", "Listing dilarang robots.txt.",
+        robots, "LISTING_REQUEST");
     }
     if (robots.status !== 200) health.warnings.push(`ROBOTS_HTTP_${robots.status}`);
     await transport.pause(options.intervalMs);
 
+    attemptedUrl = source.listing_url;
+    currentStage = "LISTING_REQUEST";
     const listing = await transport.request(source, source.listing_url, "listing");
     health.http_status = listing.status;
     health.content_type = listing.contentType;
     assertUsableHtml(listing, "listing");
-    if (detectLoginPage(listing.body)) throw new SourceError("LOGIN_REQUIRED", "Listing memerlukan login.");
+    if (detectLoginPage(listing.body)) throw responseError(
+      "LOGIN_REQUIRED", "Listing memerlukan login.", listing, "LISTING_PARSE");
+    currentStage = "LISTING_PARSE";
     const parsedListing = parseListing(listing.body, source);
     health.listing_links_found = parsedListing.records.length;
     if (parsedListing.externalLinks) health.warnings.push(
       `EXTERNAL_LINKS_IGNORED:${parsedListing.externalLinks}`);
     if (!parsedListing.records.length) {
-      throw new SourceError("NO_STATIC_DETAIL_LINKS", "Tidak ada detail link statis yang valid.");
+      throw responseError("LISTING_PARSE_EMPTY", "Listing tidak menghasilkan detail link resmi.",
+        listing, "LISTING_PARSE");
     }
     const candidates = parsedListing.records.slice(0, options.maxDetails);
     result.rawItems = candidates.length;
+    let firstDetailError = null;
 
     for (let index = 0; index < candidates.length; index += 1) {
       const listingItem = candidates[index];
       if (index > 0) await transport.pause(options.intervalMs);
       health.detail_pages_attempted += 1;
       try {
+        attemptedUrl = listingItem.link;
+        currentStage = "DETAIL_REQUEST";
         const detailResponse = await transport.request(source, listingItem.link, "detail");
         assertUsableHtml(detailResponse, "detail");
-        if (detectLoginPage(detailResponse.body)) throw new SourceError("LOGIN_REQUIRED", "Detail memerlukan login.");
+        if (detectLoginPage(detailResponse.body)) throw responseError(
+          "LOGIN_REQUIRED", "Detail memerlukan login.", detailResponse, "DETAIL_PARSE");
+        currentStage = "DETAIL_PARSE";
         const detail = parseDetail(detailResponse.body, source, listingItem.link);
         if (!isAllowedUrl(detail.canonicalUrl, source)) {
           health.warnings.push(`${listingItem.link}:CANONICAL_IGNORED_NOT_ALLOWED`);
@@ -149,21 +170,28 @@ async function processSource(source, options, transport) {
           `${item.id}:${item.quality.date_status.toUpperCase()}_DATE`);
         if (item.quality.excerpt_status === "missing") health.warnings.push(`${item.id}:MISSING_EXCERPT`);
       } catch (error) {
+        enrichSourceError(error, currentStage, attemptedUrl);
+        if (!firstDetailError) firstDetailError = error;
+        recordHealthFailure(health, error, source);
         result.invalidItems += 1;
         health.invalid_items += 1;
-        health.errors.push(`${listingItem.link}:${error.code || "DETAIL_ERROR"}`);
+        health.errors.push(`DETAIL_FAILURE:${safeErrorCode(error.code)}`);
       }
       if (result.items.length >= options.maxItems) break;
     }
 
-    if (!result.items.length) throw new SourceError("NO_VALID_ITEMS", "Tidak ada detail item valid.");
+    if (!result.items.length) throw firstDetailError || new SourceError(
+      "DETAIL_PARSE_EMPTY", "Tidak ada detail item valid.", {
+        failureStage: "DETAIL_PARSE", attemptedUrl,
+      });
     const optionalWarnings = health.warnings.some((warning) =>
       /MISSING|INVALID_DATE|CANONICAL_IGNORED/.test(warning));
     health.status = optionalWarnings || health.invalid_items > 0 ? "DEGRADED" : "HEALTHY";
   } catch (error) {
+    enrichSourceError(error, currentStage, attemptedUrl);
     health.status = statusForError(error);
-    if (error.status && !health.http_status) health.http_status = error.status;
-    health.errors.push(`${error.code || "SOURCE_ERROR"}:${error.message}`);
+    recordHealthFailure(health, error, source);
+    health.errors.push(`${safeErrorCode(error.code)}:${sanitizeDiagnosticMessage(error.message)}`);
     result.items = [];
     result.invalidItems = Math.max(result.invalidItems, health.invalid_items);
   }
@@ -189,10 +217,15 @@ function createLiveTransport(registry, options) {
             await sleep(options.intervalMs);
             continue;
           }
+          response.retryCount = attempt;
           return response;
         } catch (error) {
           lastError = error;
-          if (attempt === 0 && ["TIMEOUT", "NETWORK_ERROR"].includes(error.code)) {
+          if (kind === "detail" && error.failureStage === "LISTING_REQUEST") {
+            error.failureStage = "DETAIL_REQUEST";
+          }
+          error.retryCount = attempt;
+          if (attempt === 0 && ["TIMEOUT", "NETWORK_ERROR", "ECONNRESET", "EAI_AGAIN"].includes(error.code)) {
             await sleep(options.intervalMs);
             continue;
           }
@@ -217,16 +250,29 @@ function createFixtureTransport(fixtureDir) {
   };
 }
 
-function preserveOrWriteOutputs({ result, itemsFile, healthFile, offline }) {
-  writeJsonAtomic(healthFile, result.healthOutput);
+function preserveOrWriteOutputs({ result, itemsFile, healthFile, lastKnownGoodFile = "", offline }) {
   const successfulSources = result.itemsOutput.source_summary.healthy_sources +
     result.itemsOutput.source_summary.degraded_sources;
   if (!offline && (!successfulSources || !result.itemsOutput.items.length)) {
-    if (hasLastKnownGood(itemsFile)) return { preserved: true };
-    throw new Error("Seluruh sumber live gagal dan tidak ada last-known-good non-empty.");
+    const lkgFile = lastKnownGoodFile || itemsFile;
+    const hasLkg = hasLastKnownGood(lkgFile);
+    const errorCode = primaryFailureCode(result.healthOutput);
+    result.healthOutput.fetch_status = hasLkg
+      ? "LIVE_FETCH_FAILED_USING_LAST_KNOWN_GOOD" : "LIVE_FETCH_FAILED";
+    result.healthOutput.last_known_good = {
+      available: hasLkg,
+      item_count: hasLkg ? lastKnownGoodCount(lkgFile) : 0,
+    };
+    result.healthOutput.sources.forEach((source) => {
+      source.fetch_status = result.healthOutput.fetch_status;
+    });
+    writeJsonAtomic(healthFile, result.healthOutput);
+    return { fetchFailed: true, preserved: hasLkg, errorCode };
   }
+  result.healthOutput.fetch_status = offline ? "OFFLINE_FIXTURE_SUCCEEDED" : "LIVE_FETCH_SUCCEEDED";
+  writeJsonAtomic(healthFile, result.healthOutput);
   writeJsonAtomic(itemsFile, result.itemsOutput);
-  return { preserved: false };
+  return { fetchFailed: false, preserved: false, errorCode: "" };
 }
 
 function hasLastKnownGood(filePath) {
@@ -236,6 +282,16 @@ function hasLastKnownGood(filePath) {
   } catch (_) {
     return false;
   }
+}
+
+function lastKnownGoodCount(filePath) {
+  try { return JSON.parse(fs.readFileSync(filePath, "utf8")).items.length; }
+  catch (_) { return 0; }
+}
+
+function primaryFailureCode(healthOutput) {
+  const failed = healthOutput.sources.find((source) => source.error_code);
+  return failed ? failed.error_code : "LIVE_FETCH_FAILED";
 }
 
 function validatePilotOutputs(itemsOutput, healthOutput, registry) {
@@ -260,8 +316,15 @@ function createHealth(sourceCode) {
   return {
     source_code: sourceCode,
     status: "UNAVAILABLE",
+    failure_stage: "",
+    error_code: "",
+    error_message: "",
+    attempted_url: "",
     http_status: 0,
     content_type: "",
+    redirect_host: "",
+    network_error_code: "",
+    retry_count: 0,
     listing_links_found: 0,
     detail_pages_attempted: 0,
     valid_items: 0,
@@ -272,23 +335,76 @@ function createHealth(sourceCode) {
 }
 
 function assertUsableHtml(response, label) {
-  if ([401, 403, 429].includes(response.status)) {
-    throw new SourceError(`HTTP_${response.status}`, `${label} HTTP ${response.status}.`, { status: response.status });
-  }
   if (response.status < 200 || response.status >= 300) {
-    throw new SourceError("HTTP_UNAVAILABLE", `${label} HTTP ${response.status}.`, { status: response.status });
+    throw responseError(`HTTP_${response.status}`, `${label} HTTP ${response.status}.`, response,
+      label === "detail" ? "DETAIL_REQUEST" : "LISTING_REQUEST");
   }
   if (!/^text\/html\b/i.test(response.contentType || "")) {
-    throw new SourceError("NON_HTML", `${label} bukan HTML.`);
+    throw responseError("CONTENT_TYPE_INVALID", `${label} bukan HTML.`, response, "CONTENT_TYPE");
   }
 }
 
 function statusForError(error) {
   if (["HTTP_401", "HTTP_403", "HTTP_429", "ROBOTS_BLOCKED", "ROBOTS_DISALLOWED",
     "LOGIN_REQUIRED"].includes(error.code)) return "BLOCKED";
-  if (error.code === "NO_STATIC_DETAIL_LINKS") return "UNSUPPORTED_DYNAMIC_PAGE";
-  if (error.code === "INVALID_CONFIGURATION") return "INVALID_CONFIGURATION";
+  if (["LISTING_PARSE_EMPTY", "DETAIL_PARSE_EMPTY"].includes(error.code)) return "DEGRADED";
   return "UNAVAILABLE";
+}
+
+function responseError(code, message, response, failureStage) {
+  return new SourceError(code, message, {
+    failureStage,
+    attemptedUrl: response && response.url || "",
+    status: response && response.status || 0,
+    httpStatus: response && response.status || 0,
+    contentType: response && response.contentType || "",
+    retryCount: response && response.retryCount || 0,
+  });
+}
+
+function enrichSourceError(error, failureStage, attemptedUrl) {
+  if (!(error instanceof Error)) return;
+  if (!error.code) error.code = "SOURCE_ERROR";
+  if (!error.failureStage) error.failureStage = failureStage;
+  if (!error.attemptedUrl) error.attemptedUrl = attemptedUrl;
+}
+
+function recordHealthFailure(health, error, source) {
+  health.failure_stage = safeFailureStage(error.failureStage);
+  health.error_code = safeErrorCode(error.code);
+  health.error_message = sanitizeDiagnosticMessage(error.message);
+  health.attempted_url = safeAttemptedUrl(error.attemptedUrl, source);
+  health.http_status = Number(error.httpStatus || error.status || health.http_status) || 0;
+  health.content_type = sanitizeContentType(error.contentType || health.content_type);
+  health.redirect_host = safeHost(error.redirectHost);
+  health.network_error_code = safeErrorCode(error.networkErrorCode, "");
+  health.retry_count = Math.max(0, Number(error.retryCount) || 0);
+}
+
+function safeFailureStage(value) {
+  const stage = String(value || "").toUpperCase();
+  return ["DNS", "TLS", "LISTING_REQUEST", "REDIRECT", "CONTENT_TYPE", "LISTING_PARSE",
+    "DETAIL_REQUEST", "DETAIL_PARSE"].includes(stage) ? stage : "LISTING_REQUEST";
+}
+
+function safeErrorCode(value, fallback = "SOURCE_ERROR") {
+  const code = String(value || "").toUpperCase();
+  return /^[A-Z][A-Z0-9_]{1,80}$/.test(code) ? code : fallback;
+}
+
+function safeAttemptedUrl(value, source) {
+  return isAllowedRequestUrl(value, source) ? new URL(value).toString() : "";
+}
+
+function safeHost(value) {
+  const host = String(value || "").toLowerCase();
+  return /^(?=.{1,253}$)[a-z0-9.-]+$/.test(host) ? host : "";
+}
+
+function sanitizeContentType(value) {
+  const contentType = String(value || "").replace(/[\r\n]/g, "").trim();
+  return /^[a-z0-9!#$&^_.+\/-]+(?:\s*;\s*[a-z0-9!#$&^_.+\/-]+=(?:[a-z0-9!#$&^_.+\/-]+|"[^"]*"))*$/i
+    .test(contentType) ? contentType.slice(0, 160) : "";
 }
 
 function positiveInteger(value, fallback) {
@@ -301,7 +417,8 @@ function positiveInteger(value, fallback) {
 module.exports = {
   main, resolveOptions, runPilot, processSource, createLiveTransport, createFixtureTransport,
   preserveOrWriteOutputs, hasLastKnownGood, validatePilotOutputs, createHealth,
-  assertUsableHtml, statusForError,
+  assertUsableHtml, statusForError, responseError, recordHealthFailure, safeFailureStage,
+  safeErrorCode, safeAttemptedUrl, sanitizeContentType, primaryFailureCode,
 };
 
 if (require.main === module) {
