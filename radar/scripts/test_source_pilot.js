@@ -19,6 +19,8 @@ const protectedFiles = [
   "radar/data/events.json",
   "radar/docs/data/review_queue.json",
   "radar/docs/data/qualification_readiness.json",
+  "radar/docs/data/source_pilot_items.json",
+  "radar/docs/data/source_pilot_health.json",
   "radar/docs/data/trigger_signals.json",
 ];
 const initialHashes = hashFiles(protectedFiles);
@@ -387,6 +389,47 @@ test("44. secret header dan response body disanitasi", async () => {
   const diagnostic = JSON.stringify(result.health);
   assert.doesNotMatch(diagnostic, /topsecret|session=abc|private-body|<html>/i);
   assert.match(result.health.error_message, /REDACTED/);
+});
+test("45. default selection hanya source accepted", () => {
+  const resolved = pilot.resolveOptions(registry, {});
+  assert.deepStrictEqual(resolved.selectedSources.map((entry) => entry.code), ["BKPM_PRESS_RELEASES"]);
+});
+test("46. rejected source tidak selectable secara eksplisit", () => {
+  assert.throws(() => pilot.resolveOptions(registry, {
+    RADAR_SOURCE_CODES: "KEMENPERIN_IMC_NEWS",
+  }), /SOURCE_NOT_SELECTABLE/);
+});
+test("47. tls trust mode hanya SYSTEM_CA ketika flag aktif", () => {
+  assert.strictEqual(pilot.resolveTlsTrustMode({}, []), "NODE_BUNDLED_CA");
+  assert.strictEqual(pilot.resolveTlsTrustMode({}, ["--use-system-ca"]), "SYSTEM_CA");
+  assert.strictEqual(pilot.resolveTlsTrustMode({ NODE_OPTIONS: "--use-system-ca" }, []), "SYSTEM_CA");
+});
+test("48. committed source output write diblokir tanpa opt-in", () => {
+  assert.throws(() => pilot.assertOutputWriteAllowed(
+    "radar/docs/data/source_pilot_items.json", path.join(tempDir, "health.json"), {}),
+  /COMMITTED_SOURCE_OUTPUT_WRITE_BLOCKED/);
+});
+test("49. direct offline fetch tanpa output env memakai default temporary", () => {
+  const directDir = path.join(tempDir, "direct-default");
+  fs.mkdirSync(directDir, { recursive: true });
+  const run = spawnSync(process.execPath, [path.join(root, "radar", "scripts", "fetch_source_pilot.js")], {
+    cwd: directDir,
+    encoding: "utf8",
+    env: Object.assign({}, process.env, {
+      RADAR_SOURCE_OFFLINE: "true",
+      RADAR_SOURCE_REGISTRY: registryPath,
+      RADAR_SOURCE_FIXTURE_DIR: fixtureDir,
+    }),
+  });
+  assert.strictEqual(run.status, 0, `${run.stdout}\n${run.stderr}`);
+  const healthFile = path.join(directDir, ".source-refresh-work", "manual",
+    "proposed_source_pilot_health.json");
+  const itemsFile = path.join(directDir, ".source-refresh-work", "manual",
+    "proposed_source_pilot_items.json");
+  assert.strictEqual(fs.existsSync(healthFile), true);
+  assert.strictEqual(fs.existsSync(itemsFile), true);
+  const saved = JSON.parse(fs.readFileSync(healthFile, "utf8"));
+  assert.deepStrictEqual(saved.sources.map((entry) => entry.source_code), ["BKPM_PRESS_RELEASES"]);
 });
 
 async function main() {

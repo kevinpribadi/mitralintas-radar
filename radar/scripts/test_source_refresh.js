@@ -14,6 +14,8 @@ const report = require("./build_source_refresh_report.js");
 
 const ROOT = path.resolve(__dirname, "../..");
 const WORKFLOW = path.join(ROOT, ".github", "workflows", "source-pilot-refresh.yml");
+const FETCHER = path.join(ROOT, "radar", "scripts", "fetch_source_pilot.js");
+const SAFE_WRAPPER = path.join(ROOT, "radar", "scripts", "run_source_refresh_safe.js");
 const TEMPLATE_DIR = path.join(ROOT, "radar", "templates");
 const DASHBOARD = path.join(ROOT, "radar", "docs", "index.html");
 const PROTECTED = [
@@ -25,6 +27,8 @@ const PROTECTED = [
 ].map((name) => path.join(ROOT, name));
 const initialHashes = hashes(PROTECTED);
 const workflow = fs.readFileSync(WORKFLOW, "utf8");
+const fetcherSource = fs.readFileSync(FETCHER, "utf8");
+const safeWrapperSource = fs.readFileSync(SAFE_WRAPPER, "utf8");
 const htmlTemplate = fs.readFileSync(path.join(TEMPLATE_DIR, "source_refresh_report.html"), "utf8");
 const cssTemplate = fs.readFileSync(path.join(TEMPLATE_DIR, "source_refresh_report.css"), "utf8");
 const jsTemplate = fs.readFileSync(path.join(TEMPLATE_DIR, "source_refresh_report.js"), "utf8");
@@ -64,7 +68,8 @@ function snapshot(items, duplicateCount = 0) {
 
 function health(overrides = {}) {
   return { schema_version: "1.0.0", sources: [Object.assign({ source_code: "BKPM_PRESS_RELEASES",
-    status: "DEGRADED", http_status: 200, content_type: "text/html; charset=UTF-8",
+    status: "DEGRADED", fetch_status: "LIVE_FETCH_SUCCEEDED", tls_trust_mode: "SYSTEM_CA",
+    http_status: 200, content_type: "text/html; charset=UTF-8",
     listing_links_found: 10, detail_pages_attempted: 10, valid_items: 10, invalid_items: 0,
     warnings: [], errors: [] }, overrides)] };
 }
@@ -476,6 +481,67 @@ test("F10", "failure report 360px dan 390px tetap aman", () => {
   assert.match(cssTemplate, /html, body[\s\S]{0,120}overflow-x:\s*hidden/);
   assert.match(cssTemplate, /button, \.source-link[\s\S]{0,160}min-height:\s*44px/);
 });
+
+test("J2C3-1", "NODE_OPTIONS system CA hanya pada live fetch step", () => {
+  assert.strictEqual((workflow.match(/NODE_OPTIONS:/g) || []).length, 1);
+  const fetchStep = workflow.match(/- name: Fetch live BKPM proposal[\s\S]*?(?=\n\s+- name:)/)[0];
+  assert.match(fetchStep, /NODE_OPTIONS:\s*--use-system-ca/);
+  const testSteps = workflow.match(/- name: Run source pilot tests[\s\S]*?(?=\n\s+- name: Capture)/)[0];
+  assert.doesNotMatch(testSteps, /NODE_OPTIONS/);
+});
+test("J2C3-2", "workflow fetch hanya BKPM dan tanpa committed-write opt-in", () => {
+  const fetchStep = workflow.match(/- name: Fetch live BKPM proposal[\s\S]*?(?=\n\s+- name:)/)[0];
+  assert.match(fetchStep, /RADAR_SOURCE_CODES:\s*BKPM_PRESS_RELEASES/);
+  assert.doesNotMatch(fetchStep, /KEMENPERIN|RADAR_ALLOW_COMMITTED_SOURCE_WRITE/);
+});
+test("J2C3-3", "safe wrapper memakai system CA temporary output dan BKPM", () => {
+  assert.match(safeWrapperSource, /\["--use-system-ca"/);
+  assert.match(safeWrapperSource, /\.source-refresh-work["',\s]+"manual/);
+  assert.match(safeWrapperSource, /RADAR_SOURCE_CODES:\s*"BKPM_PRESS_RELEASES"/);
+  assert.match(safeWrapperSource, /RADAR_SOURCE_LAST_KNOWN_GOOD_FILE/);
+  assert.doesNotMatch(safeWrapperSource, /RADAR_ALLOW_COMMITTED_SOURCE_WRITE\s*:/);
+});
+test("J2C3-4", "fetcher default temporary dan committed output guard tersedia", () => {
+  assert.match(fetcherSource, /MANUAL_OUTPUT_DIR/);
+  assert.match(fetcherSource, /COMMITTED_SOURCE_OUTPUT_WRITE_BLOCKED/);
+  assert.match(fetcherSource, /RADAR_ALLOW_COMMITTED_SOURCE_WRITE/);
+  assert.match(fetcherSource, /source\.acceptance_status === ACCEPTED_STATUS/);
+});
+test("J2C3-5", "tidak ada TLS bypass pada refresh implementation", () => {
+  const implementation = [workflow, fetcherSource, safeWrapperSource,
+    fs.readFileSync(path.join(ROOT, "radar", "scripts", "lib", "source_utils.js"), "utf8")].join("\n");
+  assert.doesNotMatch(implementation, /NODE_TLS_REJECT_UNAUTHORIZED\s*=\s*0/);
+  assert.doesNotMatch(implementation, /rejectUnauthorized\s*:\s*false/);
+  assert.doesNotMatch(implementation, /\bcurl\s+(?:[^\n]*\s)?(?:-k|--insecure)\b/);
+  assert.doesNotMatch(implementation, /strictSSL\s*:\s*false/);
+});
+test("J2C3-6", "TLS mode dan verification copy tampil pada report", () => {
+  assert.strictEqual(model.source_health.tls_trust_mode, "SYSTEM_CA");
+  assert.match(sourceMd, /TLS trust mode: SYSTEM_CA/);
+  assert.match(sourceMd, /TLS verification remained enabled using the operating system CA store\./);
+  assert.match(htmlTemplate, /TLS verification remained enabled using the operating system CA store\./);
+  assert.match(htmlTemplate, /Verifikasi TLS tetap aktif dengan menggunakan penyimpanan CA sistem operasi\./);
+  assert.match(jsTemplate, /TLS trust mode/);
+});
+test("J2C3-7", "report menampilkan fetched source rejected exclusion dan production unchanged", () => {
+  assert.deepStrictEqual(model.fetched_sources, ["BKPM_PRESS_RELEASES"]);
+  assert.deepStrictEqual(model.rejected_sources_excluded, ["KEMENPERIN_IMC_NEWS"]);
+  assert.strictEqual(model.summary.production_unchanged, true);
+  assert.match(jsTemplate, /Rejected source tidak di-fetch/);
+  assert.match(jsTemplate, /Production unchanged/);
+});
+test("J2C3-8", "mobile report memiliki kontrak 768px dan 1024px", () => {
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*768px\)/);
+  assert.match(cssTemplate, /@media\s*\(min-width:\s*1024px\)/);
+  assert.match(cssTemplate, /overflow-x:\s*hidden/);
+});
+test("J2C3-9", "HTTP dan content type tetap divalidasi fail-closed", () => {
+  assert.match(fetcherSource, /response\.status < 200 \|\| response\.status >= 300/);
+  assert.match(fetcherSource, /CONTENT_TYPE_INVALID/);
+  assert.match(fetcherSource, /requestUrl\(url, source/);
+});
+test("J2C3-10", "production hashes tetap identik setelah seluruh audit", () =>
+  assert.deepStrictEqual(hashes(PROTECTED), initialHashes));
 
 try { fs.rmSync(temp, { recursive: true, force: true }); } catch (_) { /* test temp only */ }
 console.log(`\nSource refresh tests: ${passed} passed, ${failed} failed.`);

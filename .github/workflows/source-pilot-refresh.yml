@@ -100,6 +100,7 @@ jobs:
         id: fetch
         continue-on-error: true
         env:
+          NODE_OPTIONS: --use-system-ca
           RADAR_SOURCE_REGISTRY: .source-refresh-work/temporary_source_registry.json
           RADAR_SOURCE_PILOT_OUTPUT: .source-refresh-work/proposed_source_pilot_items.json
           RADAR_SOURCE_HEALTH_OUTPUT: .source-refresh-work/proposed_source_pilot_health.json
